@@ -48,6 +48,7 @@ _updated at 2026-04-04_
 - Date UI 시스템 자체 구현
   - `useDateValidation`, `Calendar`, `DateInput`, `TimeWheelPicker` primitive 설계
   - `DatePicker`, `DateRangePicker`, `DateTimeRangePicker`로 조합 가능한 구조 설계
+  - 웹뷰에서 네이티브 앱 수준의 입력 경험 제공
   - React-Hook-Form 유효성 검사와 연동해 실사용 가능한 입력 흐름 제공
 - [Lexical](https://lexical.dev/) 기반 Rich Text Editor 구축
   - 디자인 토큰 및 공용 컴포넌트와 통합
@@ -56,10 +57,12 @@ _updated at 2026-04-04_
 
 #### Product Development
 
-- 신규 프로젝트 "카플랫"의 웹, 웹뷰 개발 환경 구축 및 디자인 시스템 컴포넌트를 적용한 제품 개발 진행
-- 웹뷰 환경에서 `framer-motion`, View Transition API를 활용해 앱 수준의 인터랙션 구현
-- 웹뷰 환경에서 촬영 이미지의 해상도와 용량을 최적화하는 압축 스크립트 구현
-  - 10~30MB 촬영 사진을 1MB 이내로 압축하며 차량의 상태를 명확히 확인할 수 있도록 품질 유지
+- 신규 프로젝트 "카플랫"의 웹, 웹뷰 개발 환경 구축 및 디자인 시스템 컴포넌트를 적용한 제품 개발
+- 다중 진행 버튼으로 구성된 Step Form을 단일 CTA + 시각 피드백 구조로 개선해 사용자 혼란 지점 제거
+- 웹뷰 UX를 네이티브 앱 수준으로 개선
+  - `framer-motion`, View Transition API로 앱 수준의 화면 전환 구현
+  - Popover 기반 Select/Calendar를 Bottom Sheet로 전환해 모바일 인터랙션 패턴에 맞게 개선
+  - 촬영 이미지 압축 스크립트 구현으로 10~30MB 사진을 1MB 이내로 최적화하며 품질 유지
 - B2B 개발자센터를 기획, 디자인 포함 1인 프론트엔드로 구축
   - OpenAPI 파싱 기반 API 문서 자동 생성, Endpoint/Parameter/에러코드 통합 검색, 카플랫 도메인 온보딩 문서 제공
 
@@ -114,7 +117,7 @@ _updated at 2026-04-04_
 - Next.js + App Router
 - Tailwind
 - [website](https://bandal.dev/)
-- [github](https://github.com/kdh379/bandal.dev)
+- [github](https://github.com/ban-dal/bandal.dev)
 
 ## Education
 

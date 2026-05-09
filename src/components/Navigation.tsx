@@ -20,7 +20,7 @@ export function Navigation() {
           </li>
           <li>
             <NavLink
-              href="https://github.com/kdh379"
+              href="https://github.com/ban-dal"
               isExternal
               icon={<GitHubIcon />}
             >

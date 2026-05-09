@@ -262,7 +262,7 @@ function FooterSection() {
         </div>
         <div className="flex gap-4">
           <a
-            href="https://github.com/kdh379/bandal.dev"
+            href="https://github.com/ban-dal/bandal.dev"
             target="_blank"
             rel="noopener noreferrer"
             className="text-sm text-blockquote transition hover:opacity-80"
