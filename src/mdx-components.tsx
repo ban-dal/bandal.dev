@@ -1,338 +1,323 @@
 import Link from "next/link";
-import React from "react";
+import { Children } from "react";
 
-import { CodeExample } from "@/components/CodeExample";
-import { buttonVariants } from "@/components/ui/Button";
+import { slugifyHeading } from "@/lib/content-utils";
+import { cn } from "@/lib/utils";
 
 import type { MDXComponents } from "mdx/types";
-import type { ReactNode } from "react";
+import type { ComponentPropsWithoutRef, ReactNode } from "react";
 
-function getTextContent(node: React.ReactNode): string {
+function getTextContent(node: ReactNode): string {
   if (typeof node === "string" || typeof node === "number") {
     return String(node);
-  }
-
-  if (React.isValidElement(node)) {
-    if (node.type === "small") {
-      return "";
-    }
-
-    // @ts-ignore
-    return getTextContent(node.props.children);
   }
 
   if (Array.isArray(node)) {
     return node.map(getTextContent).join("");
   }
 
-  return ""; // If the node is neither text nor a React element
+  if (node && typeof node === "object" && "props" in node) {
+    const props = node.props as { children?: ReactNode };
+    return getTextContent(props.children);
+  }
+
+  return "";
 }
 
-function slugify(str: React.ReactNode) {
-  return getTextContent(str)
-    .toLowerCase()
-    .trim() // Remove whitespace from both ends of a string
-    .replace(/\s+/g, "-") // Replace spaces with -
-    .replace(/&/g, "-and-") // Replace & with 'and'
-    .replace(/[^\w\-]+/g, "") // Remove all non-word characters except for -
-    .replace(/\-\-+/g, "-"); // Replace multiple - with single -
+function HeadingAnchor({ children, id }: { children: ReactNode; id: string }) {
+  return (
+    <a
+      className="font-[inherit] text-[inherit] no-underline decoration-transparent [overflow-wrap:normal] transition-colors hover:text-primary"
+      href={`#${id}`}
+    >
+      {children}
+    </a>
+  );
 }
 
-function createHeading(level: 1 | 2 | 3 | 4 | 5 | 6) {
-  const HeadingComponent = ({ children }: React.PropsWithChildren) => {
-    const slug = slugify(children);
-    return React.createElement(`h${level}`, { id: slug }, [
-      React.createElement(
-        "a",
-        {
-          href: `#${slug}`,
-          key: `link-${slug}`,
-          className: "anchor",
-        },
-        children,
-      ),
-    ]);
-  };
-  HeadingComponent.displayName = `Heading${level}`;
-  return HeadingComponent;
+function Heading({
+  children,
+  className,
+  level,
+  ...props
+}: ComponentPropsWithoutRef<"h2"> & { level: 2 | 3 | 4 }) {
+  const id = slugifyHeading(getTextContent(children));
+
+  if (level === 2) {
+    return (
+      <h2
+        {...props}
+        className={cn(
+          "mt-16 mb-5 scroll-mt-24 border-t border-border pt-7 text-[clamp(1.625rem,4vw,2.25rem)] font-[780] leading-tight text-foreground",
+          className,
+        )}
+        id={id}
+      >
+        <HeadingAnchor id={id}>{children}</HeadingAnchor>
+      </h2>
+    );
+  }
+
+  if (level === 3) {
+    return (
+      <h3
+        {...props}
+        className={cn(
+          "mt-11 mb-4 scroll-mt-24 text-[clamp(1.3rem,3vw,1.625rem)] font-[760] leading-snug text-foreground",
+          className,
+        )}
+        id={id}
+      >
+        <HeadingAnchor id={id}>{children}</HeadingAnchor>
+      </h3>
+    );
+  }
+
+  return (
+    <h4
+      {...props}
+      className={cn(
+        "mt-9 mb-3 scroll-mt-24 text-xl font-[760] leading-snug text-foreground",
+        className,
+      )}
+      id={id}
+    >
+      <HeadingAnchor id={id}>{children}</HeadingAnchor>
+    </h4>
+  );
 }
 
-// This file is required to use MDX in `app` directory.
+function removeWhitespaceTextNodes(children: ReactNode) {
+  return Children.toArray(children).filter(
+    (child) => typeof child !== "string" || child.trim().length > 0,
+  );
+}
+
+function TableSection({
+  children,
+  ...props
+}: ComponentPropsWithoutRef<"tbody">) {
+  return <tbody {...props}>{removeWhitespaceTextNodes(children)}</tbody>;
+}
+
+function TableHead({ children, ...props }: ComponentPropsWithoutRef<"thead">) {
+  return <thead {...props}>{removeWhitespaceTextNodes(children)}</thead>;
+}
+
+function TableRow({ children, ...props }: ComponentPropsWithoutRef<"tr">) {
+  return <tr {...props}>{removeWhitespaceTextNodes(children)}</tr>;
+}
+
+const proseTextColor =
+  "text-[color-mix(in_srgb,var(--foreground)_76%,transparent)]";
+const proseHeadingColor = "text-foreground";
+const proseMutedColor =
+  "text-[color-mix(in_srgb,var(--foreground)_58%,transparent)]";
+
+type MDXWrapperProps = ComponentPropsWithoutRef<"article"> & {
+  params?: unknown;
+  searchParams?: unknown;
+};
+
 export function useMDXComponents(components: MDXComponents): MDXComponents {
   return {
-    wrapper(props) {
-      return <div className="slide-enter-content">{props.children}</div>;
-    },
-    // Allows customizing built-in components, e.g. to add styling.
-    h1: ({ children }) => (
-      <h1 className="scroll-mt-24 text-4xl font-bold text-heading mb-6 tracking-tight">
+    wrapper: ({
+      children,
+      className,
+      params: _params,
+      searchParams: _searchParams,
+      ...props
+    }: MDXWrapperProps) => (
+      <article
+        {...props}
+        className={cn(
+          "container max-w-[65ch] text-[1.03rem] leading-[1.82] font-normal tracking-normal md:text-[1.075rem]",
+          proseTextColor,
+          className,
+        )}
+        data-mdx-prose="true"
+      >
+        {children}
+      </article>
+    ),
+    h1: ({ children, className, ...props }) => (
+      <h1
+        {...props}
+        className={cn(
+          "mb-7 text-[clamp(2.5rem,7vw,4.5rem)] font-[820] leading-[1.05] text-foreground",
+          className,
+        )}
+      >
         {children}
       </h1>
     ),
-    ...components,
+    h2: (props) => <Heading {...props} level={2} />,
+    h3: (props) => <Heading {...props} level={3} />,
+    h4: (props) => <Heading {...props} level={4} />,
+    p: ({ children, className, ...props }) => (
+      <p {...props} className={cn("my-5", proseTextColor, className)}>
+        {children}
+      </p>
+    ),
+    ul: ({ children, className, ...props }) => (
+      <ul
+        {...props}
+        className={cn(
+          "my-6 list-disc space-y-2 pl-6 marker:text-[color-mix(in_srgb,var(--foreground)_34%,transparent)]",
+          className,
+        )}
+      >
+        {children}
+      </ul>
+    ),
+    ol: ({ children, className, ...props }) => (
+      <ol
+        {...props}
+        className={cn(
+          "my-6 list-decimal space-y-2 pl-6 marker:text-[color-mix(in_srgb,var(--foreground)_46%,transparent)] marker:font-medium",
+          className,
+        )}
+      >
+        {children}
+      </ol>
+    ),
+    li: ({ children, className, ...props }) => (
+      <li {...props} className={cn("pl-1 leading-[1.75]", className)}>
+        {children}
+      </li>
+    ),
+    strong: ({ children, className, ...props }) => (
+      <strong
+        {...props}
+        className={cn("font-[680] text-foreground", className)}
+      >
+        {children}
+      </strong>
+    ),
+    em: ({ children, className, ...props }) => (
+      <em
+        {...props}
+        className={cn(
+          "font-serif text-[1.04em] text-[color-mix(in_srgb,var(--foreground)_86%,transparent)]",
+          className,
+        )}
+      >
+        {children}
+      </em>
+    ),
+    blockquote: ({ children, className, ...props }) => (
+      <blockquote
+        {...props}
+        className={cn(
+          "my-8 -ml-3 border-l-4 border-blockquote-border bg-surface/70 px-5 py-4 leading-[1.68] text-blockquote [&>*:first-child]:mt-0 [&>*:last-child]:mb-0",
+          className,
+        )}
+      >
+        {children}
+      </blockquote>
+    ),
+    a: ({ href = "", children, className, ...props }) => {
+      if (href.startsWith("/")) {
+        return (
+          <Link
+            {...props}
+            className={cn(
+              "font-[560] text-foreground no-underline decoration-transparent [overflow-wrap:anywhere] [box-shadow:inset_0_-1px_color-mix(in_srgb,var(--foreground)_28%,transparent)] transition-[color,box-shadow] hover:text-primary hover:[box-shadow:inset_0_-1px_var(--primary)]",
+              className,
+            )}
+            href={href}
+          >
+            {children}
+          </Link>
+        );
+      }
 
-    h2: (props) => {
-      const Heading = createHeading(2);
       return (
-        <Heading {...props}>
-          <span className="scroll-mt-24 text-3xl font-bold text-heading mt-16 mb-6 block border-b border-hr pb-2 tracking-tight">
-            {props.children}
-          </span>
-        </Heading>
-      );
-    },
-    h3: (props) => {
-      const Heading = createHeading(3);
-      return (
-        <Heading {...props}>
-          <span className="scroll-mt-24 text-2xl font-semibold text-heading mt-12 mb-4 block font-sans tracking-tight">
-            {props.children}
-          </span>
-        </Heading>
-      );
-    },
-    h4: (props) => {
-      const Heading = createHeading(4);
-      return (
-        <Heading {...props}>
-          <span className="scroll-mt-24 text-xl font-semibold text-heading mt-10 mb-3 block font-sans tracking-tight">
-            {props.children}
-          </span>
-        </Heading>
-      );
-    },
-    h5: (props) => {
-      const Heading = createHeading(5);
-      return (
-        <Heading {...props}>
-          <span className="scroll-mt-24 text-lg font-semibold text-heading mt-8 mb-2 block font-sans tracking-tight">
-            {props.children}
-          </span>
-        </Heading>
-      );
-    },
-    h6: (props) => {
-      const Heading = createHeading(6);
-      return (
-        <Heading {...props}>
-          <span className="scroll-mt-24 text-base font-semibold text-heading mt-6 mb-2 block font-sans tracking-tight">
-            {props.children}
-          </span>
-        </Heading>
-      );
-    },
-
-    p(props) {
-      return (
-        <p className="my-4 leading-relaxed text-foreground font-sans">
-          {props.children}
-        </p>
-      );
-    },
-    ul(props) {
-      return (
-        <ul className="list-disc pl-6 my-2 space-y-1 text-foreground font-sans [&_p]:my-0">
-          {props.children}
-        </ul>
-      );
-    },
-    ol(props) {
-      return (
-        <ol className="list-decimal pl-6 my-2 space-y-1 text-foreground font-sans">
-          {props.children}
-        </ol>
-      );
-    },
-    li(props) {
-      return <li className="ml-2 font-sans">{props.children}</li>;
-    },
-    blockquote(props) {
-      return (
-        <blockquote className="border-l-4 border-blockquote-border pl-4 py-2 my-6 text-blockquote bg-blockquote/5 rounded-md">
-          {props.children}
-        </blockquote>
-      );
-    },
-    hr() {
-      return <hr className="my-8 border-hr" />;
-    },
-    a(props: any) {
-      const href: string = props.href ?? "";
-      if (href.startsWith("http://") || href.startsWith("https://")) {
-        // 외부 링크: 새 탭, 아이콘, rel 속성 등
-        return (
-          <a
-            {...props}
-            target="_blank"
-            rel="noopener noreferrer"
-            className={buttonVariants({ variant: "link", color: "foreground" })}
-          >
-            {props.children}
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 24 24"
-              width="16"
-              height="16"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              <path d="M21 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h6" />
-              <path d="m21 3-9 9" />
-              <path d="M15 3h6v6" />
-            </svg>
-          </a>
-        );
-      }
-      if (href.startsWith("mailto:") || href.startsWith("tel:")) {
-        // 메일/전화 링크: 기본 동작
-        return (
-          <a
-            {...props}
-            className={buttonVariants({ variant: "link", color: "foreground" })}
-          >
-            {props.children}
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="16"
-              height="16"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              <path d="M14.536 21.686a.5.5 0 0 0 .937-.024l6.5-19a.496.496 0 0 0-.635-.635l-19 6.5a.5.5 0 0 0-.024.937l7.93 3.18a2 2 0 0 1 1.112 1.11z" />
-              <path d="m21.854 2.147-10.94 10.939" />
-            </svg>
-          </a>
-        );
-      }
-      if (href.startsWith("#")) {
-        // 앵커 링크: 기본 동작
-        return (
-          <a
-            {...props}
-            className={buttonVariants({ variant: "link", color: "foreground" })}
-          >
-            {props.children}
-          </a>
-        );
-      }
-      // 내부 링크: Next.js Link 사용
-      return (
-        <Link
+        <a
           {...props}
-          className={buttonVariants({ variant: "link", color: "foreground" })}
-        />
-      );
-    },
-    code({ children }: { children: string | ReactNode }) {
-      // 문자열이 아닌 경우
-      if (typeof children !== "string") {
-        return (
-          <code className="px-1 py-0.5 rounded bg-code-background text-code-color text-[15px] font-mono">
-            {children}
-          </code>
-        );
-      }
-      // 태그가 있는 경우
-      if (children.startsWith("<")) {
-        return (
-          <code className="px-1 py-0.5 rounded bg-code-background text-code-color text-[15px] font-mono">
-            {children}
-          </code>
-        );
-      }
-      // 태그가 없는 경우
-      return (
-        <code className="px-1 py-0.5 rounded bg-code-background text-code-color text-[15px] font-mono">
-          {children
-            .split(/(<[^>]+>)/g)
-            .map((part, i) =>
-              part.startsWith("<") && part.endsWith(">") ? (
-                <var key={i}>{part}</var>
-              ) : (
-                part
-              ),
-            )}
-        </code>
-      );
-    },
-    pre(props) {
-      const child = React.Children.only(props.children) as React.ReactElement;
-      if (!child) return null;
-      // @ts-ignore
-      const { className, children: code } = child.props;
-      const lang = className ? className.replace("language-", "") : "";
-      let filename = undefined;
-      // 첫 줄에서 [!code filename:…] 지시어 추출
-      const lines = code.split("\n");
-      const filenameRegex = /\[!code filename\:(.+)\]/;
-      const match = lines[0].match(filenameRegex);
-      let codeBody = code;
-      if (match) {
-        filename = match[1];
-        codeBody = lines.splice(1).join("\n");
-      }
-      return (
-        <div className="my-6 font-mono">
-          <CodeExample
-            example={{ lang, code: codeBody }}
-            className="not-prose rounded-lg shadow bg-code-background font-mono"
-            filename={filename}
-          />
-        </div>
-      );
-    },
-    table(props) {
-      return (
-        <div className="my-6 w-full overflow-x-auto">
-          <table className="w-full border-collapse text-foreground font-sans">
-            {React.Children.toArray(props.children).filter((child) =>
-              React.isValidElement(child),
-            )}
-          </table>
-        </div>
-      );
-    },
-    thead(props) {
-      return (
-        <thead className="bg-table-header-bg">
-          {React.Children.toArray(props.children).filter((child) =>
-            React.isValidElement(child),
+          className={cn(
+            "font-[560] text-foreground no-underline decoration-transparent [overflow-wrap:anywhere] [box-shadow:inset_0_-1px_color-mix(in_srgb,var(--foreground)_28%,transparent)] transition-[color,box-shadow] hover:text-primary hover:[box-shadow:inset_0_-1px_var(--primary)]",
+            className,
           )}
-        </thead>
+          href={href}
+          rel={href.startsWith("http") ? "noopener noreferrer" : undefined}
+          target={href.startsWith("http") ? "_blank" : undefined}
+        >
+          {children}
+        </a>
       );
     },
-    tbody(props) {
-      return (
-        <tbody>
-          {React.Children.toArray(props.children).filter((child) =>
-            React.isValidElement(child),
+    pre: ({ children, className, ...props }) => (
+      <pre
+        {...props}
+        className={cn(
+          "my-8 overflow-auto rounded-md border border-border bg-code-background px-5 py-4 font-mono text-[0.88em] leading-[1.7] text-code-foreground shadow-app [&_code]:border-0 [&_code]:bg-transparent [&_code]:p-0 [&_code]:text-[1em] [&_code]:text-inherit",
+          className,
+        )}
+      >
+        {children}
+      </pre>
+    ),
+    code: ({ children, className, ...props }) => (
+      <code
+        {...props}
+        className={cn(
+          "rounded border border-[var(--inline-code-border)] bg-[var(--inline-code-background)] px-1.5 py-0.5 font-mono text-[0.9em] font-medium text-[var(--inline-code-foreground)]",
+          className,
+        )}
+      >
+        {children}
+      </code>
+    ),
+    hr: ({ className, ...props }) => (
+      <hr
+        {...props}
+        className={cn(
+          "mx-auto my-12 w-14 border-t border-[color-mix(in_srgb,var(--foreground)_28%,transparent)]",
+          className,
+        )}
+      />
+    ),
+    table: ({ children, className, ...props }) => (
+      <div className="my-8 overflow-x-auto">
+        <table
+          {...props}
+          className={cn(
+            "w-full min-w-[36rem] border-collapse text-left text-[0.9em] leading-[1.65]",
+            className,
           )}
-        </tbody>
-      );
-    },
-    tr(props) {
-      return (
-        <tr className="border-b border-table-border">
-          {React.Children.toArray(props.children).filter((child) =>
-            React.isValidElement(child),
-          )}
-        </tr>
-      );
-    },
-    th(props) {
-      return (
-        <th className="px-4 py-3 text-left font-semibold">{props.children}</th>
-      );
-    },
-    td(props) {
-      return <td className="px-4 py-3">{props.children}</td>;
-    },
+        >
+          {children}
+        </table>
+      </div>
+    ),
+    th: ({ children, className, ...props }) => (
+      <th
+        {...props}
+        className={cn(
+          "border-b border-border px-3 py-2 font-[680]",
+          proseHeadingColor,
+          className,
+        )}
+      >
+        {children}
+      </th>
+    ),
+    td: ({ children, className, ...props }) => (
+      <td
+        {...props}
+        className={cn(
+          "border-b border-border px-3 py-2",
+          proseMutedColor,
+          className,
+        )}
+      >
+        {children}
+      </td>
+    ),
+    thead: TableHead,
+    tbody: TableSection,
+    tr: TableRow,
+    ...components,
   };
 }

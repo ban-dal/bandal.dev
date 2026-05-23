@@ -6,36 +6,49 @@ interface ThemeProviderProps {
   children: React.ReactNode;
 }
 
+type Theme = "light" | "dark" | "system";
+
+function getStoredTheme(): Theme {
+  const storedTheme = localStorage.getItem("theme");
+
+  if (
+    storedTheme === "light" ||
+    storedTheme === "dark" ||
+    storedTheme === "system"
+  ) {
+    return storedTheme;
+  }
+
+  return "system";
+}
+
+function applyTheme(theme: Theme) {
+  const root = document.documentElement;
+  const systemPrefersDark = window.matchMedia(
+    "(prefers-color-scheme: dark)",
+  ).matches;
+
+  root.dataset.theme = theme;
+  root.classList.toggle(
+    "dark",
+    theme === "dark" || (theme === "system" && systemPrefersDark),
+  );
+}
+
 export function ThemeProvider({ children }: ThemeProviderProps) {
   useEffect(() => {
-    // 로컬 스토리지에서 테마 설정 가져오기
-    const theme = localStorage.getItem("theme");
-    const systemPrefersDark = window.matchMedia(
-      "(prefers-color-scheme: dark)",
-    ).matches;
-
-    // 테마 적용
-    if (theme === "dark" || (theme === null && systemPrefersDark)) {
-      document.documentElement.classList.add("dark");
-    } else if (theme === "light") {
-      document.documentElement.classList.remove("dark");
-    }
-
-    // 시스템 테마 변경 감지
     const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
-    const handleChange = (e: MediaQueryListEvent) => {
-      const theme = localStorage.getItem("theme");
-      if (theme === null) {
-        if (e.matches) {
-          document.documentElement.classList.add("dark");
-        } else {
-          document.documentElement.classList.remove("dark");
-        }
-      }
-    };
+    const handleSystemThemeChange = () => applyTheme(getStoredTheme());
+    const handleThemeStorageChange = () => applyTheme(getStoredTheme());
 
-    mediaQuery.addEventListener("change", handleChange);
-    return () => mediaQuery.removeEventListener("change", handleChange);
+    applyTheme(getStoredTheme());
+    mediaQuery.addEventListener("change", handleSystemThemeChange);
+    window.addEventListener("storage", handleThemeStorageChange);
+
+    return () => {
+      mediaQuery.removeEventListener("change", handleSystemThemeChange);
+      window.removeEventListener("storage", handleThemeStorageChange);
+    };
   }, []);
 
   return <>{children}</>;

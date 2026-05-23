@@ -4,6 +4,7 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   pageExtensions: ["mdx", "tsx", "ts"],
+  allowedDevOrigins: ["192.168.219.*"],
   redirects: async () => [
     {
       source: "/resume",

@@ -1,53 +1,63 @@
 import fs from "fs";
 import path from "path";
 
-import dayjs from "dayjs";
-import customParseFormat from "dayjs/plugin/customParseFormat";
-import isSameOrBefore from "dayjs/plugin/isSameOrBefore";
 import { cache } from "react";
-
-dayjs.extend(isSameOrBefore);
-dayjs.extend(customParseFormat);
 
 export type ContentType = "blog" | "note";
 
+export type ContentMeta = {
+  slug: string;
+  title: string;
+  description: string;
+  date: string;
+  published?: boolean;
+  type: ContentType;
+};
+
+export type ContentHeading = {
+  id: string;
+  text: string;
+  depth: 2 | 3;
+};
+
 export type ContentItem = {
-  Component: React.ComponentType<any>;
-  meta: {
-    slug: string;
-    title: string;
-    description: string;
-    date: string;
-    published?: boolean;
-    type?: ContentType;
-  };
+  Component: React.ComponentType;
+  headings: ContentHeading[];
+  meta: ContentMeta;
 };
 
-// 콘텐츠 디렉토리 경로
-const contentDirectories = {
-  blog: path.join(process.cwd(), "src/content/posts"),
-  note: path.join(process.cwd(), "src/content/notes"),
-};
+const CONTENT_ROOT_BY_TYPE = {
+  blog: path.join(
+    /* turbopackIgnore: true */ process.cwd(),
+    "src/content/posts",
+  ),
+  note: path.join(
+    /* turbopackIgnore: true */ process.cwd(),
+    "src/content/notes",
+  ),
+} satisfies Record<ContentType, string>;
 
-/**
- * 콘텐츠를 위한 유틸리티 함수들
- */
+const CONTENT_IMPORT_BY_TYPE = {
+  blog: "posts",
+  note: "notes",
+} satisfies Record<ContentType, string>;
 
-// MDX 모듈 가져오기
-export async function getModule(type: ContentType, slug: string) {
-  try {
-    const contentPath = type === "blog" ? "posts" : "notes";
-    const content = await import(`@/content/${contentPath}/${slug}/index.mdx`);
-    return content || null;
-  } catch (error) {
-    console.error(`Error importing module for ${type}/${slug}:`, error);
-    return null;
-  }
+export function slugifyHeading(value: string) {
+  return value
+    .normalize("NFKD")
+    .toLowerCase()
+    .trim()
+    .replace(/[^\p{Letter}\p{Number}\s-]/gu, "")
+    .replace(/\s+/g, "-")
+    .replace(/-+/g, "-");
 }
 
-// 디렉토리의 모든 슬러그 목록을 가져오는 함수
-export function getSlugs(type: ContentType) {
-  const directory = contentDirectories[type];
+function getContentPath(type: ContentType, slug: string) {
+  return path.join(CONTENT_ROOT_BY_TYPE[type], slug, "index.mdx");
+}
+
+function getSlugs(type: ContentType) {
+  const directory = CONTENT_ROOT_BY_TYPE[type];
 
   if (!fs.existsSync(directory)) {
     return [];
@@ -55,100 +65,108 @@ export function getSlugs(type: ContentType) {
 
   return fs
     .readdirSync(directory, { withFileTypes: true })
-    .filter((dirent) => dirent.isDirectory())
-    .map((dirent) => dirent.name);
+    .filter((entry) => entry.isDirectory())
+    .map((entry) => entry.name);
 }
 
-// 연도별로 콘텐츠 그룹화하는 함수
-export function groupContentByYear<T extends { meta: { date: string } }>(
-  content: T[],
-): Record<number, T[]> {
-  const contentByYear: Record<number, T[]> = {};
+export function parseContentHeadings(source: string): ContentHeading[] {
+  return source
+    .split(/\r?\n/)
+    .map((line) => line.match(/^(#{2,3})\s+(.+)$/))
+    .filter((match): match is RegExpMatchArray => Boolean(match))
+    .map((match) => {
+      const text = match[2].replace(/<[^>]+>/g, "").trim();
 
-  const sortedContent = content.sort((a, b) => {
-    const dateA = dayjs(a.meta.date);
-    const dateB = dayjs(b.meta.date);
-
-    return dateB.isBefore(dateA) ? -1 : 1;
-  });
-
-  sortedContent.forEach((item) => {
-    const year = dayjs(item.meta.date).year();
-    if (!contentByYear[year]) {
-      contentByYear[year] = [];
-    }
-    contentByYear[year].push(item);
-  });
-
-  // 연도를 내림차순으로 정렬
-  return Object.keys(contentByYear)
-    .sort((a, b) => Number(b) - Number(a))
-    .reduce(
-      (obj, key) => {
-        obj[Number(key)] = contentByYear[Number(key)];
-        return obj;
-      },
-      {} as Record<number, T[]>,
-    );
+      return {
+        id: slugifyHeading(text),
+        text,
+        depth: match[1].length as 2 | 3,
+      };
+    })
+    .filter((heading) => heading.id.length > 0);
 }
 
-// 특정 슬러그의 콘텐츠 메타데이터를 가져오는 함수
+function readHeadings(type: ContentType, slug: string): ContentHeading[] {
+  const sourcePath = getContentPath(type, slug);
+
+  if (!fs.existsSync(sourcePath)) {
+    return [];
+  }
+
+  return parseContentHeadings(fs.readFileSync(sourcePath, "utf8"));
+}
+
+async function importContent(type: ContentType, slug: string) {
+  const contentDirectory = CONTENT_IMPORT_BY_TYPE[type];
+  return import(`@/content/${contentDirectory}/${slug}/index.mdx`);
+}
+
 export const getContentBySlug = cache(
   async (type: ContentType, slug: string): Promise<ContentItem | null> => {
-    const contentModule = await getModule(type, slug);
-
-    if (!contentModule.default) {
-      return null;
-    }
-
     try {
+      const contentModule = await importContent(type, slug);
+
+      if (!contentModule.default) {
+        return null;
+      }
+
       return {
         Component: contentModule.default,
+        headings: readHeadings(type, slug),
         meta: {
           slug,
-          ...contentModule.meta,
           type,
+          ...contentModule.meta,
         },
       };
-    } catch (error) {
-      console.error(`Error processing meta for ${type}/${slug}:`, error);
+    } catch {
       return null;
     }
   },
 );
 
-// 모든 콘텐츠를 가져오는 함수
-export async function getAllContent(type: ContentType): Promise<ContentItem[]> {
-  const slugs = getSlugs(type);
-  const contentPromises = slugs.map((slug) => getContentBySlug(type, slug));
-  const content = await Promise.all(contentPromises);
+export async function getAllContent(type: ContentType) {
+  const content = await Promise.all(
+    getSlugs(type).map((slug) => getContentBySlug(type, slug)),
+  );
 
-  // null이 아닌 콘텐츠만 필터링하고, published가 true인 것만 포함
   return content
     .filter(
       (item): item is ContentItem =>
         item !== null && item.meta.published !== false,
     )
     .sort(
-      (a, b) =>
-        new Date(b.meta.date).getTime() - new Date(a.meta.date).getTime(),
+      (first, second) =>
+        new Date(second.meta.date).getTime() -
+        new Date(first.meta.date).getTime(),
     );
 }
 
-// 연도별로 콘텐츠 가져오기
-export async function getContentByYear(
-  type: ContentType,
-): Promise<Record<number, ContentItem[]>> {
-  const content = await getAllContent(type);
-  return groupContentByYear(content);
+export function groupContentByYear<T extends { meta: { date: string } }>(
+  items: T[],
+) {
+  return [...items]
+    .sort(
+      (first, second) =>
+        new Date(second.meta.date).getTime() -
+        new Date(first.meta.date).getTime(),
+    )
+    .reduce<Record<string, T[]>>((groupedItems, item) => {
+      const year = new Date(item.meta.date).getFullYear().toString();
+
+      return {
+        ...groupedItems,
+        [year]: [...(groupedItems[year] ?? []), item],
+      };
+    }, {});
 }
 
-// 블로그 포스트 관련 편의 함수
 export const getPostBySlug = (slug: string) => getContentBySlug("blog", slug);
 export const getAllPosts = () => getAllContent("blog");
-export const getPostsByYear = () => getContentByYear("blog");
+export const getPostsByYear = async () =>
+  groupContentByYear(await getAllPosts());
 
-// 노트 관련 편의 함수
 export const getNoteBySlug = (slug: string) => getContentBySlug("note", slug);
 export const getAllNotes = () => getAllContent("note");
-export const getNotesByYear = () => getContentByYear("note");
+export const getNotesByYear = async () =>
+  groupContentByYear(await getAllNotes());

@@ -1,67 +1,79 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 
-import { MoonIcon, SunIcon, DesktopIcon } from "@/components/ThemeIcons";
-import { Button } from "@/components/ui/Button";
-import { useCursor } from "@/hooks/useCursor";
+import { DesktopIcon, MoonIcon, SunIcon } from "@/components/ThemeIcons";
+import { Switch } from "@/components/ui/Switch";
 
-type Theme = "light" | "dark" | "system";
+type Theme = "system" | "light" | "dark";
+
+const THEME_OPTIONS = [
+  {
+    value: "system",
+    label: "시스템 테마",
+    icon: <DesktopIcon className="size-4" />,
+  },
+  {
+    value: "light",
+    label: "라이트 테마",
+    icon: <SunIcon className="size-4" />,
+  },
+  {
+    value: "dark",
+    label: "다크 테마",
+    icon: <MoonIcon className="size-4" />,
+  },
+] satisfies {
+  icon: React.ReactNode;
+  label: string;
+  value: Theme;
+}[];
+
+function readTheme(): Theme {
+  const storedTheme = localStorage.getItem("theme");
+
+  if (
+    storedTheme === "system" ||
+    storedTheme === "light" ||
+    storedTheme === "dark"
+  ) {
+    return storedTheme;
+  }
+
+  return "system";
+}
+
+function applyTheme(theme: Theme) {
+  const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+
+  localStorage.setItem("theme", theme);
+  document.documentElement.dataset.theme = theme;
+  document.documentElement.classList.toggle(
+    "dark",
+    theme === "dark" || (theme === "system" && prefersDark),
+  );
+}
 
 export function ThemeSwitch() {
   const [theme, setTheme] = useState<Theme>("system");
-  const ref = useRef<HTMLDivElement>(null);
-  const { cursorStyle, initContainer } = useCursor(theme, {
-    selector: `[data-theme="${theme}"]`,
-  });
 
   useEffect(() => {
-    initContainer(ref.current);
-  }, [initContainer]);
+    const storedTheme = readTheme();
 
-  useEffect(() => {
-    const storedTheme = localStorage.getItem("theme") as Theme | null;
-    setTheme(storedTheme || "system");
+    setTheme(storedTheme);
+    applyTheme(storedTheme);
   }, []);
 
-  useEffect(() => {
-    if (theme === "system") {
-      localStorage.removeItem("theme");
-      const isDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
-      document.documentElement.classList.toggle("dark", isDark);
-    } else {
-      localStorage.setItem("theme", theme);
-      document.documentElement.classList.toggle("dark", theme === "dark");
-    }
-  }, [theme]);
-
-  const themeOptions: { value: Theme; icon: React.ReactNode }[] = [
-    { value: "light", icon: <SunIcon className="w-5 h-5" /> },
-    { value: "dark", icon: <MoonIcon className="w-5 h-5" /> },
-    { value: "system", icon: <DesktopIcon className="w-5 h-5" /> },
-  ];
-
   return (
-    <div ref={ref} className="flex border rounded-full p-1 border-hr relative">
-      <span
-        className="absolute bg-gray-200 dark:bg-gray-700 size-8 rounded-full -z-1 left-0"
-        style={cursorStyle}
-      />
-      {themeOptions.map(({ value, icon }) => (
-        <Button
-          key={value}
-          isIconOnly
-          color="foreground"
-          variant="light"
-          size="sm"
-          radius="full"
-          data-theme={value}
-          onClick={() => setTheme(value)}
-          aria-label={`${value} 테마로 변경`}
-        >
-          {icon}
-        </Button>
-      ))}
-    </div>
+    <Switch
+      ariaLabel="테마 변경"
+      itemClassName="size-8 min-h-8 px-0"
+      items={THEME_OPTIONS}
+      onValueChange={(nextTheme) => {
+        setTheme(nextTheme);
+        applyTheme(nextTheme);
+      }}
+      value={theme}
+    />
   );
 }

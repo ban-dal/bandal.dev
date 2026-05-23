@@ -1,6 +1,6 @@
 import { describe, it, expect, vi } from "vitest";
 
-import { groupContentByYear } from "./content-utils";
+import { groupContentByYear, parseContentHeadings } from "./content-utils";
 
 import type { ContentType } from "./content-utils";
 
@@ -24,6 +24,33 @@ describe("content-utils", () => {
       const note: ContentType = "note";
       expect(blog).toBe("blog");
       expect(note).toBe("note");
+    });
+  });
+
+  describe("parseContentHeadings", () => {
+    it("CRLF 줄바꿈을 사용하는 MDX에서도 h2, h3 heading을 추출해야 한다", () => {
+      const source = [
+        "# Title",
+        "",
+        "## First Heading",
+        "",
+        "### Second Heading",
+        "",
+        "#### Ignored Heading",
+      ].join("\r\n");
+
+      expect(parseContentHeadings(source)).toEqual([
+        {
+          id: "first-heading",
+          text: "First Heading",
+          depth: 2,
+        },
+        {
+          id: "second-heading",
+          text: "Second Heading",
+          depth: 3,
+        },
+      ]);
     });
   });
 
