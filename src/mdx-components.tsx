@@ -1,11 +1,12 @@
 import Link from "next/link";
-import { Children } from "react";
+import { Children, isValidElement } from "react";
 
+import { CodeExample } from "@/components/CodeExample";
 import { slugifyHeading } from "@/lib/content-utils";
 import { cn } from "@/lib/utils";
 
 import type { MDXComponents } from "mdx/types";
-import type { ComponentPropsWithoutRef, ReactNode } from "react";
+import type { ComponentPropsWithoutRef, ReactElement, ReactNode } from "react";
 
 function getTextContent(node: ReactNode): string {
   if (typeof node === "string" || typeof node === "number") {
@@ -91,6 +92,25 @@ function removeWhitespaceTextNodes(children: ReactNode) {
   return Children.toArray(children).filter(
     (child) => typeof child !== "string" || child.trim().length > 0,
   );
+}
+
+function getCodeBlockExample(children: ReactNode) {
+  const [child] = Children.toArray(children).filter(
+    (child) => typeof child !== "string" || child.trim().length > 0,
+  );
+
+  if (!isValidElement(child)) {
+    return null;
+  }
+
+  const codeElement = child as ReactElement<ComponentPropsWithoutRef<"code">>;
+  const className = codeElement.props.className ?? "";
+  const languageMatch = /language-(\S+)/.exec(className);
+
+  return {
+    lang: languageMatch?.[1] ?? "text",
+    code: getTextContent(codeElement.props.children).replace(/\n$/, ""),
+  };
 }
 
 function TableSection({
@@ -247,22 +267,35 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
         </a>
       );
     },
-    pre: ({ children, className, ...props }) => (
-      <pre
-        {...props}
-        className={cn(
-          "my-8 overflow-auto rounded-md border border-border bg-code-background px-5 py-4 font-mono text-[0.88em] leading-[1.7] text-code-foreground shadow-app [&_code]:border-0 [&_code]:bg-transparent [&_code]:p-0 [&_code]:text-[1em] [&_code]:text-inherit",
-          className,
-        )}
-      >
-        {children}
-      </pre>
-    ),
+    pre: ({ children, className, ...props }) => {
+      const example = getCodeBlockExample(children);
+
+      if (example) {
+        return (
+          <CodeExample
+            example={example}
+            className={cn("not-prose my-8", className)}
+          />
+        );
+      }
+
+      return (
+        <pre
+          {...props}
+          className={cn(
+            "my-8 overflow-auto rounded-md border border-border bg-code-background px-5 py-4 font-mono text-sm leading-7 text-code-foreground shadow-app [&_code]:border-0 [&_code]:bg-transparent [&_code]:p-0 [&_code]:text-[1em] [&_code]:text-inherit",
+            className,
+          )}
+        >
+          {children}
+        </pre>
+      );
+    },
     code: ({ children, className, ...props }) => (
       <code
         {...props}
         className={cn(
-          "rounded border border-[var(--inline-code-border)] bg-[var(--inline-code-background)] px-1.5 py-0.5 font-mono text-[0.9em] font-medium text-[var(--inline-code-foreground)]",
+          "rounded border border-[var(--inline-code-border)] bg-[var(--inline-code-background)] px-1.5 py-0.5 font-mono text-sm leading-7 font-medium text-[var(--inline-code-foreground)]",
           className,
         )}
       >
