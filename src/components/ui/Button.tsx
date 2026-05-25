@@ -30,7 +30,7 @@ const buttonVariants = tv({
       lg: "rounded-lg",
       full: "rounded-full",
     },
-    isDisabled: {
+    disabled: {
       true: "disabled:opacity-50 disabled:cursor-not-allowed",
     },
     isIconOnly: {
@@ -44,7 +44,7 @@ const buttonVariants = tv({
     size: "md",
     radius: "md",
     isIconOnly: false,
-    isDisabled: false,
+    disabled: false,
   },
   compoundVariants: [
     {
@@ -126,7 +126,7 @@ function Button({
   size,
   radius,
   isIconOnly,
-  isDisabled,
+  disabled,
   variant = "solid",
   ...rest
 }: ButtonProps) {
@@ -149,10 +149,11 @@ function Button({
         variant,
         radius,
         isIconOnly,
-        isDisabled,
+        disabled,
         className,
       })}
       onClick={handleClick}
+      disabled
       {...rest}
     >
       {rest.children}

@@ -1,6 +1,7 @@
 import { Analytics } from "@vercel/analytics/react";
 import localFont from "next/font/local";
 
+import { SiteFooter } from "@/components/SiteFooter";
 import { SiteNav } from "@/components/SiteNav";
 import { ThemeProvider } from "@/components/ThemeProvider";
 
@@ -36,6 +37,7 @@ export default function RootLayout({
             <SiteNav />
           </header>
           <div className="container">{children}</div>
+          <SiteFooter />
         </ThemeProvider>
         <Analytics />
       </body>
