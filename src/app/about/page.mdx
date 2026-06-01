@@ -7,14 +7,13 @@ export const meta = {
 
 _updated at 2026-06-01_
 
-더 좋은 제품이 더 많은 사용자를 만든다고 믿는 프론트엔드 엔지니어입니다.
+제품의 사용성과 개발 생산성을 함께 개선하는 프론트엔드 엔지니어입니다.
 
-기능을 구현하는 것보다 "더 나은 UX가 있는가"를 먼저 고민합니다. 스프린트마다 기획자, 디자이너와 UX를 논의하고, 더 나은 방향이 있으면 가감없이 의견을 전합니다. 
+기능을 구현하는 것보다 더 나은 UX가 있는지 먼저 고민합니다. 기획자, 디자이너와 UX를 논의하고, 더 나은 방향이 있는지 의견을 나누는 것을 좋아합니다.
 이 과정에서 개발자 관점의 UX 피드백이 팀의 자산이 된다고 믿습니다.
 
-코드도 같은 기준으로 봅니다. 읽기 좋은 코드인지, 각 함수의 역할이 뚜렷한지, 하나의 모듈이 두 개 이상의 도메인을 담당하진 않는지를 매번 검토합니다. 
-
-디자인 시스템 구축과 API 자동화 같은 플랫폼 작업도 결국 팀 전체가 더 빠르게, 더 좋은 제품을 만들 수 있도록 하는 수단이라는 생각으로 해왔습니다.
+디자인 시스템과 API 자동화 같은 플랫폼 작업도 결국 제품을 더 잘 만들기 위한 수단이라고 생각합니다.
+반복되는 구현을 줄이고, 팀이 공통된 기준 위에서 더 빠르게 개발할 수 있도록 만드는 일을 중요하게 여깁니다.
 
 ## Contact
 
@@ -31,35 +30,35 @@ _updated at 2026-06-01_
 > 피플카(투루카)의 신규 B2B 플랫폼 프로젝트의 0부터 1을 개발하였습니다.
 > 기술 스택 선택 및 디자인 시스템 구축, B2B Web/Admin, WebView, 대외 홈페이지 개선까지 전반적인 프론트엔드 영역을 담당하였습니다.
 
-`Next.js 16(app)` `Vite` `TailwindCSS` `Tanstack Query`
+`Next.js(app)` `Vite` `TailwindCSS` `Tanstack Query`
 
 #### 신규 B2B 플랫폼의 프론트엔드 구조와 핵심 기능을 구축하였습니다.
 
 - Next.js App Router 기반 **Server/Client Component 공통 아키텍처**를 설계
   - 프로젝트 초기 Server/Client 간 분리가 페이지별 담당자마다 구조가 불일치한 문제가 발생
   - Server/Client 간 page·container·components 아키텍처 설계로 데이터 조회와 UI 렌더링 흐름을 표준화
-  - 모든 API 호출은 **Server Action**으로 수행하여 클라이언트 내 API 엔드포인트 노출 차단
+  - 주요 도메인 API 호출을 **Server Action** 중심으로 구성해 클라이언트에서 백엔드 API 엔드포인트를 직접 호출하지 않도록 설계
 - Kakao Map 기반 차량 관제 시스템 렌더링 성능 개선
   - 수천 대 차량 마커를 동시에 표시하면서 DOM Element 증가로 지도 줌/이동 시 프레임 드랍 발생
   - 지도 줌 레벨과 viewport 기준 **클러스터링**을 적용해 렌더링 대상 수를 제어하여 지도 이동 성능을 **60fps 수준으로 유지**
 - WebView/Native Bridge 통신 안정성을 개선
   - Native 응답 손실로 인해 WebView 상태 불일치 및 응답 대기 화면 멈춤 문제 발생
-  - useEffect 기반 전역 함수 등록/해제 구조를 `useSyncExternalStore` 기반 모듈 레벨 구독 구조로 변경해 Native 응답 상태 관리 일관성 개선
+  - `useEffect` 기반 전역 함수 등록/해제 구조를 React 외부 store + `useSyncExternalStore` 기반 구독 구조로 변경해 Native 응답 상태 관리 일관성 개선
 - Next.js App Router 기반 통합 로깅 환경 구축
   - Edge Runtime, Server, Client 등 실행 환경별 로그 수집 방식 차이로 로깅 코드가 도메인 로직에 분산될 우려 발생
   - Server Action 기반 **공통 logger**를 구현해 호출 위치와 관계없이 **AWS CloudWatch Logs Insights**에서 로그를 조회할 수 있는 구조 구축
   - Client Runtime Error, API 호출 성공/실패, Server Error를 각각 error 이벤트, SDK lifecycle, instrumentation.ts에서 수집하도록 표준화
 - B2B 파트너 온보딩을 위한 개발자센터를 구축
   - 백엔드 파트에서 고객사에게 API 명세를 안내하기 위한 문서형 웹앱 요구사항 발생
-  - 백엔드 파트가 OpenAPI 3.0 기반 YAML 문서를 작성하면, 이를 파싱해 웹 페이지로 보여주는 구조 구현
+  - OpenAPI 3.0 기반 YAML 문서를 작성하면, 이를 파싱해 웹 페이지로 보여주는 구조 구현
   - https://developers.carplat.co.kr
 
 #### 프론트엔드의 개발 생산성을 개선하였습니다.
 
 - 신규 페이지 개발과 함께 디자인 시스템 구축을 주도
   - 2개 프로젝트 / 8개의 웹앱을 개발하는 데 필요한 생산성을 높였습니다.
-  - Radix UI의 컴파운드 패턴과 다양한 prop 조합으로 디자이너의 요구사항을 대부분 충족하는 컴포넌트 라이브러리 구축
-  - AI 기반 개발 시 UI 컴포넌트 사용 유도 및 정확도 향상을 위해 Storybook 문서를 Skills 형태로 전환하는 구조 구축
+  - Radix UI의 컴파운드 패턴과 prop 조합을 활용해 다양한 화면 요구사항에 대응 가능한 컴포넌트 라이브러리 구축
+  - Storybook 문서를 Agent Skills 형태로 변환해 AI 코드 생성 시 사내 컴포넌트와 사용 예시를 함께 참조할 수 있도록 구성
   - 시맨틱 디자인 토큰 기반의 **라이트/다크 테마 구조**를 설계하고, data-theme 속성만으로 하위 UI에 테마 토큰이 적용되는 다크모드 시스템 구현
 - OpenAPI 기반 타입 작성 및 SDK 자동화
   - 타입을 수동 작성하며 발생하는 반복 작업과 타입 불일치 문제 발생
@@ -68,7 +67,7 @@ _updated at 2026-06-01_
 #### 복잡한 입력 컴포넌트를 구축하였습니다.
 
 - Date UI 시스템 자체 구현
-  - input[type="date"]는 해결할 수 없는 날짜/시간 범위 표시/입력 요구사항 발생
+  - 브라우저 기본 date input으로는 날짜/시간 범위 선택, 표시 포맷, 검증 UX를 일관되게 제공하기 어려운 요구사항 발생
   - Calendar, DateInput, TimeWheelPicker 등 조합 가능한 UI 컴포넌트 설계
   - DatePicker, DateRangePicker, DateTimeRangePicker 형태로 조합 가능한 API 설계
 - Lexical 기반 Rich Text Editor 구축
@@ -85,7 +84,7 @@ _updated at 2026-06-01_
   - Vercel AI SDK 기반 스트리밍 응답, 채팅 이력, 공유 기능 제공
 - napi-rs 기반 알림 상태 조회 OS API
   - 기존 Electron 문서에서 가이드하는 라이브러리에서 크래시 문제 발생. 유지보수 또한 중단됨
-  - Codex를 활용해 네이티브 API 조사, Rust 기반 native bridge 개발
+  - macOS/Windows 네이티브 API를 조사하고 Codex를 보조 도구로 활용해 Rust/napi-rs 기반 native bridge 구현
   - Electron/Node.js 환경에서 macOS, Windows 알림 권한 및 Focus/DND 상태를 조회하기 위한 범용 native bridge npm 패키지 개발
 
 ### (주)이노룰스
