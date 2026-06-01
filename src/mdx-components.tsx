@@ -183,7 +183,7 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
       <ul
         {...props}
         className={cn(
-          "my-6 list-disc space-y-2 pl-6 marker:text-[color-mix(in_srgb,var(--foreground)_34%,transparent)]",
+          "my-6 list-disc space-y-2 pl-6 marker:text-[color-mix(in_srgb,var(--foreground)_34%,transparent)] [li_&]:mt-2 [li_&]:mb-6",
           className,
         )}
       >
@@ -194,7 +194,7 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
       <ol
         {...props}
         className={cn(
-          "my-6 list-decimal space-y-2 pl-6 marker:text-[color-mix(in_srgb,var(--foreground)_46%,transparent)] marker:font-medium",
+          "my-6 list-decimal space-y-2 pl-6 marker:text-[color-mix(in_srgb,var(--foreground)_46%,transparent)] marker:font-medium [li_&]:mt-2 [li_&]:mb-6",
           className,
         )}
       >
