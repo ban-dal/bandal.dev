@@ -1,11 +1,11 @@
 export const meta = {
   title: "About",
-  date: "2026-06-01",
+  date: "2026-06-03",
 };
 
 # 김도현
 
-_updated at 2026-06-01_
+_updated at 2026-06-03_
 
 제품의 사용성과 개발 생산성을 함께 개선하는 프론트엔드 엔지니어입니다.
 
@@ -34,56 +34,64 @@ _updated at 2026-06-01_
 
 #### 신규 B2B 플랫폼의 프론트엔드 구조와 핵심 기능을 구축하였습니다.
 
-- Next.js App Router 기반 **Server/Client Component 공통 아키텍처**를 설계
-  - 프로젝트 초기 Server/Client 간 분리가 페이지별 담당자마다 구조가 불일치한 문제가 발생
-  - Server/Client 간 page·container·components 아키텍처 설계로 데이터 조회와 UI 렌더링 흐름을 표준화
-  - 주요 도메인 API 호출을 **Server Action** 중심으로 구성해 클라이언트에서 백엔드 API 엔드포인트를 직접 호출하지 않도록 설계
+- Next.js App Router 기반 공통 페이지 아키텍처 설계
+  - **3개 웹과 1개 WebView의 페이지 개발 방식을 표준화**해 데이터 조회, 데이터 변경, UI 조립 방식이 화면마다 달라지는 문제를 줄임
+  - Proxy는 라우트 접근 제어와 요청 전처리, Server Component는 초기 데이터 조회, Client Component는 사용자 입력, 상호작용, 상태 관리에 집중하도록 책임 경계 설계
+  - `page → container → components` 구조와 공통 SDK/Server Action/디자인 시스템을 결합해 신규 페이지 개발 패턴을 정착
 - Kakao Map 기반 차량 관제 시스템 렌더링 성능 개선
-  - 수천 대 차량 마커를 동시에 표시하면서 DOM Element 증가로 지도 줌/이동 시 프레임 드랍 발생
-  - 지도 줌 레벨과 viewport 기준 **클러스터링**을 적용해 렌더링 대상 수를 제어하여 지도 이동 성능을 **60fps 수준으로 유지**
-- WebView/Native Bridge 통신 안정성을 개선
-  - Native 응답 손실로 인해 WebView 상태 불일치 및 응답 대기 화면 멈춤 문제 발생
-  - `useEffect` 기반 전역 함수 등록/해제 구조를 React 외부 store + `useSyncExternalStore` 기반 구독 구조로 변경해 Native 응답 상태 관리 일관성 개선
+  - **수천 대 차량 마커 렌더링으로 발생한 프레임 드랍/프리징 문제**를 Chrome DevTools FPS Meter와 4x throttling 환경에서 재현
+  - 차량 식별이 필요한 줌 레벨을 기획자와 협의해 클러스터링 기준을 정의
+  - 기본 클러스터, 이동 중 업데이트 debounce, 이미지 기반 마커 표현을 조합해 DOM 갱신량과 Element 수를 줄임
+  - 고밀도 지역에서 클러스터가 해제된 상태로 빠르게 지도를 이동해도 60fps 수준 유지
+- WebView/Native Bridge 기반 BLE 차량 제어 상태 안정화
+  - **Native BLE 상태와 WebView 상태 불일치로** 응답 대기화면에 멈추거나 불필요한 Web API fallback 발생
+  - BLE 연결 상태를 특정 React 화면 생명주기에 종속되지 않는 외부 상태로 판단
+  - `useEffect` 기반 구독 등록/해제 구조를 모듈 스코프 외부 Store와 `useSyncExternalStore` 기반 구독 구조로 변경
+  - 페이지 이동, unmount, 앱 재활성화 이후에도 BLE 상태를 일관되게 동기화해 불필요한 Web API fallback을 줄임
 - Next.js App Router 기반 통합 로깅 환경 구축
-  - Edge Runtime, Server, Client 등 실행 환경별 로그 수집 방식 차이로 로깅 코드가 도메인 로직에 분산될 우려 발생
-  - Server Action 기반 **공통 logger**를 구현해 호출 위치와 관계없이 **AWS CloudWatch Logs Insights**에서 로그를 조회할 수 있는 구조 구축
+  - **Edge Runtime, Server, Client의 로그 수집 방식을 통합**해 로깅 코드가 도메인 로직에 분산되는 문제를 줄임
+  - Server Action 기반 공통 logger를 구현해 호출 위치와 관계없이 AWS CloudWatch Logs Insights에서 로그를 조회할 수 있는 구조 구축
   - Client Runtime Error, API 호출 성공/실패, Server Error를 각각 error 이벤트, SDK lifecycle, instrumentation.ts에서 수집하도록 표준화
-- B2B 파트너 온보딩을 위한 개발자센터를 구축
-  - 백엔드 파트에서 고객사에게 API 명세를 안내하기 위한 문서형 웹앱 요구사항 발생
+- B2B 파트너 온보딩을 위한 개발자센터 구축
+  - **B2B 파트너 온보딩에 필요한 API 문서 제공 흐름**을 만들기 위해 개발자센터 구축
   - OpenAPI 3.0 기반 YAML 문서를 작성하면, 이를 파싱해 웹 페이지로 보여주는 구조 구현
   - https://developers.carplat.co.kr
 
 #### 프론트엔드의 개발 생산성을 개선하였습니다.
 
-- 신규 페이지 개발과 함께 디자인 시스템 구축을 주도
-  - 2개 프로젝트 / 8개의 웹앱을 개발하는 데 필요한 생산성을 높였습니다.
-  - Radix UI의 컴파운드 패턴과 prop 조합을 활용해 다양한 화면 요구사항에 대응 가능한 컴포넌트 라이브러리 구축
-  - Storybook 문서를 Agent Skills 형태로 변환해 AI 코드 생성 시 사내 컴포넌트와 사용 예시를 함께 참조할 수 있도록 구성
-  - 시맨틱 디자인 토큰 기반의 **라이트/다크 테마 구조**를 설계하고, data-theme 속성만으로 하위 UI에 테마 토큰이 적용되는 다크모드 시스템 구현
-- OpenAPI 기반 타입 작성 및 SDK 자동화
-  - 타입을 수동 작성하며 발생하는 반복 작업과 타입 불일치 문제 발생
-  - OpenAPI YAML을 단일 소스로 사용해 **TypeScript 타입 자동 생성 및 API 요청/응답 타입이 함께 갱신되는 fetch SDK** 구조 설계
+- 신규 페이지 개발과 함께 멀티 웹앱 확장을 위한 디자인 시스템 구축 주도
+  - **3개 웹과 1개 WebView의 반복 UI 구현 비용을 줄이기 위해** 사내 디자인 시스템 구축
+  - Radix UI 기반으로 업무 화면에 필요한 50+ 공용 컴포넌트를 구현하고, Sass map/CSS variable 기반 variant-color 토큰 구조 설계
+  - 시맨틱 디자인 토큰과 `data-theme` 기반 라이트/다크 테마 구조를 설계해 하위 UI에 테마 토큰이 일괄 적용되도록 구현
+  - 이후 투루카 대외 홈페이지/백오피스와 신규 3개 웹 프로젝트에 재사용되어 컴포넌트 재구현 비용을 줄이고 UI 일관성 유지
+- Agent Skills 기반 사내 컴포넌트 사용성 개선
+  - **AI 코드 생성 시 사내 디자인 시스템 규칙을 참조하도록** Storybook 문서를 Agent Skills 형태로 변환
+- OpenAPI 기반 TypeScript 타입 자동화 및 API 개발자 경험 개선
+  - **Swagger 명세 기반 타입 생성 자동화로** 수기 작성에서 발생하던 오타, 중복 타입, API 변경 누락 문제를 개선
+  - OpenAPI YAML을 파싱해 path/query/header/request/response body와 content type을 포함한 API 타입을 `.d.ts`로 생성하는 스크립트 구축
+  - 오픈소스 OpenAPI generator가 팀에서 원하는 파일 구조와 IDE 탐색 경험을 충족하지 못해, API별 타입 파일 구조와 JSDoc 기반 hover 문서, 타입 정의 이동을 지원하는 형태로 직접 구현
+  - API 연동 반복 코드와 타입 불일치 위험을 줄이고, 신규 API 추가 및 변경사항 반영에 필요한 프론트엔드 개발 비용을 절감
 
 #### 복잡한 입력 컴포넌트를 구축하였습니다.
 
 - Date UI 시스템 자체 구현
-  - 브라우저 기본 date input으로는 날짜/시간 범위 선택, 표시 포맷, 검증 UX를 일관되게 제공하기 어려운 요구사항 발생
+  - **브라우저 기본 date input으로 대응하기 어려운 복합 날짜 입력 UX**를 지원하기 위해 Date UI 시스템 자체 구현
   - Calendar, DateInput, TimeWheelPicker 등 조합 가능한 UI 컴포넌트 설계
   - DatePicker, DateRangePicker, DateTimeRangePicker 형태로 조합 가능한 API 설계
 - Lexical 기반 Rich Text Editor 구축
-  - Headless 형태의 Editor 라이브러리에 기존 UI 컴포넌트, 디자인 토큰을 적용
+  - **사내 디자인 시스템과 DB 저장 요구사항에 맞춘** Lexical 기반 Rich Text Editor 구축
   - Table, ColorPicker, Markdown 입력 지원
-  - HTML 결과를 gzip 압축으로 **크기 평균 70~80% 감소**하여 DB 저장 용량 절감
+  - HTML 결과를 gzip 압축으로 크기 평균 70~80% 감소하여 DB 저장 용량 절감
 
-#### 요구사항 해결을 위해 AI를 활용해 프론트엔드 경계를 확장하였습니다.
+#### 프론트엔드 요구사항 해결을 위해 필요한 영역까지 확장하였습니다.
 
 - RAG 기반 사내 데이터 분석 챗봇 구축
-  - 기존 백오피스 앱의 고정 쿼리 방식에서 자연어 질의 기반 데이터 분석 흐름으로 전환
-  - PostgreSQL + pgvector 기반 DB 스키마 유사도 검색
-  - 검색된 스키마를 Prompt에 조합해 SQL 생성
-  - Vercel AI SDK 기반 스트리밍 응답, 채팅 이력, 공유 기능 제공
+  - **백오피스에 없는 검색 조건이 필요할 때마다 개발자에게 데이터 추출을 요청하던 흐름을** 자연어 기반 데이터 조회 방식으로 개선
+  - 컬럼별 context/keyword/sample data/table 정보를 담은 스키마 사전 구조를 설계하고 embedding해, 자연어 질의에 필요한 DB 스키마 정보를 Prompt에 조합
+  - 개인정보성 테이블 제외, `TOP N` 기본 주입, 금지 SQL 키워드 검증을 적용한 MSSQL SELECT query 생성/실행 구조 구현
+  - Vercel AI SDK 기반 스트리밍 응답, 채팅 이력, 공유 기능을 제공해 담당자가 필요한 운영 데이터를 직접 탐색할 수 있도록 개선
 - napi-rs 기반 알림 상태 조회 OS API
-  - 기존 Electron 문서에서 가이드하는 라이브러리에서 크래시 문제 발생. 유지보수 또한 중단됨
+  - **Electron 환경에서 사용하던 알림 상태 조회 라이브러리의 크래시와 유지보수 중단 문제**를 해결하기 위해 native bridge 구현
   - macOS/Windows 네이티브 API를 조사하고 Codex를 보조 도구로 활용해 Rust/napi-rs 기반 native bridge 구현
   - Electron/Node.js 환경에서 macOS, Windows 알림 권한 및 Focus/DND 상태를 조회하기 위한 범용 native bridge npm 패키지 개발
 
@@ -109,9 +117,9 @@ _updated at 2026-06-01_
 - `Vanilla JS` 기반의 사내 디자인 시스템을 `React`로 마이그레이션
   - UI 컴포넌트, Modal(Dialog, Drawer, Tooltip) 등을 `React`로 재구성
 - Apache ECharts 기반의 대시보드 화면 개발
-- 실시간 차트 데이터 API 응답 사이즈 개선
-  - 기존엔 화면에 보여주기 위한 시간대의 전체 데이터를 받아오는 방식이었으나, API 응답 크기를 줄이기 위해 각 차트의 마지막 데이터 Timestamp를 전송.
-  - Timestamp부터 최신 데이터까지만 DB에서 가져오도록 API를 개선하여 응답 크기를 기존 10MB에서 1MB 이내로 90%이상 감소.
+- **실시간 차트 API 응답 크기를 10MB에서 1MB 이내로 줄여 90% 이상 감소**
+  - 기존에는 조회 구간의 전체 데이터를 매번 받아와 응답 크기가 커지는 문제가 발생
+  - 차트별 마지막 Timestamp 이후 데이터만 조회하도록 API를 개선해 응답 크기를 10MB에서 1MB 이내로 90% 이상 감소
 - [React-Query, Suspense, Error Boundary를 통해 API 캐싱 및 예외 처리 로직 구현](/post/react-query)
 
 #### JAVA 기반 솔루션 어드민 페이지 웹 앱
@@ -139,24 +147,17 @@ _updated at 2026-06-01_
 
 ## Education
 
-### 자바기반 AWS 활용 Full-Stack
+### 쌍용교육센터
 
-쌍용교육센터
+2021년 07월 ~ 2022년 01월
 
-> 2021년 07월 ~ 2022년 01월
->
-> - 자바에 대해 기본부터 심화과정까지 학습하여 웹을 직접 구현해보는 교육과정
-> - 팀별 웹앱 개발 프로젝트를 진행하여 협업 경험
-> - B/E : Spring Boot, Mybatis, MySQL, JSP
-> - F/E : JavaScript, jQuery
+Java, Spring, Oracle DB, JavaScript 기반 웹 애플리케이션 개발 과정 수료
 
-_병역 2019년 07월 ~ 2021년 04월_
+**병역 2019년 07월 ~ 2021년 04월**
 
-### 신구대학교 정보통신과
+### 신구대학교 
 
-신구대학교
+**IT미디어 정보통신과 전문학사**
 
-> 2017년 03월 ~ 2019년 02월
->
-> - 네트워크 TCP/UDP, OSI 7Layer, Network Protocol에 대한 이해
-> - Java 기반의 FullStack 교육으로, JDBC, Swing을 이용한 프로젝트 구현
+2017년 03월 ~ 2019년 02월
+
