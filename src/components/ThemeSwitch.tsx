@@ -74,15 +74,19 @@ function emitThemeChange() {
   window.dispatchEvent(new Event(THEME_STORAGE_EVENT));
 }
 
+function getServerThemeSnapshot(): Theme {
+  return "system";
+}
+
 export function ThemeSwitch() {
   const theme = useSyncExternalStore(
     subscribeThemeChange,
     readTheme,
-    () => "system",
+    getServerThemeSnapshot,
   );
 
   return (
-    <Switch
+    <Switch<Theme>
       ariaLabel="테마 변경"
       itemClassName="size-8 min-h-8 px-0"
       items={THEME_OPTIONS}
