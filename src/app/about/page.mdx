@@ -52,6 +52,7 @@ _updated at 2026-06-03_
   - **Edge Runtime, Server, Client의 로그 수집 지점을 표준화**해 로깅 코드가 도메인 로직에 분산되는 문제를 줄임
   - Server Action 기반 공통 logger를 구현해 호출 위치와 관계없이 AWS CloudWatch Logs Insights에서 로그를 조회할 수 있는 구조 구축
   - Client Runtime Error, API 호출 성공/실패, Server Error를 각각 error 이벤트, SDK lifecycle, instrumentation.ts에서 수집하도록 표준화
+  - [Next.js에서 자동화된 로깅 구조 만들기](/blog/nextjs-logging-strategy)
 - B2B 파트너 온보딩을 위한 개발자센터 구축
   - **B2B 파트너 온보딩에 필요한 API 문서 제공 흐름**을 만들기 위해 개발자센터 구축
   - OpenAPI 3.0 기반 YAML 문서를 작성하면, 이를 파싱해 웹 페이지로 보여주는 구조 구현
