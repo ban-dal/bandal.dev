@@ -38,7 +38,11 @@ export const meta = {
 
 [LangChain의 Agent Harness 글](https://www.langchain.com/blog/the-anatomy-of-an-agent-harness)에서도 에이전트를 `모델 + 하네스`로 설명합니다. 모델 자체는 텍스트를 입력받아 텍스트를 출력할 수 있지만, 상태 유지, 도구 실행, 파일 수정, 피드백 루프는 하네스가 제공하는 영역입니다.
 
+[OpenAI의 하네스 엔지니어링 글](https://openai.com/ko-KR/index/harness-engineering/)에서도 비슷한 방향을 이야기합니다. 하나의 거대한 `AGENTS.md`에 모든 규칙을 넣기보다, `AGENTS.md`는 맵처럼 두고 실제 지식은 구조화된 `docs/`에 쌓아 에이전트가 필요한 정보를 찾아가게 만드는 방식입니다.
+
 저에게는 이 정의가 가장 실용적입니다. 모델을 바꾸지 않고도 결과 품질을 개선할 수 있는 지점이 어디인지 명확해지기 때문입니다.
+
+물론 이 글은 하네스의 모든 영역을 다루지는 않습니다. 제가 실제로 많이 다듬어본 부분은 크게 두 가지였습니다. 하나는 개인 워크플로우에 맞춘 Skills이고, 다른 하나는 repo와 팀에 공통으로 적용되는 문서와 규칙입니다.
 
 ## 왜 하네스가 필요한가
 
@@ -144,6 +148,16 @@ Superpowers에서 가장 좋았던 점은 제가 쓴 허접한 프롬프트를 �
 
 직접 Skills를 만들면서 가장 신경 쓰게 된 부분은 `SKILL.md`의 description이었습니다. 결국 메인 모델은 description을 보고 "이 Skill을 지금 써야 하는가?"를 판단합니다. description이 흐리면 Skill이 의도한 상황에 사용되지 않거나, 반대로 필요 없는 상황에 호출되기도 했습니다. description이 명확할 때는 별도 지시 없이도 메인 모델이 스스로 Skill을 잘 사용했습니다.
 
+다만 모든 규칙을 개인 Skills에 넣지는 않았습니다. repo와 팀에 공통으로 적용되어야 하는 내용은 repo의 `.docs/`에 적어두고, 모든 개발자가 AI를 쓸 때 같은 기준을 참조할 수 있게 했습니다.
+
+예를 들면 이런 것들입니다.
+
+- 폴더 구조
+- 팀의 리팩터링 규칙
+- 디자인 시스템 Skills
+
+개인 Skills는 제가 일하는 방식을 모델에게 알려주는 장치에 가깝고, repo 문서는 팀이 합의한 기준을 모델에게 알려주는 장치에 가깝습니다. 둘을 분리해야 개인의 취향과 팀의 규칙이 섞이지 않습니다.
+
 제가 중요하게 본 기준은 다음과 같습니다.
 
 - 작은 작업은 작게 처리하게 할 것
@@ -198,4 +212,5 @@ AI 모델은 계속 업그레이드되고 있고, 그에 맞춰 Skills도 계속
 - [하네스 엔지니어링이란? 2026년 AI 에이전트 개발의 핵심으로 떠오른 이유](https://channel.io/ko/blog/articles/what-is-harness-2611ddf1)
 - [에이전트 하네스 완전 해부](https://yozm.wishket.com/magazine/detail/3718/)
 - [프롬프트에서 하네스까지 - AI 에이전틱 패턴 4년의 기록](https://bits-bytes-nn.github.io/insights/agentic-ai/2026/04/05/evolution-of-ai-agentic-patterns.html)
+- [하네스 엔지니어링: 에이전트 우선 세계에서 Codex 활용하기](https://openai.com/ko-KR/index/harness-engineering/)
 - [Introducing Claude Opus 4.8](https://www.anthropic.com/news/claude-opus-4-8)
