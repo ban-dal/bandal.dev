@@ -49,7 +49,7 @@ _updated at 2026-06-03_
   - `useEffect` 기반 구독 등록/해제 구조를 모듈 스코프 외부 Store와 `useSyncExternalStore` 기반 구독 구조로 변경
   - 페이지 이동, unmount, 앱 재활성화 이후에도 BLE 상태를 일관되게 동기화해 불필요한 Web API fallback을 줄임
 - Next.js App Router 기반 통합 로깅 환경 구축
-  - **Edge Runtime, Server, Client의 로그 수집 방식을 통합**해 로깅 코드가 도메인 로직에 분산되는 문제를 줄임
+  - **Edge Runtime, Server, Client의 로그 수집 지점을 표준화**해 로깅 코드가 도메인 로직에 분산되는 문제를 줄임
   - Server Action 기반 공통 logger를 구현해 호출 위치와 관계없이 AWS CloudWatch Logs Insights에서 로그를 조회할 수 있는 구조 구축
   - Client Runtime Error, API 호출 성공/실패, Server Error를 각각 error 이벤트, SDK lifecycle, instrumentation.ts에서 수집하도록 표준화
 - B2B 파트너 온보딩을 위한 개발자센터 구축
