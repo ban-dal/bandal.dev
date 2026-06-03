@@ -12,4 +12,5 @@ module.exports = {
   trailingComma: "all",
   arrowParens: "always",
   endOfLine: "auto",
+  plugins: ["prettier-plugin-tailwindcss"],
 };
