@@ -13,7 +13,7 @@ export default function ContentHeader({
     <div>
       <h1
         className={cn(
-          "text-4xl md:text-5xl font-bold mb-4",
+          "mb-4 text-4xl font-bold md:text-5xl",
           "text-heading font-serif",
           "transition-all duration-300",
         )}

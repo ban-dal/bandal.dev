@@ -32,10 +32,8 @@ const badgeVariants = tv({
 });
 
 export interface BadgeProps
-  extends Omit<
-      React.HTMLAttributes<HTMLSpanElement>,
-      "color" | "size" | "radius"
-    >,
+  extends
+    Omit<React.HTMLAttributes<HTMLSpanElement>, "color" | "size" | "radius">,
     VariantProps<typeof badgeVariants> {}
 
 export function Badge({

@@ -141,7 +141,7 @@ export function Switch<Value extends string>({
     <div
       aria-label={ariaLabel}
       className={cn(
-        "relative grid rounded-full border border-border bg-surface/90 p-1 shadow-[inset_0_1px_0_rgb(255_255_255/0.08)]",
+        "border-border bg-surface/90 relative grid rounded-full border p-1 shadow-[inset_0_1px_0_rgb(255_255_255/0.08)]",
         className,
       )}
       role="group"
@@ -152,7 +152,7 @@ export function Switch<Value extends string>({
     >
       <span
         className={cn(
-          "pointer-events-none absolute top-1 bottom-1 left-1 w-[calc((100%_-_0.5rem)/var(--switch-count))] rounded-full bg-foreground shadow-[0_8px_24px_rgb(0_0_0/0.16)] transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)]",
+          "bg-foreground pointer-events-none absolute top-1 bottom-1 left-1 w-[calc((100%_-_0.5rem)/var(--switch-count))] rounded-full shadow-[0_8px_24px_rgb(0_0_0/0.16)] transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)]",
           indicatorClassName,
         )}
         style={{

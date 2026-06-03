@@ -46,7 +46,7 @@ export function Image({ alt = "", className, src, ...props }: ImageProps) {
     <>
       <motion.button
         type="button"
-        className={`my-8 block w-full cursor-zoom-in overflow-hidden rounded-app border border-border bg-surface p-0 ${className ?? ""}`}
+        className={`rounded-app border-border bg-surface my-8 block w-full cursor-zoom-in overflow-hidden border p-0 ${className ?? ""}`}
         onClick={() => setIsOpen(true)}
         whileHover={{ y: -2 }}
         whileTap={{ scale: 0.99 }}
@@ -111,7 +111,7 @@ export function Video(props: React.VideoHTMLAttributes<HTMLVideoElement>) {
   }
 
   return (
-    <div className="my-8 overflow-hidden rounded-app border border-border bg-surface">
+    <div className="rounded-app border-border bg-surface my-8 overflow-hidden border">
       <video
         className="block h-auto w-full"
         autoPlay
@@ -130,7 +130,7 @@ export function Iframe(props: React.IframeHTMLAttributes<HTMLIFrameElement>) {
   }
 
   return (
-    <div className="my-8 overflow-hidden rounded-app border border-border bg-surface">
+    <div className="rounded-app border-border bg-surface my-8 overflow-hidden border">
       <iframe className="aspect-video w-full border-0" {...props} />
     </div>
   );

@@ -27,11 +27,10 @@ export type TransitionMap = {
   [key in TransitionEvent]?: TransitionType;
 };
 
-interface ViewTransitionProps
-  extends Omit<
-    React.ComponentProps<typeof ReactViewTransition>,
-    "onEnter" | "onUpdate" | "onExit" | "exit"
-  > {
+interface ViewTransitionProps extends Omit<
+  React.ComponentProps<typeof ReactViewTransition>,
+  "onEnter" | "onUpdate" | "onExit" | "exit"
+> {
   children: React.ReactNode;
   transitions?: TransitionMap;
   duration?: number;

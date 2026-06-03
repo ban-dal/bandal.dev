@@ -37,7 +37,7 @@ export default function ContentDetailHeader({
       <ViewTransition name={`title-${slug}`}>
         <h1
           className={cn(
-            "text-3xl md:text-4xl font-bold mb-4",
+            "mb-4 text-3xl font-bold md:text-4xl",
             "text-heading font-serif",
           )}
         >
@@ -45,10 +45,10 @@ export default function ContentDetailHeader({
         </h1>
       </ViewTransition>
       <ViewTransition name={`description-${slug}`}>
-        <p className="text-base text-blockquote mb-4 ">{description}</p>
+        <p className="text-blockquote mb-4 text-base">{description}</p>
       </ViewTransition>
       <ViewTransition name={`date-${slug}`}>
-        <time className="text-base text-blockquote">{date}</time>
+        <time className="text-blockquote text-base">{date}</time>
       </ViewTransition>
     </div>
   );

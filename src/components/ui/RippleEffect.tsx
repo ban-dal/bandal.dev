@@ -12,7 +12,7 @@ export function RippleEffect({ ripples }: RippleEffectProps) {
       {ripples.map((ripple, idx) => (
         <span
           key={idx}
-          className="absolute rounded-full bg-white/30 animate-ripple pointer-events-none"
+          className="animate-ripple pointer-events-none absolute rounded-full bg-white/30"
           style={{
             left: ripple.x - ripple.size / 2,
             top: ripple.y - ripple.size / 2,

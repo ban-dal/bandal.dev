@@ -25,7 +25,7 @@ export function SiteSectionSwitch() {
   return (
     <Switch
       ariaLabel="Primary navigation"
-      className="min-w-36 bg-surface/84 max-md:min-w-26"
+      className="bg-surface/84 min-w-36 max-md:min-w-26"
       itemClassName="px-4 max-md:px-2"
       items={SECTION_ITEMS}
       value={getActiveSection(pathname)}

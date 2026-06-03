@@ -1,11 +1,13 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useSyncExternalStore, type ReactNode } from "react";
 
 import { DesktopIcon, MoonIcon, SunIcon } from "@/components/ThemeIcons";
 import { Switch } from "@/components/ui/Switch";
 
 type Theme = "system" | "light" | "dark";
+
+const THEME_STORAGE_EVENT = "theme-storage-change";
 
 const THEME_OPTIONS = [
   {
@@ -24,12 +26,16 @@ const THEME_OPTIONS = [
     icon: <MoonIcon className="size-4" />,
   },
 ] satisfies {
-  icon: React.ReactNode;
+  icon: ReactNode;
   label: string;
   value: Theme;
 }[];
 
 function readTheme(): Theme {
+  if (typeof window === "undefined") {
+    return "system";
+  }
+
   const storedTheme = localStorage.getItem("theme");
 
   if (
@@ -54,15 +60,26 @@ function applyTheme(theme: Theme) {
   );
 }
 
+function subscribeThemeChange(onStoreChange: () => void) {
+  window.addEventListener("storage", onStoreChange);
+  window.addEventListener(THEME_STORAGE_EVENT, onStoreChange);
+
+  return () => {
+    window.removeEventListener("storage", onStoreChange);
+    window.removeEventListener(THEME_STORAGE_EVENT, onStoreChange);
+  };
+}
+
+function emitThemeChange() {
+  window.dispatchEvent(new Event(THEME_STORAGE_EVENT));
+}
+
 export function ThemeSwitch() {
-  const [theme, setTheme] = useState<Theme>("system");
-
-  useEffect(() => {
-    const storedTheme = readTheme();
-
-    setTheme(storedTheme);
-    applyTheme(storedTheme);
-  }, []);
+  const theme = useSyncExternalStore(
+    subscribeThemeChange,
+    readTheme,
+    () => "system",
+  );
 
   return (
     <Switch
@@ -70,8 +87,8 @@ export function ThemeSwitch() {
       itemClassName="size-8 min-h-8 px-0"
       items={THEME_OPTIONS}
       onValueChange={(nextTheme) => {
-        setTheme(nextTheme);
         applyTheme(nextTheme);
+        emitThemeChange();
       }}
       value={theme}
     />

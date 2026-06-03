@@ -57,22 +57,22 @@ function useResolvedCodeTheme() {
   return theme;
 }
 
-export function js(strings: TemplateStringsArray, ...args: any[]) {
+export function js(strings: TemplateStringsArray, ...args: unknown[]) {
   return { lang: "js", code: dedent(strings, ...args) };
 }
-export function ts(strings: TemplateStringsArray, ...args: any[]) {
+export function ts(strings: TemplateStringsArray, ...args: unknown[]) {
   return { lang: "ts", code: dedent(strings, ...args) };
 }
-export function jsx(strings: TemplateStringsArray, ...args: any[]) {
+export function jsx(strings: TemplateStringsArray, ...args: unknown[]) {
   return { lang: "jsx", code: dedent(strings, ...args) };
 }
-export function html(strings: TemplateStringsArray, ...args: any[]) {
+export function html(strings: TemplateStringsArray, ...args: unknown[]) {
   return { lang: "html", code: dedent(strings, ...args) };
 }
-export function svelte(strings: TemplateStringsArray, ...args: any[]) {
+export function svelte(strings: TemplateStringsArray, ...args: unknown[]) {
   return { lang: "svelte", code: dedent(strings, ...args) };
 }
-export function css(strings: TemplateStringsArray, ...args: any[]) {
+export function css(strings: TemplateStringsArray, ...args: unknown[]) {
   return { lang: "css", code: dedent(strings, ...args) };
 }
 
@@ -88,13 +88,13 @@ export function CodeExampleGroup({
   return (
     <Tabs.Root defaultValue={filenames[0]} className="not-prose">
       <div className="rounded-xl">
-        <div className={clsx("rounded-xl p-1 text-sm ", className)}>
+        <div className={clsx("rounded-xl p-1 text-sm", className)}>
           <Tabs.List className="flex gap-1 px-2 pt-2">
             {filenames.map((filename, i) => (
               <Tabs.Trigger
                 key={filename}
                 value={filename}
-                className="rounded-t-lg px-3 py-1.5 font-mono text-xs text-muted transition-colors data-[state=active]:bg-surface-muted data-[state=active]:text-foreground dark:data-[state=active]:bg-[#181a18] dark:data-[state=active]:text-white"
+                className="text-muted data-[state=active]:bg-surface-muted data-[state=active]:text-foreground rounded-t-lg px-3 py-1.5 font-mono text-xs transition-colors dark:data-[state=active]:bg-[#181a18] dark:data-[state=active]:text-white"
               >
                 <CodeExampleFilename
                   filename={filename}
@@ -152,7 +152,7 @@ export function CodeExampleWrapper({
   return (
     <div
       className={clsx(
-        "rounded-xl border border-border bg-surface p-2 text-sm text-foreground shadow-app dark:bg-code-background dark:text-code-foreground",
+        "border-border bg-surface text-foreground shadow-app dark:bg-code-background dark:text-code-foreground rounded-xl border p-2 text-sm",
         className,
       )}
     >
@@ -177,10 +177,10 @@ function CodeExampleHeader({
     setTimeout(() => setCopied(false), 1200);
   };
   return (
-    <div className="flex items-center justify-between gap-2 mb-2">
+    <div className="mb-2 flex items-center justify-between gap-2">
       <div className="flex min-w-0 items-center gap-2">
         {filename && (
-          <span className="max-w-[160px] truncate font-mono text-xs text-muted dark:text-white/70">
+          <span className="text-muted max-w-[160px] truncate font-mono text-xs dark:text-white/70">
             {filename}
           </span>
         )}
@@ -253,8 +253,8 @@ export function RawHighlightedCode({
   return (
     <div
       className={cn(
-        "overflow-auto rounded-lg border border-border bg-background font-mono text-sm leading-7",
-        "[&_pre]:m-0 [&_pre]:overflow-x-auto [&_pre]:p-4 [&_pre]:whitespace-pre [&_code]:whitespace-pre",
+        "border-border bg-background overflow-auto rounded-lg border font-mono text-sm leading-7",
+        "[&_code]:whitespace-pre [&_pre]:m-0 [&_pre]:overflow-x-auto [&_pre]:p-4 [&_pre]:whitespace-pre",
       )}
       dangerouslySetInnerHTML={{ __html: html }}
     />
@@ -271,7 +271,7 @@ function CodeExampleFilename({
   // 탭에만 쓰이는 파일명+언어 뱃지 (복사 버튼 없음)
   return (
     <div className="flex min-w-0 items-center gap-1">
-      <span className="max-w-[120px] truncate font-mono text-xs text-muted dark:text-white/50">
+      <span className="text-muted max-w-[120px] truncate font-mono text-xs dark:text-white/50">
         {filename}
       </span>
       {lang && (

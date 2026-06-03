@@ -9,7 +9,7 @@ export function SiteFooter() {
     <footer className="container py-8 md:py-12">
       <nav
         aria-label="Contact links"
-        className="relative mx-auto flex w-fit max-w-full flex-wrap items-center justify-center gap-1 rounded-full border border-border/80 bg-surface/58 p-1 text-sm text-muted shadow-[0_14px_34px_rgb(36_31_20/0.06),inset_0_1px_0_rgb(255_255_255/0.22)] backdrop-blur dark:bg-surface/42 dark:shadow-[0_18px_38px_rgb(0_0_0/0.18),inset_0_1px_0_rgb(255_255_255/0.06)]"
+        className="border-border/80 bg-surface/58 text-muted dark:bg-surface/42 relative mx-auto flex w-fit max-w-full flex-wrap items-center justify-center gap-1 rounded-full border p-1 text-sm shadow-[0_14px_34px_rgb(36_31_20/0.06),inset_0_1px_0_rgb(255_255_255/0.22)] backdrop-blur dark:shadow-[0_18px_38px_rgb(0_0_0/0.18),inset_0_1px_0_rgb(255_255_255/0.06)]"
       >
         <a
           href={`https://mail.google.com/mail/?view=cm&fs=1&to=${EMAIL_ADDRESS}`}

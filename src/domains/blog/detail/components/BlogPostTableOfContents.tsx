@@ -41,7 +41,7 @@ function BlogPostTocLinks({ headings, onNavigate }: BlogPostTocLinksProps) {
         <a
           key={`${heading.id}-${heading.text}`}
           href={`#${heading.id}`}
-          className={`text-sm leading-snug text-muted transition hover:text-foreground ${
+          className={`text-muted hover:text-foreground text-sm leading-snug transition ${
             heading.depth === 3 ? "pl-3.5" : ""
           }`}
           onClick={(event) => handleTocLinkClick(event, heading.id, onNavigate)}
@@ -65,19 +65,19 @@ export function BlogPostTableOfContents({
   return (
     <>
       <aside
-        className="sticky top-24 col-start-2 row-start-1 max-h-[calc(100vh-8rem)] overflow-auto border-l border-border pl-4 max-lg:hidden"
+        className="border-border sticky top-24 col-start-2 row-start-1 max-h-[calc(100vh-8rem)] overflow-auto border-l pl-4 max-lg:hidden"
         aria-label="Table of contents"
       >
-        <span className="mb-3.5 block text-xs font-[850] uppercase text-primary">
+        <span className="text-primary mb-3.5 block text-xs font-[850] uppercase">
           On this page
         </span>
         <BlogPostTocLinks headings={headings} />
       </aside>
 
-      <div className="sticky top-[4.625rem] z-20 mb-4 -mt-2 hidden justify-end max-lg:flex">
+      <div className="sticky top-[4.625rem] z-20 -mt-2 mb-4 hidden justify-end max-lg:flex">
         <button
           type="button"
-          className="inline-flex min-h-9 items-center justify-center rounded-full border border-foreground bg-foreground px-4 font-[760] text-background shadow-[0_12px_28px_rgb(0_0_0/0.22),0_2px_8px_rgb(0_0_0/0.14)] transition hover:opacity-90 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary dark:shadow-[0_14px_30px_rgb(0_0_0/0.42)]"
+          className="border-foreground bg-foreground text-background focus-visible:outline-primary inline-flex min-h-9 items-center justify-center rounded-full border px-4 font-[760] shadow-[0_12px_28px_rgb(0_0_0/0.22),0_2px_8px_rgb(0_0_0/0.14)] transition hover:opacity-90 focus-visible:outline-2 focus-visible:outline-offset-2 dark:shadow-[0_14px_30px_rgb(0_0_0/0.42)]"
           onClick={() => setIsOpen(true)}
         >
           목차

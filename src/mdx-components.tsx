@@ -28,7 +28,7 @@ function getTextContent(node: ReactNode): string {
 function HeadingAnchor({ children, id }: { children: ReactNode; id: string }) {
   return (
     <a
-      className="font-[inherit] text-[inherit] no-underline decoration-transparent [overflow-wrap:normal] transition-colors hover:text-primary"
+      className="hover:text-primary font-[inherit] [overflow-wrap:normal] text-[inherit] no-underline decoration-transparent transition-colors"
       href={`#${id}`}
     >
       {children}
@@ -49,7 +49,7 @@ function Heading({
       <h2
         {...props}
         className={cn(
-          "mt-16 mb-5 scroll-mt-24 border-t border-border pt-7 text-[clamp(1.625rem,4vw,2.25rem)] font-[780] leading-tight text-foreground",
+          "border-border text-foreground mt-16 mb-5 scroll-mt-24 border-t pt-7 text-[clamp(1.625rem,4vw,2.25rem)] leading-tight font-[780]",
           className,
         )}
         id={id}
@@ -64,7 +64,7 @@ function Heading({
       <h3
         {...props}
         className={cn(
-          "mt-11 mb-4 scroll-mt-24 text-[clamp(1.3rem,3vw,1.625rem)] font-[760] leading-snug text-foreground",
+          "text-foreground mt-11 mb-4 scroll-mt-24 text-[clamp(1.3rem,3vw,1.625rem)] leading-snug font-[760]",
           className,
         )}
         id={id}
@@ -78,7 +78,7 @@ function Heading({
     <h4
       {...props}
       className={cn(
-        "mt-9 mb-3 scroll-mt-24 text-xl font-[760] leading-snug text-foreground",
+        "text-foreground mt-9 mb-3 scroll-mt-24 text-xl leading-snug font-[760]",
         className,
       )}
       id={id}
@@ -141,13 +141,7 @@ type MDXWrapperProps = ComponentPropsWithoutRef<"article"> & {
 
 export function useMDXComponents(components: MDXComponents): MDXComponents {
   return {
-    wrapper: ({
-      children,
-      className,
-      params: _params,
-      searchParams: _searchParams,
-      ...props
-    }: MDXWrapperProps) => (
+    wrapper: ({ children, className, ...props }: MDXWrapperProps) => (
       <article
         {...props}
         className={cn(
@@ -164,7 +158,7 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
       <h1
         {...props}
         className={cn(
-          "mb-7 text-[clamp(2.5rem,7vw,4.5rem)] font-[820] leading-[1.05] text-foreground",
+          "text-foreground mb-7 text-[clamp(2.5rem,7vw,4.5rem)] leading-[1.05] font-[820]",
           className,
         )}
       >
@@ -175,7 +169,10 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
     h3: (props) => <Heading {...props} level={3} />,
     h4: (props) => <Heading {...props} level={4} />,
     p: ({ children, className, ...props }) => (
-      <p {...props} className={cn("my-5", proseTextColor, className)}>
+      <p
+        {...props}
+        className={cn("my-5 [li_&]:my-0", proseTextColor, className)}
+      >
         {children}
       </p>
     ),
@@ -194,7 +191,7 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
       <ol
         {...props}
         className={cn(
-          "my-6 list-decimal space-y-2 pl-6 marker:text-[color-mix(in_srgb,var(--foreground)_46%,transparent)] marker:font-medium [li_&]:mt-2 [li_&]:mb-6",
+          "my-6 list-decimal space-y-2 pl-6 marker:font-medium marker:text-[color-mix(in_srgb,var(--foreground)_46%,transparent)] [li_&]:mt-2 [li_&]:mb-6",
           className,
         )}
       >
@@ -209,7 +206,7 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
     strong: ({ children, className, ...props }) => (
       <strong
         {...props}
-        className={cn("font-[680] text-foreground", className)}
+        className={cn("text-foreground font-[680]", className)}
       >
         {children}
       </strong>
@@ -229,7 +226,7 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
       <blockquote
         {...props}
         className={cn(
-          "my-8 -ml-3 border-l-4 border-blockquote-border bg-surface/70 px-5 py-4 leading-[1.68] text-blockquote [&>*:first-child]:mt-0 [&>*:last-child]:mb-0",
+          "border-blockquote-border bg-surface/70 text-blockquote my-8 -ml-3 border-l-4 px-5 py-4 leading-[1.68] [&>*:first-child]:mt-0 [&>*:last-child]:mb-0",
           className,
         )}
       >
@@ -242,7 +239,7 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
           <Link
             {...props}
             className={cn(
-              "font-[560] text-foreground no-underline decoration-transparent [overflow-wrap:anywhere] [box-shadow:inset_0_-1px_color-mix(in_srgb,var(--foreground)_28%,transparent)] transition-[color,box-shadow] hover:text-primary hover:[box-shadow:inset_0_-1px_var(--primary)]",
+              "text-foreground hover:text-primary font-[560] [overflow-wrap:anywhere] no-underline decoration-transparent [box-shadow:inset_0_-1px_color-mix(in_srgb,var(--foreground)_28%,transparent)] transition-[color,box-shadow] hover:[box-shadow:inset_0_-1px_var(--primary)]",
               className,
             )}
             href={href}
@@ -256,7 +253,7 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
         <a
           {...props}
           className={cn(
-            "font-[560] text-foreground no-underline decoration-transparent [overflow-wrap:anywhere] [box-shadow:inset_0_-1px_color-mix(in_srgb,var(--foreground)_28%,transparent)] transition-[color,box-shadow] hover:text-primary hover:[box-shadow:inset_0_-1px_var(--primary)]",
+            "text-foreground hover:text-primary font-[560] [overflow-wrap:anywhere] no-underline decoration-transparent [box-shadow:inset_0_-1px_color-mix(in_srgb,var(--foreground)_28%,transparent)] transition-[color,box-shadow] hover:[box-shadow:inset_0_-1px_var(--primary)]",
             className,
           )}
           href={href}
@@ -283,7 +280,7 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
         <pre
           {...props}
           className={cn(
-            "my-8 overflow-auto rounded-md border border-border bg-code-background px-5 py-4 font-mono text-sm leading-7 text-code-foreground shadow-app [&_code]:border-0 [&_code]:bg-transparent [&_code]:p-0 [&_code]:text-[1em] [&_code]:text-inherit",
+            "border-border bg-code-background text-code-foreground shadow-app my-8 overflow-auto rounded-md border px-5 py-4 font-mono text-sm leading-7 [&_code]:border-0 [&_code]:bg-transparent [&_code]:p-0 [&_code]:text-[1em] [&_code]:text-inherit",
             className,
           )}
         >
@@ -328,7 +325,7 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
       <th
         {...props}
         className={cn(
-          "border-b border-border px-3 py-2 font-[680]",
+          "border-border border-b px-3 py-2 font-[680]",
           proseHeadingColor,
           className,
         )}
@@ -340,7 +337,7 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
       <td
         {...props}
         className={cn(
-          "border-b border-border px-3 py-2",
+          "border-border border-b px-3 py-2",
           proseMutedColor,
           className,
         )}

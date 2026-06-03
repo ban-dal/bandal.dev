@@ -37,7 +37,7 @@ function DrawerHandle({ direction }: { direction: DrawerDirection }) {
     <div
       aria-hidden="true"
       className={cn(
-        "shrink-0 rounded-full bg-border",
+        "bg-border shrink-0 rounded-full",
         DRAWER_HANDLE_CLASS_NAME[direction],
       )}
     />
@@ -52,7 +52,7 @@ function DrawerHeader({ title }: { title: string }) {
       </VaulDrawer.Title>
       <VaulDrawer.Close asChild>
         <button
-          className="inline-flex min-h-8 items-center justify-center rounded-full border border-foreground bg-foreground px-3 text-sm font-[760] text-background transition hover:opacity-80 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+          className="border-foreground bg-foreground text-background focus-visible:outline-primary inline-flex min-h-8 items-center justify-center rounded-full border px-3 text-sm font-[760] transition hover:opacity-80 focus-visible:outline-2 focus-visible:outline-offset-2"
           type="button"
         >
           닫기
@@ -78,10 +78,10 @@ export function Drawer({
       open={open}
     >
       <VaulDrawer.Portal>
-        <VaulDrawer.Overlay className="fixed inset-0 z-80 bg-foreground/45" />
+        <VaulDrawer.Overlay className="bg-foreground/45 fixed inset-0 z-80" />
         <VaulDrawer.Content
           className={cn(
-            "fixed z-80 flex flex-col border border-border bg-surface outline-none",
+            "border-border bg-surface fixed z-80 flex flex-col border outline-none",
             DRAWER_CONTENT_CLASS_NAME[direction],
             contentClassName,
           )}
