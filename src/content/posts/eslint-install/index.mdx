@@ -1,6 +1,5 @@
 import eslint from "./eslint.png";
 import prettier from "./prettier.png";
-import prettierMaxLength from "./prettier-max-length.png";
 import vscodeExtension from "./vscode-eslint-extension.png";
 import { Image } from "@/components/Media";
 import { jsx, js } from "@/components/CodeExample";
@@ -11,177 +10,195 @@ export const meta = {
   date: "2024-02-20",
 };
 
-> eslint v9 부터 변경된, module js 기반의 설정 방법으로 새로 작성하였습니다. - 25. 05. 05.
+> ESLint v9 이후의 flat config 기준으로 다시 정리했습니다. - 26. 06.
 
-ESLint 설정 방법에 대해 정리한 글입니다. 제가 React 프로젝트를 진행할 때 주로 사용했던 ESLint 설정 기반으로 작성되었습니다.
+ESLint 설정 방법에 대해 정리한 글입니다. 제가 TypeScript, React, Next.js 프로젝트를 진행할 때 주로 사용하는 설정을 기준으로 작성했습니다.
 
-## 정의
+## 먼저 짚고 가기
 
 ### ESLint
 
 <Image src={eslint} alt="ESLint" />
 
-Javascript, JSX의 코드를 분석하여 **문법 오류나 안티 패턴을 찾아주거나 일괄된 코드 스타일로 작성하도록 코드 포맷**을 만들 수 있는 라이브러리 입니다. 그 중 외부에 오픈되어 있는 코딩 규칙도 사용이 가능한데 유명한 Airbnb, Google 등의 Style을 제공합니다.
+ESLint는 JavaScript, TypeScript, JSX 코드를 분석해서 버그 가능성이 높은 패턴이나 팀에서 금지한 작성 방식을 찾아주는 도구입니다. 예전에는 포매팅 규칙도 많이 담당했지만, ESLint v8.53.0부터 포매팅 규칙이 deprecated 되었고 ESLint v10부터 제거되었습니다.
+
+그래서 지금은 ESLint를 "코드 품질과 규칙 검사"에 두고, 포매팅은 Prettier에 맡기는 구성이 가장 단순합니다.
+
+- [ESLint - Deprecating formatting rules](https://eslint.org/blog/2023/10/deprecating-formatting-rules/)
+- [ESLint - Version Support](https://eslint.org/version-support/)
+
+2026년 6월 기준 ESLint의 현재 릴리스 라인은 v10입니다. 다만 v9도 아직 maintenance 상태이고, flat config를 사용하는 프로젝트라면 v9와 v10의 설정 형태는 크게 다르지 않습니다.
+
+Next.js를 같이 쓴다면 사용하는 Next.js와 `eslint-config-next` 버전을 먼저 확인하는 것이 좋습니다. 이 글을 갱신하는 시점의 `eslint-config-next@16.2.6`은 `eslint >=9.0.0`을 peer dependency로 요구합니다. 즉 ESLint v9를 유지해도 되고, 프로젝트 의존성이 맞으면 v10을 사용해도 됩니다.
 
 ### Prettier
 
 <Image src={prettier} alt="Prettier" />
 
-Prettier는 코드를 읽고 다시 작성하여 코드 스타일을 일관성 있게 맞춰주는 도구입니다. ESLint와 함께 사용할 경우 코드 스타일 관련된 ESLint 규칙을 비활성화하고 Prettier에 맡기는 방식으로 사용합니다.
+Prettier는 코드를 다시 출력해서 줄바꿈, 공백, 괄호, 따옴표 같은 형식을 일관되게 맞춰주는 formatter입니다.
 
-<details>
-<summary>Prettier를 안썼는데요, 쓰게 됐습니다..</summary>
+ESLint 쪽에서는 포매팅 규칙을 직접 관리하고 싶다면 [ESLint Stylistic](https://eslint.style/)을 사용할 수 있다고 안내하지만, Prettier와 같은 결과를 ESLint 규칙으로 전부 맞추려면 설정이 꽤 복잡해집니다. 그래서 저는 formatter는 Prettier에 맡기고, ESLint에서는 Prettier 결과가 어긋났는지만 error로 띄우는 방식을 선호합니다.
 
-#### 왜 Prettier는 다루지 않나요?
+## 패키지 구성과 설치
 
-Linters는 코드를 분석하여 문제점을 찾아내는 것이 주 할이고, Formatters는 코드를 정리하는 것이 주 역할입니다.
+이 글의 예제는 TypeScript, React, Next.js 프로젝트를 기준으로 합니다. Next.js를 쓰는 경우와 일반 TypeScript/React 프로젝트를 쓰는 경우에 필요한 패키지가 조금 다릅니다.
 
-Linters로 코드 작성 규칙 정리 과정은 코드 분석 및 문제점을 찾아내는 과정으로 인해 Formatters 대비 느린 속도를 보입니다. 그래서 코드작성규칙은 Prettier로 작성하길 권장하는 글을 종종 볼 수 있습니다.
+설치 명령은 묶음별로 나눴습니다. 전부 한 번에 설치해도 되지만, 어떤 패키지가 왜 필요한지 확인하면서 복사하기에는 묶음 단위가 더 편합니다.
 
-하지만 Prettier는 코드를 읽고 다시 작성하기에 그 과정에서 소스 코드에서 모든 스타일 정보를 버려버립니다. 그 과정에서 개발자가 원하는 스타일을 보존할 수 없게 만듭니다.
+### Next.js 프로젝트
 
-가장 큰 예시로 printWidth 옵션을 들 수 있습니다. 아래 예시를 통해 오히려 시각적으로 더 읽기 어려운 코드가 되는 것을 확인할 수 있습니다.
+```sh [npm]
+npm install --save-dev eslint eslint-config-next
+```
 
-<Image src={prettierMaxLength} alt="Prettier Max Length" />
+```sh [yarn]
+yarn add --dev eslint eslint-config-next
+```
 
-### ESLint의 포매팅 규칙 deprecate
+```sh [pnpm]
+pnpm add -D eslint eslint-config-next
+```
 
-`2023.12.16 추가`
+- `eslint`: ESLint 코어 패키지입니다.
+- `eslint-config-next`: Next.js, React, React Hooks 규칙을 포함한 공유 설정입니다.
 
-ESLint v8.53.0부터 포매팅 규칙을 deprecate 처리하였고, 이후 v10부터 완전히 제거할 계획을 발표했습니다.
+Next.js TypeScript 프로젝트에서는 `eslint-config-next/typescript`를 함께 사용하면 됩니다. Next.js 공식 문서에 따르면 이 설정은 [typescript-eslint](https://typescript-eslint.io/) 기반 TypeScript 전용 lint 규칙을 추가합니다.
 
-주된 이유로는 언어적 발전에 따른 구문들의 변화와 프레임워크(주로 React)의 사용이 폭발적으로 증가함에 따라 스타일 규칙을 동결해 관리하고자 했지만, 더 이상 변화들과 사용자 요구를 따라잡기 어려워졌기 때문이라고 합니다.
+따라서 일반적인 Next.js 프로젝트에서는 `typescript-eslint`, `@typescript-eslint/eslint-plugin`, `eslint-plugin-react`, `eslint-plugin-react-hooks`, `@next/eslint-plugin-next`를 따로 설치하지 않아도 됩니다. 이미 `create-next-app`이나 [Codemods](https://nextjs.org/docs/app/guides/upgrading/codemods)로 설정된 프로젝트라면 위 패키지도 이미 설치되어 있을 수 있습니다.
 
-대신 코드 형식을 관리하고자 한다면 코드 포메터인 Prettier를 사용할 것을 권장합니다.
+`@next/eslint-plugin-next`는 Next.js 규칙만 직접 주입하고 싶을 때 설치합니다. 기존 ESLint 설정에 충돌 가능성이 있거나, `eslint-config-next` 전체를 쓰기 어려운 경우에 사용하는 선택지입니다.
 
-[ESLint 블로그 - Deprecating formatting rules](https://eslint.org/blog/2023/10/deprecating-formatting-rules/)
+Next.js 16부터는 `next lint`가 제거되었고 ESLint CLI를 직접 사용합니다.
 
-</details>
+- [Next.js - ESLint Plugin](https://nextjs.org/docs/app/api-reference/config/eslint)
+
+### 일반 TypeScript 프로젝트
+
+```sh [npm]
+npm install --save-dev eslint @eslint/js typescript-eslint globals
+```
+
+```sh [yarn]
+yarn add --dev eslint @eslint/js typescript-eslint globals
+```
+
+```sh [pnpm]
+pnpm add -D eslint @eslint/js typescript-eslint globals
+```
+
+- `eslint`: ESLint 코어 패키지입니다.
+- `@eslint/js`: JavaScript 권장 규칙을 flat config에서 가져올 때 사용합니다.
+- `typescript-eslint`: TypeScript ESLint의 권장 규칙과 플러그인을 가져올 때 사용합니다.
+- `globals`: Node.js, browser 같은 전역 변수를 설정할 때 사용합니다.
+
+Next.js가 아닌 프로젝트에서 flat config로 `typescript-eslint`를 사용한다면 `@typescript-eslint/parser`와 `@typescript-eslint/eslint-plugin`을 따로 설치하지 않아도 됩니다. `typescript-eslint` 패키지가 parser와 plugin을 함께 제공하고, 필요한 경우 `tseslint.parser`, `tseslint.plugin`으로 꺼내 쓸 수 있습니다.
+
+### Prettier 연동
+
+```sh [npm]
+npm install --save-dev prettier eslint-config-prettier eslint-plugin-prettier
+```
+
+```sh [yarn]
+yarn add --dev prettier eslint-config-prettier eslint-plugin-prettier
+```
+
+```sh [pnpm]
+pnpm add -D prettier eslint-config-prettier eslint-plugin-prettier
+```
+
+- `prettier`: 코드 포매터입니다.
+- `eslint-config-prettier`: ESLint의 포매팅 관련 규칙을 꺼서 Prettier와 충돌하지 않게 합니다.
+- `eslint-plugin-prettier`: Prettier 실행 결과를 ESLint rule error로 표시합니다.
+
+`eslint-plugin-prettier`는 필수는 아닙니다. 에디터나 CI에서 `prettier --check`를 따로 실행한다면 생략할 수 있습니다. 저는 AI 에이전트나 팀원이 `eslint`만 실행해도 포매팅 오류를 같이 보게 만들고 싶을 때 사용합니다.
+
+### import 정렬
+
+```sh [npm]
+npm install --save-dev eslint-plugin-import-x
+```
+
+```sh [yarn]
+yarn add --dev eslint-plugin-import-x
+```
+
+```sh [pnpm]
+pnpm add -D eslint-plugin-import-x
+```
+
+- `eslint-plugin-import-x`: import/export 관련 규칙을 제공합니다. 예제에서는 `import-x/order`로 import 문을 그룹별로 정렬합니다.
+
+### 일반 React 프로젝트
+
+```sh [npm]
+npm install --save-dev eslint-plugin-react eslint-plugin-react-hooks
+```
+
+```sh [yarn]
+yarn add --dev eslint-plugin-react eslint-plugin-react-hooks
+```
+
+```sh [pnpm]
+pnpm add -D eslint-plugin-react eslint-plugin-react-hooks
+```
+
+- `eslint-plugin-react`: React 컴포넌트 관련 규칙을 제공합니다.
+- `eslint-plugin-react-hooks`: hooks 규칙과 React Compiler 관련 lint를 제공합니다.
+
+Next.js에서 `eslint-config-next`를 사용한다면 이 묶음은 따로 설치하지 않아도 됩니다. Next.js 공식 문서에 따르면 `eslint-config-next`에는 `@next/eslint-plugin-next`와 함께 `eslint-plugin-react`, `eslint-plugin-react-hooks`가 이미 포함되어 있습니다.
+
+> TypeScript 프로젝트에서는 prop type을 TypeScript가 담당하므로 `react/prop-types`는 꺼두는 편이 좋습니다.
+
+`eslint-plugin-react-hooks` 최신 문서에는 기존 hooks 규칙뿐 아니라 React Compiler 진단 규칙도 포함되어 있습니다.
+React 공식 문서의 recommended preset에는 `exhaustive-deps`, `rules-of-hooks` 외에도 `immutability`, `purity`, `refs`, `set-state-in-effect`, `static-components`, `use-memo` 같은 규칙이 들어갑니다.
+
+- [React - eslint-plugin-react-hooks](https://ko.react.dev/reference/eslint-plugin-react-hooks)
+- [facebook/react#32431](https://github.com/facebook/react/issues/32431)
+- [facebook/react#34679](https://github.com/facebook/react/issues/34679)
+- [facebook/react#34743](https://github.com/facebook/react/issues/34743)
+
+위 이슈들처럼 flat config와 `recommended` preset 주변에는 버전별 이슈가 있었기 때문에, hooks 규칙은 설치한 버전의 공식 문서를 확인한 뒤 적용하는 것이 좋습니다.
+프로젝트 상황에 따라 React Compiler 관련 규칙이 너무 공격적으로 느껴지면 필요한 규칙만 끄고 시작해도 됩니다.
 
 ## 설정 방법
 
 ### IDE에 ESLint 설치
 
-VSCode의 확장탭에서 ESLint ( 혹은 dbaeumer.vscode-eslint ) 를 검색하여 설치합니다.
+VSCode의 확장탭에서 ESLint 혹은 `dbaeumer.vscode-eslint`를 검색하여 설치합니다.
 
 <Image src={vscodeExtension} alt="VSCode ESLint Extension" />
 
-### ESLint 패키지 설치
+### eslint.config.mjs
 
-**1. ESLint 패키지중 필요한 패키지를 설치합니다.**
-
-- eslint: ESLint의 코어 패키지
-- @eslint/eslintrc: ESLint 설정 파일을 로드하는 패키지
-- eslint-plugin-import: import / export 관련 규칙
-- eslint-plugin-jsx-a11y: JSX 요소의 접근성 관련 규칙
-- eslint-plugin-react: JSX 및 React 컴포넌트 관련 규칙
-- eslint-plugin-react-hooks: React Hooks 관련 규칙
-- typescript-eslint: TypeScript 관련 ESLint 규칙을 제공하는 패키지
-- @typescript-eslint/parser: TypeScript 코드를 분석하기 위한 parser
-- eslint-config-next: Next.js 프로젝트에서 사용하는 ESLint 설정
-- @next/eslint-plugin-next: Next.js 코드를 위한 ESLint 플러그인
-- eslint-config-prettier: ESLint와 Prettier 충돌 방지
-- eslint-plugin-prettier: Prettier를 ESLint 규칙으로 실행
-
-eslint-config-next는 Next CLI로 구성했을 경우 기본 설치되어 있으므로 아래 명령어에 포함하지 않았습니다.
-
-::: code-group
-
-```sh [npm]
-npm install --save-dev eslint @eslint/eslintrc eslint-plugin-import eslint-plugin-jsx-a11y eslint-plugin-react eslint-plugin-react-hooks @typescript-eslint/parser typescript-eslint eslint-config-prettier eslint-plugin-prettier
-```
-
-```sh [yarn]
-yarn add --dev eslint @eslint/eslintrc eslint-plugin-import eslint-plugin-jsx-a11y eslint-plugin-react eslint-plugin-react-hooks @typescript-eslint/parser typescript-eslint eslint-config-prettier eslint-plugin-prettier
-```
-
-```sh [pnpm]
-pnpm i -D eslint @eslint/eslintrc eslint-plugin-import eslint-plugin-jsx-a11y eslint-plugin-react eslint-plugin-react-hooks @typescript-eslint/parser typescript-eslint eslint-config-prettier eslint-plugin-prettier
-```
-
-:::
-
-**2. eslint.config.mjs 파일을 생성하고 아래와 같이 설정합니다.**
-
-eslint v9부터는 module js 기반 설정 방식을 권장합니다. 패키지 목록을 전부 설치했을 경우 샘플 설정입니다.
+아래 예제는 이 글을 작성할 때 사용 중인 Next.js 프로젝트 기준 설정입니다. `eslint-config-next`로 Next.js, React, React Hooks, TypeScript 규칙을 가져오고, 직접 설치한 `eslint-plugin-import-x`, `eslint-plugin-prettier`만 추가로 주입합니다.
 
 ```js
 // [!code filename:eslint.config.mjs]
-import { dirname } from "path";
-import { fileURLToPath } from "url";
-
-import { FlatCompat } from "@eslint/eslintrc";
-import tseslintParser from "@typescript-eslint/parser";
-import eslintConfigPrettier from "eslint-config-prettier";
-import importPlugin from "eslint-plugin-import";
+import { defineConfig, globalIgnores } from "eslint/config";
+import nextVitals from "eslint-config-next/core-web-vitals";
+import nextTs from "eslint-config-next/typescript";
+import prettierConfig from "eslint-config-prettier/flat";
+import importX from "eslint-plugin-import-x";
 import prettierPlugin from "eslint-plugin-prettier";
-import tseslint from "typescript-eslint";
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
-
-const compat = new FlatCompat({
-  baseDirectory: __dirname,
-});
 
 /** @type {import('eslint').Linter.Config[]} */
-export default tseslint.config(
-  ...compat.extends("next/core-web-vitals", "next/typescript"),
-  eslintConfigPrettier,
+const eslintConfig = defineConfig([
+  ...nextVitals,
+  ...nextTs,
   {
-    ignores: ["dist", "node_modules"],
-    extends: [tseslint.configs.recommended], // 추천 규칙 확장
-    languageOptions: {
-      parser: tseslintParser,
-      parserOptions: {
-        projectService: true, // 프로젝트에서 가장 가까운 tsconfig.json 파일을 찾아서 사용합니다.
-        project: true, // tsconfig.json 프로젝트 설정 활성화
-        ecmaFeatures: {
-          jsx: true,
-        },
-      },
-    },
+    files: ["**/*.{js,jsx,ts,tsx,mjs,cjs}"],
     plugins: {
-      "@typescript-eslint": tseslint.plugin,
-      prettier: prettierPlugin,
-      "@import": importPlugin,
+      "import-x": importX,
     },
     settings: {
-      "import/resolver": {
+      "import-x/resolver": {
         typescript: true,
         node: true,
       },
     },
     rules: {
-      "prettier/prettier": "error", // prettier 규칙 어긋나면 error
-
-      // tseslint.config 에 지정하면 에러나는 규칙
-      // -------------------------------------
-      "@typescript-eslint/consistent-type-imports": "error", // type에 대한 import 시 type 키워드 필수
-      "no-unused-vars": "off", // ts eslint에서 수행하므로, eslint 에서는 무시
-
-      // tseslint.configs.recommended를 덮어쓰기 위한 규칙
-      // -------------------------------------
-      "@typescript-eslint/no-unused-vars": [
-        "error",
-        {
-          args: "all",
-          varsIgnorePattern: "_.*",
-          argsIgnorePattern: "_.*",
-          caughtErrors: "all",
-          caughtErrorsIgnorePattern: "^_",
-          destructuredArrayIgnorePattern: "^_",
-          ignoreRestSiblings: true,
-        },
-      ],
-      "@typescript-eslint/no-explicit-any": "off", // any 타입 허용
-      "@typescript-eslint/ban-ts-comment": "off", // @ts-comment 사용 허용
-      "@typescript-eslint/no-empty-object-type": "off", // 빈 객체 타입 허용
-      // "no-undef": "off",  // ts eslint가 전역 변수/타입을 못잡을 경우 주석 제거
-
-      // import 규칙
-      // -------------------------------------
-      "@import/order": [
+      "import-x/order": [
         "error",
         {
           groups: [
@@ -201,17 +218,12 @@ export default tseslint.config(
               position: "before",
             },
             {
-              pattern: "@turucar/**",
-              group: "external",
-              position: "after",
-            },
-            {
               pattern: "@/**",
               group: "internal",
               position: "before",
             },
             {
-              pattern: "*.scss",
+              pattern: "*.css",
               group: "sibling",
               position: "after",
             },
@@ -225,22 +237,24 @@ export default tseslint.config(
       ],
     },
   },
-
-  // js
+  prettierConfig,
   {
-    files: ["**/*.js", "**/*.cjs", "**/*.mjs"],
-    extends: [tseslint.configs.disableTypeChecked],
     plugins: {
-      "@typescript-eslint": tseslint.plugin,
+      prettier: prettierPlugin,
     },
     rules: {
-      "@typescript-eslint/no-require-imports": "off",
+      "prettier/prettier": "error",
     },
   },
-);
+  globalIgnores([".next/**", "out/**", "build/**", "next-env.d.ts"]),
+]);
+
+export default eslintConfig;
 ```
 
-**3. prettier.config.js 파일을 생성합니다.**
+`eslint-config-next`에는 React, React Hooks, Next.js 규칙이 이미 포함되어 있습니다. TypeScript 프로젝트에서는 `eslint-config-next/typescript`를 함께 spread하면 `typescript-eslint` 기반 규칙도 적용됩니다. 그래서 위 예제처럼 Next.js 설정은 공유 설정에 맡기고, import 정렬이나 Prettier처럼 직접 설치한 플러그인만 추가로 주입하는 편이 관리하기 쉽습니다.
+
+### prettier.config.js
 
 ```js
 // [!code filename:prettier.config.js]
@@ -252,8 +266,7 @@ module.exports = {
   singleQuote: false,
   quoteProps: "as-needed",
   jsxSingleQuote: false,
-  jsxBracketSameLine: false,
-  jsxParens: true,
+  bracketSameLine: false,
   proseWrap: "never",
   trailingComma: "all",
   arrowParens: "always",
@@ -263,17 +276,17 @@ module.exports = {
 
 ### VSCode 설정
 
-소스코드를 내려받은 사용자가 VSCode에 ESLint를 기본 Formatter로 사용할 수 있도록 공통 설정을 추가합니다. .vscode/settings.json 파일을 생성하고 아래와 같이 설정합니다.
+소스코드를 내려받은 사용자가 같은 확장과 저장 시 동작을 사용하도록 `.vscode` 설정을 추가합니다.
 
 ```json
 // [!code filename:.vscode/settings.json]
 {
-  "eslint.format.enable": true,
   "editor.formatOnSave": true,
   "editor.defaultFormatter": "dbaeumer.vscode-eslint",
-  "css.lint.unknownAtRules": "ignore",
+  "eslint.format.enable": true,
+  "eslint.useFlatConfig": true,
   "typescript.preferences.importModuleSpecifier": "non-relative",
-  "eslint.experimental.useFlatConfig": true
+  "css.lint.unknownAtRules": "ignore"
 }
 ```
 
@@ -286,6 +299,6 @@ module.exports = {
 
 ## 결론
 
-ESLint v9부터 설정 방식이 크게 변경되었으며, 기존 JSON 형식 대신 모듈 기반의 JavaScript 설정이 권장됩니다. 이 방식은 더 유연하고 강력한 설정을 가능하게 합니다. 같이 일하는 팀원들과 코드 스타일을 통일하고 싶다면 ESLint와 Prettier를 함께 사용하는 것이 좋은 선택입니다.
+ESLint v9 이후에는 flat config가 기본 흐름이 되었고, Next.js 16부터는 `next lint` 대신 ESLint CLI를 직접 사용합니다.
 
-특히 TypeScript와 React를 사용하는 프로젝트에서는 적절한 플러그인을 추가하여 타입 안정성과 컴포넌트 작성 규칙을 강화할 수 있습니다. 여기서 소개한 설정들을 참고하여 프로젝트에 맞게 ESLint를 구성해보세요.
+지금은 ESLint를 코드 품질과 규칙 검사에 집중시키고, Prettier는 formatter로 분리하는 구성이 가장 관리하기 쉽습니다. Next.js 프로젝트라면 `eslint-config-next/core-web-vitals`, `eslint-config-next/typescript`를 먼저 사용하고, 일반 TypeScript/React 프로젝트라면 `typescript-eslint`, React hooks 규칙, import 정렬 정도부터 잡아도 팀 코드 스타일을 꽤 안정적으로 맞출 수 있습니다.
