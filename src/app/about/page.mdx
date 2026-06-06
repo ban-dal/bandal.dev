@@ -36,8 +36,11 @@ _updated at 2026-06_
 
 - Next.js App Router 기반 공통 페이지 아키텍처 설계
   - **3개 웹과 1개 WebView의 페이지 개발 방식을 표준화**해 데이터 조회, 데이터 변경, UI 조립 방식이 화면마다 달라지는 문제를 줄임
-  - Proxy는 라우트 접근 제어와 요청 전처리, Server Component는 초기 데이터 조회, Client Component는 사용자 입력, 상호작용, 상태 관리에 집중하도록 책임 경계 설계
-  - `page → container → components` 구조와 공통 SDK/Server Action/디자인 시스템을 결합해 신규 페이지 개발 패턴을 정착
+  - Proxy, Server Component, Client Component의 책임 경계를 정리하고 `page → container → components` 구조와 공통 SDK/Server Action 기반 개발 패턴 확립
+- 예약 진입 조건을 선언적으로 다루는 Boundary 컴포넌트 설계
+  - **서비스 종류, 예약 상태, 관리자 권한에 따라 섹션과 액션 노출 조건이 달라지는 문제**를 공통 Boundary 컴포넌트로 정리
+  - 페이지 컴포넌트가 화면 구성에 집중할 수 있도록 조건 판단 로직을 Boundary 책임으로 분리
+  - 진입 조건 변경이나 신규 기능 추가 시 페이지별 조건문을 직접 수정하는 범위를 줄여 변경 대응 비용을 낮춤
 - Kakao Map 기반 차량 관제 시스템 렌더링 성능 개선
   - **수천 대 차량 마커 렌더링으로 발생한 프레임 드랍/프리징 문제**를 Chrome DevTools FPS Meter와 4x throttling 환경에서 재현
   - 차량 식별이 필요한 줌 레벨을 기획자와 협의해 클러스터링 기준을 정의
@@ -58,19 +61,16 @@ _updated at 2026-06_
   - Client Runtime Error, API 호출 성공/실패, Server Error를 각각 error 이벤트, SDK lifecycle, instrumentation.ts에서 수집하도록 표준화
   - [Next.js에서 자동화된 로깅 구조 만들기](/blog/nextjs-logging-strategy)
 - B2B 파트너 온보딩을 위한 개발자센터 구축
-  - **B2B 파트너 온보딩에 필요한 API 문서 제공 흐름**을 만들기 위해 개발자센터 구축
-  - OpenAPI 3.0 기반 YAML 문서를 작성하면, 이를 파싱해 웹 페이지로 보여주는 구조 구현
+  - OpenAPI 3.0 기반 YAML 문서를 파싱해 API 문서를 웹 페이지로 제공하는 개발자센터 구축
   - https://developers.carplat.co.kr
 
 #### 프론트엔드의 개발 생산성을 개선하였습니다.
 
-- 신규 페이지 개발과 함께 멀티 웹앱 확장을 위한 디자인 시스템 구축 주도
-  - **3개 웹과 1개 WebView의 반복 UI 구현 비용을 줄이기 위해** 사내 디자인 시스템 구축
-  - Radix UI 기반으로 업무 화면에 필요한 50+ 공용 컴포넌트를 구현하고, Sass map/CSS variable 기반 variant-color 토큰 구조 설계
-  - 시맨틱 디자인 토큰과 `data-theme` 기반 라이트/다크 테마 구조를 설계해 하위 UI에 테마 토큰이 일괄 적용되도록 구현
-  - 이후 투루카 대외 홈페이지/백오피스 웹앱이 추가되며 총 6개의 웹앱과 1개 WebView에서 공통 UI 기반으로 사용
-- Agent Skills 기반 사내 컴포넌트 사용성 개선
-  - **AI 코드 생성 시 사내 디자인 시스템 규칙을 참조하도록** Storybook 문서를 Agent Skills 형태로 변환
+- 신규 페이지 개발과 멀티 웹앱 확장을 위한 디자인 시스템 구축 주도
+  - **6개 웹앱과 1개 WebView에서 사용하는 공통 UI 기반** 구축
+  - Radix UI 기반으로 업무 화면에 필요한 50+ 공용 컴포넌트 구현
+  - CSS variable과 Sass map 기반 variant-color 토큰, `data-theme` 기반 라이트/다크 테마 구조 설계
+  - Storybook 문서를 Agent Skills 형태로 변환해 AI 코드 생성 시 사내 컴포넌트 사용 기준을 참조하도록 개선
 - OpenAPI 기반 TypeScript 타입 자동화 및 API 연동 개발자 경험 개선
   - **Swagger 명세 기반 타입 생성 자동화**로 API 타입 수기 작성 시간을 줄이고, 오타, 중복 타입, API 변경 누락 문제를 개선
   - 오픈소스 OpenAPI generator가 팀의 파일 구조와 IDE 탐색 요구사항을 충족하지 못해, OpenAPI YAML을 파싱해 `.d.ts`를 생성하는 스크립트를 직접 구현
@@ -79,14 +79,10 @@ _updated at 2026-06_
 
 #### 복잡한 입력 컴포넌트를 구축하였습니다.
 
-- Date UI 시스템 자체 구현
-  - **브라우저 기본 date input으로 대응하기 어려운 복합 날짜 입력 UX**를 지원하기 위해 Date UI 시스템 자체 구현
-  - Calendar, DateInput, TimeWheelPicker 등 조합 가능한 UI 컴포넌트 설계
-  - DatePicker, DateRangePicker, DateTimeRangePicker 형태로 조합 가능한 API 설계
-- Lexical 기반 Rich Text Editor 구축
-  - **사내 디자인 시스템과 DB 저장 요구사항에 맞춘** Lexical 기반 Rich Text Editor 구축
-  - Table, ColorPicker, Markdown 입력 지원
-  - HTML 결과를 gzip 압축으로 크기 평균 70~80% 감소하여 DB 저장 용량 절감
+- Date UI 시스템과 Lexical 기반 Rich Text Editor 구축
+  - 브라우저 기본 date input으로 대응하기 어려운 복합 날짜 입력 UX를 위해 Calendar, DateInput, TimeWheelPicker 기반 Date UI 시스템 구현
+  - 사내 디자인 시스템과 DB 저장 요구사항에 맞춰 Table, ColorPicker, Markdown 입력을 지원하는 Rich Text Editor 구축
+  - Rich Text Editor HTML 결과를 gzip 압축해 DB 저장 크기 평균 70~80% 감소
 
 #### 프론트엔드 요구사항 해결을 위해 필요한 영역까지 확장하였습니다.
 
@@ -96,9 +92,8 @@ _updated at 2026-06_
   - 개인정보성 테이블 제외, `TOP N` 기본 주입, 금지 SQL 키워드 검증을 적용한 MSSQL SELECT query 생성/실행 구조 구현
   - Vercel AI SDK 기반 스트리밍 응답, 채팅 이력, 공유 기능을 제공해 담당자가 필요한 운영 데이터를 직접 탐색할 수 있도록 개선
 - napi-rs 기반 알림 상태 조회 OS API
-  - **Electron 환경에서 사용하던 알림 상태 조회 라이브러리의 크래시와 유지보수 중단 문제**를 해결하기 위해 native bridge 구현
-  - macOS/Windows 네이티브 API를 조사하고 Codex를 보조 도구로 활용해 Rust/napi-rs 기반 native bridge 구현
-  - Electron/Node.js 환경에서 macOS, Windows 알림 권한 및 Focus/DND 상태를 조회하기 위한 범용 native bridge npm 패키지 개발
+  - **Electron 알림 상태 조회 라이브러리의 크래시와 유지보수 중단 문제**를 해결하기 위해 Rust/napi-rs 기반 native bridge 구현
+  - macOS/Windows 알림 권한 및 Focus/DND 상태를 Electron/Node.js 환경에서 조회할 수 있는 npm 패키지 개발
 
 ### (주)이노룰스
 
