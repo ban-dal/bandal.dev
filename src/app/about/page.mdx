@@ -1,11 +1,11 @@
 export const meta = {
   title: "About",
-  date: "2026-06-03",
+  date: "2026-06",
 };
 
 # 김도현
 
-_updated at 2026-06-03_
+_updated at 2026-06_
 
 제품의 사용성과 개발 생산성을 함께 개선하는 프론트엔드 엔지니어입니다.
 
@@ -68,14 +68,14 @@ _updated at 2026-06-03_
   - **3개 웹과 1개 WebView의 반복 UI 구현 비용을 줄이기 위해** 사내 디자인 시스템 구축
   - Radix UI 기반으로 업무 화면에 필요한 50+ 공용 컴포넌트를 구현하고, Sass map/CSS variable 기반 variant-color 토큰 구조 설계
   - 시맨틱 디자인 토큰과 `data-theme` 기반 라이트/다크 테마 구조를 설계해 하위 UI에 테마 토큰이 일괄 적용되도록 구현
-  - 이후 투루카 대외 홈페이지/백오피스와 신규 3개 웹 프로젝트에 재사용되어 컴포넌트 재구현 비용을 줄이고 UI 일관성 유지
+  - 이후 투루카 대외 홈페이지/백오피스 웹앱이 추가되며 총 6개의 웹앱과 1개 WebView에서 공통 UI 기반으로 사용
 - Agent Skills 기반 사내 컴포넌트 사용성 개선
   - **AI 코드 생성 시 사내 디자인 시스템 규칙을 참조하도록** Storybook 문서를 Agent Skills 형태로 변환
-- OpenAPI 기반 TypeScript 타입 자동화 및 API 개발자 경험 개선
-  - **Swagger 명세 기반 타입 생성 자동화로** 수기 작성에서 발생하던 오타, 중복 타입, API 변경 누락 문제를 개선
-  - OpenAPI YAML을 파싱해 path/query/header/request/response body와 content type을 포함한 API 타입을 `.d.ts`로 생성하는 스크립트 구축
-  - 오픈소스 OpenAPI generator가 팀에서 원하는 파일 구조와 IDE 탐색 경험을 충족하지 못해, API별 타입 파일 구조와 JSDoc 기반 hover 문서, 타입 정의 이동을 지원하는 형태로 직접 구현
-  - API 연동 반복 코드와 타입 불일치 위험을 줄이고, 신규 API 추가 및 변경사항 반영에 필요한 프론트엔드 개발 비용을 절감
+- OpenAPI 기반 TypeScript 타입 자동화 및 API 연동 개발자 경험 개선
+  - **Swagger 명세 기반 타입 생성 자동화**로 API 타입 수기 작성 시간을 줄이고, 오타, 중복 타입, API 변경 누락 문제를 개선
+  - 오픈소스 OpenAPI generator가 팀의 파일 구조와 IDE 탐색 요구사항을 충족하지 못해, OpenAPI YAML을 파싱해 `.d.ts`를 생성하는 스크립트를 직접 구현
+  - API별 타입 파일 구조, JSDoc 기반 hover 문서, 타입 정의 이동을 지원해 IDE에서 API 타입을 탐색하기 쉽게 개선
+  - 모든 프로젝트의 API 호출을 공통 SDK로 통일하여 request/response 타입이 fetch 경계에서 추론되도록 구성
 
 #### 복잡한 입력 컴포넌트를 구축하였습니다.
 
