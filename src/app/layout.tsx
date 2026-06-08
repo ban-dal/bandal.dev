@@ -33,10 +33,10 @@ export default function RootLayout({
     <html lang="ko" className={pretendard.variable} suppressHydrationWarning>
       <body>
         <ThemeProvider>
-          <header className="sticky top-1 z-30 container">
+          <header className="sticky top-1 z-30 container print:hidden">
             <SiteNav />
           </header>
-          <div className="container">{children}</div>
+          <div className="container print:!mx-0 print:!w-full">{children}</div>
           <SiteFooter />
         </ThemeProvider>
         <Analytics />

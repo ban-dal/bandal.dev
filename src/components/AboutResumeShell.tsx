@@ -33,12 +33,12 @@ export function AboutResumeShell({ children }: AboutResumeShellProps) {
       transition={{ duration: 0.22 }}
     >
       <motion.div
-        className="bg-primary/70 pointer-events-none absolute top-8 bottom-8 left-[max(0.75rem,calc((100%_-_65ch)/2_-_3rem))] hidden w-px origin-top md:block"
+        className="bg-primary/70 pointer-events-none absolute top-8 bottom-8 left-[max(0.75rem,calc((100%_-_65ch)/2_-_3rem))] hidden w-px origin-top md:block print:hidden"
         style={{ scaleY: shouldReduceMotion ? 1 : progressScale }}
         aria-hidden="true"
       />
       <motion.div
-        className="rounded-app border-border bg-surface shadow-app relative isolate overflow-hidden border p-[clamp(1.5rem,5vw,4rem)]"
+        className="rounded-app border-border bg-surface shadow-app relative isolate overflow-hidden border p-[clamp(1.5rem,5vw,4rem)] print:overflow-visible print:rounded-none print:border-0 print:bg-transparent print:p-0 print:shadow-none"
         initial={
           shouldReduceMotion
             ? false
