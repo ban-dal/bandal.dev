@@ -9,13 +9,12 @@ export const dynamic = "force-static";
 
 _updated at 2026-06_
 
-제품의 사용성과 개발 생산성을 함께 개선하는 프론트엔드 엔지니어입니다.
+제품 UX와 개발 생산성의 병목을 구조로 풀어내는 프론트엔드 엔지니어입니다.
 
-기능을 구현하는 것보다 더 나은 UX가 있는지 먼저 고민합니다. 기획자, 디자이너와 UX를 논의하고, 더 나은 방향이 있는지 의견을 나누는 것을 좋아합니다.
-이 과정에서 개발자 관점의 UX 피드백이 팀의 자산이 된다고 믿습니다.
+기능 구현에 머무르지 않고, 사용 흐름과 팀의 개발 방식이 함께 좋아지는 지점을 찾습니다.
+기획자, 디자이너와 제품 흐름을 논의하고, 개발자 관점의 UX 피드백이 팀의 공통 기준으로 남도록 일합니다.
 
-디자인 시스템과 API 자동화 같은 플랫폼 작업도 결국 제품을 더 잘 만들기 위한 수단이라고 생각합니다.
-반복되는 구현을 줄이고, 팀이 공통된 기준 위에서 더 빠르게 개발할 수 있도록 만드는 일을 중요하게 여깁니다.
+디자인 시스템, API 자동화, AI 기반 운영 도구처럼 제품을 더 잘 만들기 위해 필요한 문제라면 프론트엔드 경계 밖까지 파고듭니다.
 
 ## Contact
 
@@ -34,68 +33,48 @@ _updated at 2026-06_
 
 `Next.js(app)` `Vite` `TailwindCSS` `Tanstack Query`
 
-#### 신규 B2B 플랫폼의 프론트엔드 구조와 핵심 기능을 구축하였습니다.
+#### 신규 B2B 플랫폼을 0부터 만들며 여러 웹앱이 같은 방식으로 확장되는 기반을 설계했습니다.
 
-- Next.js App Router 기반 공통 페이지 아키텍처 설계
-  - **3개 웹과 1개 WebView의 페이지 개발 방식을 표준화**해 데이터 조회, 데이터 변경, UI 조립 방식이 화면마다 달라지는 문제를 줄임
-  - Proxy, Server Component, Client Component의 책임 경계를 정리하고 `page → container → components` 구조와 공통 SDK/Server Action 기반 개발 패턴 확립
-- 예약 진입 조건을 선언적으로 다루는 Boundary 컴포넌트 설계
-  - **서비스 종류, 예약 상태, 관리자 권한에 따라 섹션과 액션 노출 조건이 달라지는 문제**를 공통 Boundary 컴포넌트로 정리
-  - 페이지 컴포넌트가 화면 구성에 집중할 수 있도록 조건 판단 로직을 Boundary 책임으로 분리
-  - 진입 조건 변경이나 신규 기능 추가 시 페이지별 조건문을 직접 수정하는 범위를 줄여 변경 대응 비용을 낮춤
-- Kakao Map 기반 차량 관제 시스템 렌더링 성능 개선
-  - **수천 대 차량 마커 렌더링으로 발생한 프레임 드랍/프리징 문제**를 Chrome DevTools FPS Meter와 4x throttling 환경에서 재현
-  - 차량 식별이 필요한 줌 레벨을 기획자와 협의해 클러스터링 기준을 정의
-  - 기본 클러스터, 이동 중 업데이트 debounce, 이미지 기반 마커 표현을 조합해 DOM 갱신량과 Element 수를 줄임
-  - 고밀도 지역에서 클러스터가 해제된 상태로 빠르게 지도를 이동해도 60fps 수준 유지
-- WebView 기반 모바일 UX 안정화
-  - **full screen modal에서 뒤로가기 시 이전 페이지로 이동해 form 입력값이 유실되는 문제**를 modal의 페이지 기반 플로우 전환과 zustand 상태 분리로 개선
-  - **iOS/AOS 가상 키보드 동작 차이로 CTA 위치가 불안정해지는 문제**를 공통 hook과 CSS variable 기반 safe area 관리로 표준화
-  - OS별 viewport 차이에도 CTA와 입력 흐름이 의도한 방식으로 유지되도록 WebView 레이아웃 기준 정립
-- WebView/Native Bridge 기반 BLE 차량 제어 상태 안정화
-  - **Native BLE 상태와 WebView 상태 불일치로** 응답 대기화면에 멈추거나 불필요한 Web API fallback 발생
-  - BLE 연결 상태를 특정 React 화면 생명주기에 종속되지 않는 외부 상태로 판단
-  - `useEffect` 기반 구독 등록/해제 구조를 모듈 스코프 외부 Store와 `useSyncExternalStore` 기반 구독 구조로 변경
-  - 페이지 이동, unmount, 앱 재활성화 이후에도 BLE 상태를 일관되게 동기화해 불필요한 Web API fallback을 줄임
-- Next.js App Router 기반 통합 로깅 환경 구축
-  - **Edge Runtime, Server, Client의 로그 수집 지점을 표준화**해 로깅 코드가 도메인 로직에 분산되는 문제를 줄임
-  - Server Action 기반 공통 logger를 구현해 호출 위치와 관계없이 AWS CloudWatch Logs Insights에서 로그를 조회할 수 있는 구조 구축
+- 3개 웹과 1개 WebView가 같은 방식으로 확장되는 개발 기반을 마련했습니다.
+  - 화면마다 달라지던 데이터 조회, 변경, UI 조립 방식을 `page → container → components`, 공통 SDK, Server Action 패턴으로 정리
+  - 서비스 종류, 예약 상태, 관리자 권한에 따라 달라지는 섹션/액션 노출 기준을 Boundary 컴포넌트로 분리해 변경 범위를 줄임
+- 차량 관제 지도에서 수천 대 마커가 몰려도 조작 가능한 성능을 확보했습니다.
+  - Chrome DevTools FPS Meter와 4x throttling 환경에서 프레임 드랍/프리징을 재현하고, 기획자와 필요한 정보 밀도를 먼저 재정의
+  - 클러스터링, 이동 중 업데이트 debounce, 이미지 기반 마커를 조합해 고밀도 지역에서도 60fps 수준 유지
+- WebView와 Native 경계에서 흔들리던 입력 흐름과 상태 동기화를 안정화했습니다.
+  - 페이지를 오가며 입력하는 복잡한 폼의 입력값은 내부 페이지 간 유지하고, 상위 페이지 진입 시 초기화되도록 zustand 상태 흐름 설계
+  - iOS/AOS 키보드, safe area, Native BLE 상태 차이로 발생하던 CTA 위치 불안정과 불필요한 Web API fallback을 공통 기준으로 정리
+- Runtime별로 흩어지던 로그 수집 방식을 하나의 운영 관점으로 묶었습니다.
+  - Edge Runtime, Server, Client의 로그 수집 지점을 표준화하고, Server Action 기반 logger로 AWS CloudWatch Logs Insights 조회 흐름 구축
   - Client Runtime Error, API 호출 성공/실패, Server Error를 각각 error 이벤트, SDK lifecycle, instrumentation.ts에서 수집하도록 표준화
   - [Next.js에서 자동화된 로깅 구조 만들기](/blog/nextjs-logging-strategy)
-- B2B 파트너 온보딩을 위한 개발자센터 구축
-  - OpenAPI 3.0 기반 YAML 문서를 파싱해 API 문서를 웹 페이지로 제공하는 개발자센터 구축
+- B2B 파트너가 API를 직접 이해하고 연동할 수 있는 개발자센터를 구축했습니다.
+  - OpenAPI 3.0 기반 YAML 문서를 파싱해 API 문서를 웹 페이지로 제공
   - https://developers.carplat.co.kr
 
-#### 프론트엔드의 개발 생산성을 개선하였습니다.
+#### 반복 구현과 변경 누락을 줄이는 개발 기반을 만들었습니다.
 
-- 신규 페이지 개발과 멀티 웹앱 확장을 위한 디자인 시스템 구축 주도
-  - **6개 웹앱과 1개 WebView에서 사용하는 공통 UI 기반** 구축
-  - Radix UI 기반으로 업무 화면에 필요한 50+ 공용 컴포넌트 구현
-  - CSS variable과 Sass map 기반 variant-color 토큰, `data-theme` 기반 라이트/다크 테마 구조 설계
-  - Storybook 문서를 Agent Skills 형태로 변환해 AI 코드 생성 시 사내 컴포넌트 사용 기준을 참조하도록 개선
-- OpenAPI 기반 TypeScript 타입 자동화 및 API 연동 개발자 경험 개선
-  - **Swagger 명세 기반 타입 생성 자동화**로 API 타입 수기 작성 시간을 줄이고, 오타, 중복 타입, API 변경 누락 문제를 개선
-  - 오픈소스 OpenAPI generator가 팀의 파일 구조와 IDE 탐색 요구사항을 충족하지 못해, OpenAPI YAML을 파싱해 `.d.ts`를 생성하는 스크립트를 직접 구현
-  - API별 타입 파일 구조, JSDoc 기반 hover 문서, 타입 정의 이동을 지원해 IDE에서 API 타입을 탐색하기 쉽게 개선
-  - 모든 프로젝트의 API 호출을 공통 SDK로 통일하여 request/response 타입이 fetch 경계에서 추론되도록 구성
+- 6개 웹앱과 1개 WebView가 함께 쓰는 UI 기준을 정리했습니다.
+  - Radix UI 기반 50+ 공용 컴포넌트, variant-color 토큰, `data-theme` 기반 라이트/다크 테마 구조 설계
+  - AI 코드 생성이 사내 컴포넌트 사용 기준을 벗어나지 않도록 Storybook 문서를 Agent Skills 형태로 전환
+- API 연동에서 반복되던 수기 타입 작성과 변경 누락을 자동화했습니다.
+  - 팀의 파일 구조와 IDE 탐색 방식에 맞춰 OpenAPI YAML을 파싱하는 `.d.ts` 생성 스크립트를 직접 구현
+  - JSDoc hover 문서, 타입 정의 이동, 공통 SDK 기반 request/response 추론으로 API 탐색과 연동 흐름 개선
 
-#### 복잡한 입력 컴포넌트를 구축하였습니다.
+#### 복잡한 입력 경험을 제품 요구사항에 맞게 직접 설계했습니다.
 
-- Date UI 시스템과 Lexical 기반 Rich Text Editor 구축
-  - 브라우저 기본 date input으로 대응하기 어려운 복합 날짜 입력 UX를 위해 Calendar, DateInput, TimeWheelPicker 기반 Date UI 시스템 구현
+- 브라우저 기본 입력으로 해결하기 어려운 Date Picker UI 시스템과 Rich Text Editor를 구축했습니다.
+  - 브라우저 기본 date input으로 대응하기 어려운 복합 날짜 입력 UX를 위해 Calendar, DateInput, TimeWheelPicker 기반 Date Picker UI 시스템 구현
   - 사내 디자인 시스템과 DB 저장 요구사항에 맞춰 Table, ColorPicker, Markdown 입력을 지원하는 Rich Text Editor 구축
   - Rich Text Editor HTML 결과를 gzip 압축해 DB 저장 크기 평균 70~80% 감소
 
-#### 프론트엔드 요구사항 해결을 위해 필요한 영역까지 확장하였습니다.
+#### 프론트엔드 요구사항을 풀기 위해 필요한 영역까지 확장했습니다.
 
-- RAG 기반 사내 데이터 분석 챗봇 구축
-  - **백오피스에 없는 검색 조건이 필요할 때마다 개발자에게 데이터 추출을 요청하던 흐름을** 자연어 기반 데이터 조회 방식으로 개선
-  - 컬럼별 context/keyword/sample data/table 정보를 담은 스키마 사전 구조를 설계하고 embedding해, 자연어 질의에 필요한 DB 스키마 정보를 Prompt에 조합
-  - 개인정보성 테이블 제외, `TOP N` 기본 주입, 금지 SQL 키워드 검증을 적용한 MSSQL SELECT query 생성/실행 구조 구현
-  - Vercel AI SDK 기반 스트리밍 응답, 채팅 이력, 공유 기능을 제공해 담당자가 필요한 운영 데이터를 직접 탐색할 수 있도록 개선
-- napi-rs 기반 알림 상태 조회 OS API
-  - **Electron 알림 상태 조회 라이브러리의 크래시와 유지보수 중단 문제**를 해결하기 위해 Rust/napi-rs 기반 native bridge 구현
-  - macOS/Windows 알림 권한 및 Focus/DND 상태를 Electron/Node.js 환경에서 조회할 수 있는 npm 패키지 개발
+- 운영자가 필요한 데이터를 직접 찾을 수 있도록 RAG 기반 사내 데이터 분석 챗봇을 만들었습니다.
+  - 개발자에게 반복적으로 데이터 추출을 요청하던 병목을 자연어 기반 운영 데이터 탐색 흐름으로 전환
+  - 스키마 사전 embedding, 개인정보성 테이블 제외, 금지 SQL 키워드 검증, `TOP N` 기본 주입을 적용한 MSSQL SELECT query 생성/실행 구조 구현
+- 유지보수가 중단된 Electron 알림 상태 조회 문제를 native bridge로 해결했습니다.
+  - Rust/napi-rs 기반으로 macOS/Windows 알림 권한 및 Focus/DND 상태를 Electron/Node.js 환경에서 조회할 수 있는 npm 패키지 개발
 
 ### (주)이노룰스
 
@@ -123,9 +102,7 @@ _updated at 2026-06_
 #### JAVA 기반 솔루션 어드민 페이지 웹 앱
 
 - 사내 솔루션 제품 설정 방법을 분석하여 화면 설계
-- `React` 기반 컴포넌트 계층 구성 및 UI 구현
-- `StoryBook` 기반의 컴포넌트 개발
-- `SWR`, `Jotai`를 사용하여 전역 상태 관리
+- 고객사별 온프로미스 환경에서 필요한 커스텀 설정 화면을 구현하고 유지보수
 
 ## Side Projects
 
