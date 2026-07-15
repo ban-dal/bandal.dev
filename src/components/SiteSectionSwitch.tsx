@@ -1,15 +1,11 @@
 "use client";
 
+import Link from "next/link";
 import { usePathname } from "next/navigation";
 
-import { Switch } from "@/components/ui/Switch";
+import { cn } from "@/lib/utils";
 
-const SECTION_ITEMS = [
-  { href: "/blog", label: "Blog", value: "blog" },
-  { href: "/about", label: "About", value: "about" },
-] as const;
-
-type Section = (typeof SECTION_ITEMS)[number]["value"];
+type Section = "about" | "blog";
 
 function getActiveSection(pathname: string): Section {
   if (pathname.startsWith("/about")) {
@@ -21,14 +17,30 @@ function getActiveSection(pathname: string): Section {
 
 export function SiteSectionSwitch() {
   const pathname = usePathname();
+  const activeSection = getActiveSection(pathname);
 
   return (
-    <Switch
-      ariaLabel="Primary navigation"
-      className="bg-surface/84 min-w-36 max-md:min-w-26"
-      itemClassName="px-4 max-md:px-2"
-      items={SECTION_ITEMS}
-      value={getActiveSection(pathname)}
-    />
+    <nav aria-label="Primary navigation" className="flex items-center gap-3">
+      <Link
+        aria-current={activeSection === "blog" ? "page" : undefined}
+        className={cn(
+          "text-muted hover:text-foreground focus-visible:outline-focus text-sm transition-colors focus-visible:outline-2 focus-visible:outline-offset-2",
+          activeSection === "blog" && "text-foreground font-semibold",
+        )}
+        href="/blog"
+      >
+        Blog
+      </Link>
+      <Link
+        aria-current={activeSection === "about" ? "page" : undefined}
+        className={cn(
+          "text-muted hover:text-foreground focus-visible:outline-focus text-sm transition-colors focus-visible:outline-2 focus-visible:outline-offset-2",
+          activeSection === "about" && "text-foreground font-semibold",
+        )}
+        href="/about"
+      >
+        About
+      </Link>
+    </nav>
   );
 }

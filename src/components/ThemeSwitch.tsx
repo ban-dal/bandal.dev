@@ -3,7 +3,7 @@
 import { useSyncExternalStore, type ReactNode } from "react";
 
 import { DesktopIcon, MoonIcon, SunIcon } from "@/components/ThemeIcons";
-import { Switch } from "@/components/ui/Switch";
+import { cn } from "@/lib/utils";
 
 type Theme = "system" | "light" | "dark";
 
@@ -86,15 +86,29 @@ export function ThemeSwitch() {
   );
 
   return (
-    <Switch<Theme>
-      ariaLabel="테마 변경"
-      itemClassName="size-8 min-h-8 px-0"
-      items={THEME_OPTIONS}
-      onValueChange={(nextTheme) => {
-        applyTheme(nextTheme);
-        emitThemeChange();
-      }}
-      value={theme}
-    />
+    <div
+      aria-label="테마 변경"
+      className="flex items-center gap-1"
+      role="group"
+    >
+      {THEME_OPTIONS.map((option) => (
+        <button
+          key={option.value}
+          aria-label={option.label}
+          aria-pressed={theme === option.value}
+          className={cn(
+            "text-muted hover:text-foreground focus-visible:outline-focus inline-grid size-7 place-items-center rounded-sm transition-colors focus-visible:outline-2 focus-visible:outline-offset-2",
+            theme === option.value && "text-primary",
+          )}
+          onClick={() => {
+            applyTheme(option.value);
+            emitThemeChange();
+          }}
+          type="button"
+        >
+          {option.icon}
+        </button>
+      ))}
+    </div>
   );
 }

@@ -20,10 +20,10 @@ export async function BlogPostDetailContainer({
   }
 
   return (
-    <main className="py-14 max-md:py-9">
+    <main className="mx-auto max-w-[68ch] py-12 max-md:py-8">
       <BlogPostDetailHeader post={post.meta} />
 
-      <div className="grid grid-cols-[minmax(0,760px)_220px] items-start gap-14 max-lg:grid-cols-1">
+      <div>
         <BlogPostTableOfContents headings={post.headings} />
         <ViewTransition>
           <post.Component />

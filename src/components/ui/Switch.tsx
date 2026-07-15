@@ -41,7 +41,7 @@ function getSwitchItemClassName({
   itemClassName?: string;
 }) {
   return cn(
-    "relative z-10 inline-grid min-h-8 place-items-center rounded-full px-3 text-sm font-[760] text-muted transition duration-300 hover:text-foreground focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary data-[active=true]:text-background",
+    "relative z-10 inline-grid min-h-8 place-items-center rounded-sm px-3 text-sm font-[760] text-muted transition-colors duration-150 hover:text-foreground focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus data-[active=true]:text-foreground",
     hasIcon && "grid-flow-col gap-1.5 px-2",
     itemClassName,
   );
@@ -140,10 +140,7 @@ export function Switch<Value extends string>({
   return (
     <div
       aria-label={ariaLabel}
-      className={cn(
-        "border-border bg-surface/90 relative grid rounded-full border p-1 shadow-[inset_0_1px_0_rgb(255_255_255/0.08)]",
-        className,
-      )}
+      className={cn("border-border relative grid border-b", className)}
       role="group"
       style={{
         ...switchStyle,
@@ -152,7 +149,7 @@ export function Switch<Value extends string>({
     >
       <span
         className={cn(
-          "bg-foreground pointer-events-none absolute top-1 bottom-1 left-1 w-[calc((100%_-_0.5rem)/var(--switch-count))] rounded-full shadow-[0_8px_24px_rgb(0_0_0/0.16)] transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)]",
+          "bg-primary pointer-events-none absolute bottom-0 left-0 h-0.5 w-[calc(100%/var(--switch-count))] transition-transform duration-150 ease-out",
           indicatorClassName,
         )}
         style={{

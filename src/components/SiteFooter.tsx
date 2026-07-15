@@ -6,10 +6,10 @@ const EMAIL_ADDRESS = "bandal2dev@gmail.com";
 
 export function SiteFooter() {
   return (
-    <footer className="container py-8 md:py-12 print:hidden">
+    <footer className="border-border mx-auto w-[min(100%-2rem,56rem)] border-t py-8 md:py-12 print:hidden">
       <nav
         aria-label="Contact links"
-        className="border-border/80 bg-surface/58 text-muted dark:bg-surface/42 relative mx-auto flex w-fit max-w-full flex-wrap items-center justify-center gap-1 rounded-full border p-1 text-sm shadow-[0_14px_34px_rgb(36_31_20/0.06),inset_0_1px_0_rgb(255_255_255/0.22)] backdrop-blur dark:shadow-[0_18px_38px_rgb(0_0_0/0.18),inset_0_1px_0_rgb(255_255_255/0.06)]"
+        className="text-muted flex flex-wrap items-center gap-x-2 gap-y-1 text-sm"
       >
         <a
           href={`https://mail.google.com/mail/?view=cm&fs=1&to=${EMAIL_ADDRESS}`}
@@ -18,7 +18,6 @@ export function SiteFooter() {
           className={buttonVariants({
             variant: "light",
             size: "sm",
-            radius: "full",
           })}
         >
           {EMAIL_ADDRESS}
@@ -30,7 +29,6 @@ export function SiteFooter() {
           className={buttonVariants({
             variant: "light",
             size: "sm",
-            radius: "full",
           })}
         >
           GitHub
@@ -40,7 +38,6 @@ export function SiteFooter() {
           className={buttonVariants({
             variant: "light",
             size: "sm",
-            radius: "full",
           })}
         >
           About

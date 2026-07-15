@@ -17,12 +17,11 @@ type DrawerProps = {
 };
 
 const DRAWER_CONTENT_CLASS_NAME: Record<DrawerDirection, string> = {
-  bottom:
-    "inset-x-0 bottom-0 max-h-[78vh] rounded-t-app shadow-[0_-24px_64px_rgb(0_0_0/0.24)]",
-  left: "inset-y-0 left-0 h-full w-[min(24rem,calc(100vw-2rem))] rounded-r-app shadow-[24px_0_64px_rgb(0_0_0/0.24)]",
+  bottom: "inset-x-0 bottom-0 max-h-[78vh] rounded-t-md",
+  left: "inset-y-0 left-0 h-full w-[min(24rem,calc(100vw-2rem))] rounded-r-md",
   right:
-    "inset-y-0 right-0 h-full w-[min(24rem,calc(100vw-2rem))] rounded-l-app shadow-[-24px_0_64px_rgb(0_0_0/0.24)]",
-  top: "inset-x-0 top-0 max-h-[78vh] rounded-b-app shadow-[0_24px_64px_rgb(0_0_0/0.24)]",
+    "inset-y-0 right-0 h-full w-[min(24rem,calc(100vw-2rem))] rounded-l-md",
+  top: "inset-x-0 top-0 max-h-[78vh] rounded-b-md",
 };
 
 const DRAWER_HANDLE_CLASS_NAME: Record<DrawerDirection, string> = {
@@ -48,11 +47,11 @@ function DrawerHeader({ title }: { title: string }) {
   return (
     <div className="flex items-center justify-between gap-4 px-5 pt-4 pb-3">
       <VaulDrawer.Title asChild>
-        <strong className="text-base font-[780]">{title}</strong>
+        <strong className="text-base font-semibold">{title}</strong>
       </VaulDrawer.Title>
       <VaulDrawer.Close asChild>
         <button
-          className="border-foreground bg-foreground text-background focus-visible:outline-primary inline-flex min-h-8 items-center justify-center rounded-full border px-3 text-sm font-[760] transition hover:opacity-80 focus-visible:outline-2 focus-visible:outline-offset-2"
+          className="border-border bg-background text-foreground hover:bg-surface focus-visible:outline-focus inline-flex min-h-8 items-center justify-center rounded-sm border px-3 text-sm font-medium transition-colors focus-visible:outline-2 focus-visible:outline-offset-2"
           type="button"
         >
           닫기
@@ -78,10 +77,10 @@ export function Drawer({
       open={open}
     >
       <VaulDrawer.Portal>
-        <VaulDrawer.Overlay className="bg-foreground/45 fixed inset-0 z-80" />
+        <VaulDrawer.Overlay className="bg-foreground/30 fixed inset-0 z-80" />
         <VaulDrawer.Content
           className={cn(
-            "border-border bg-surface fixed z-80 flex flex-col border outline-none",
+            "border-border bg-surface shadow-app fixed z-80 flex flex-col border outline-none",
             DRAWER_CONTENT_CLASS_NAME[direction],
             contentClassName,
           )}

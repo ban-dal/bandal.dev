@@ -10,25 +10,22 @@ type BlogPostDetailHeaderProps = {
 
 export function BlogPostDetailHeader({ post }: BlogPostDetailHeaderProps) {
   return (
-    <MotionShell className="mb-8 pt-4">
+    <MotionShell className="mb-12 pt-2">
       <Link
         href="/blog"
-        className="border-foreground inline-flex min-h-10 items-center rounded-full border px-4 font-[760]"
+        className="text-muted hover:text-foreground focus-visible:outline-focus inline-flex min-h-8 items-center text-sm transition-colors focus-visible:outline-2 focus-visible:outline-offset-2"
       >
         글 목록
       </Link>
-      <time
-        dateTime={post.date}
-        className="text-primary mt-7 mb-4 block text-sm font-[850]"
-      >
+      <time dateTime={post.date} className="text-muted mt-7 mb-3 block text-sm">
         {post.date}
       </time>
       <ViewTransition name={`post-title-${post.slug}`}>
-        <h1 className="mb-5 max-w-[760px] text-[clamp(2.125rem,7vw,4.5rem)] leading-tight font-[820]">
+        <h1 className="mb-5 text-[clamp(2rem,4vw,2.75rem)] leading-[1.12] font-bold [overflow-wrap:anywhere]">
           {post.title}
         </h1>
       </ViewTransition>
-      <p className="text-muted max-w-[680px] text-base leading-relaxed">
+      <p className="text-secondary max-w-[60ch] text-base leading-relaxed">
         {post.description}
       </p>
     </MotionShell>

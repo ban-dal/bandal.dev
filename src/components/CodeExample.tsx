@@ -11,8 +11,6 @@ import dedent from "dedent";
 import React, { useEffect, useState } from "react";
 import { codeToHtml, type BundledLanguage, type BundledTheme } from "shiki";
 
-import { Badge } from "@/components/ui/Badge";
-import { Button } from "@/components/ui/Button";
 import { cn } from "@/lib/utils";
 
 type CodeTheme = "light" | "dark";
@@ -87,35 +85,33 @@ export function CodeExampleGroup({
 }) {
   return (
     <Tabs.Root defaultValue={filenames[0]} className="not-prose">
-      <div className="rounded-xl">
-        <div className={clsx("rounded-xl p-1 text-sm", className)}>
-          <Tabs.List className="flex gap-1 px-2 pt-2">
-            {filenames.map((filename, i) => (
-              <Tabs.Trigger
-                key={filename}
-                value={filename}
-                className="text-muted data-[state=active]:bg-surface-muted data-[state=active]:text-foreground rounded-t-lg px-3 py-1.5 font-mono text-xs transition-colors dark:data-[state=active]:bg-[#181a18] dark:data-[state=active]:text-white"
-              >
-                <CodeExampleFilename
-                  filename={filename}
-                  lang={examples[i].lang}
-                />
-              </Tabs.Trigger>
-            ))}
-          </Tabs.List>
-          {examples.map((example, i) => (
-            <Tabs.Content key={filenames[i]} value={filenames[i]} asChild>
-              <CodeExampleWrapper>
-                <CodeExampleHeader
-                  filename={filenames[i]}
-                  lang={example.lang}
-                  code={example.code}
-                />
-                <RawHighlightedCode example={example} />
-              </CodeExampleWrapper>
-            </Tabs.Content>
+      <div className={clsx("text-sm", className)}>
+        <Tabs.List className="border-border flex gap-1 border-b px-1">
+          {filenames.map((filename, i) => (
+            <Tabs.Trigger
+              key={filename}
+              value={filename}
+              className="text-muted data-[state=active]:text-foreground data-[state=active]:border-primary border-b-2 border-transparent px-3 py-2 font-mono text-xs transition-colors"
+            >
+              <CodeExampleFilename
+                filename={filename}
+                lang={examples[i].lang}
+              />
+            </Tabs.Trigger>
           ))}
-        </div>
+        </Tabs.List>
+        {examples.map((example, i) => (
+          <Tabs.Content key={filenames[i]} value={filenames[i]} asChild>
+            <CodeExampleWrapper>
+              <CodeExampleHeader
+                filename={filenames[i]}
+                lang={example.lang}
+                code={example.code}
+              />
+              <RawHighlightedCode example={example} />
+            </CodeExampleWrapper>
+          </Tabs.Content>
+        ))}
       </div>
     </Tabs.Root>
   );
@@ -152,7 +148,7 @@ export function CodeExampleWrapper({
   return (
     <div
       className={clsx(
-        "border-border bg-surface text-foreground shadow-app dark:bg-code-background dark:text-code-foreground rounded-xl border p-2 text-sm",
+        "border-border bg-surface text-foreground dark:bg-code-background dark:text-code-foreground rounded-md border p-2 text-sm",
         className,
       )}
     >
@@ -177,31 +173,22 @@ function CodeExampleHeader({
     setTimeout(() => setCopied(false), 1200);
   };
   return (
-    <div className="mb-2 flex items-center justify-between gap-2">
+    <div className="border-border mb-2 flex items-center justify-between gap-2 border-b px-1 pb-2">
       <div className="flex min-w-0 items-center gap-2">
         {filename && (
-          <span className="text-muted max-w-[160px] truncate font-mono text-xs dark:text-white/70">
+          <span className="text-muted max-w-[160px] truncate font-mono text-xs">
             {filename}
           </span>
         )}
-        {lang && (
-          <Badge color="gray" size="sm" radius="md" className="ml-1">
-            {lang}
-          </Badge>
-        )}
+        {lang && <span className="text-muted font-mono text-xs">{lang}</span>}
       </div>
-      <Button
-        size="sm"
-        variant="light"
-        color="foreground"
-        radius="md"
-        className="h-auto min-w-[48px] px-2 py-1 text-xs"
+      <button
+        className="border-border bg-background text-foreground hover:bg-surface focus-visible:outline-focus inline-flex min-h-8 min-w-[48px] items-center justify-center rounded-sm border px-2 text-xs font-medium transition-colors focus-visible:outline-2 focus-visible:outline-offset-2"
         onClick={handleCopy}
         type="button"
-        isIconOnly={false}
       >
         {copied ? "복사됨!" : "복사"}
-      </Button>
+      </button>
     </div>
   );
 }
@@ -253,7 +240,7 @@ export function RawHighlightedCode({
   return (
     <div
       className={cn(
-        "border-border bg-background overflow-auto rounded-lg border font-mono text-sm leading-7",
+        "bg-code-background text-code-foreground overflow-auto font-mono text-sm leading-7",
         "[&_code]:whitespace-pre [&_pre]:m-0 [&_pre]:overflow-x-auto [&_pre]:p-4 [&_pre]:whitespace-pre",
       )}
       dangerouslySetInnerHTML={{ __html: html }}
@@ -268,17 +255,12 @@ function CodeExampleFilename({
   filename: string;
   lang: string;
 }) {
-  // 탭에만 쓰이는 파일명+언어 뱃지 (복사 버튼 없음)
   return (
     <div className="flex min-w-0 items-center gap-1">
-      <span className="text-muted max-w-[120px] truncate font-mono text-xs dark:text-white/50">
+      <span className="text-muted max-w-[120px] truncate font-mono text-xs">
         {filename}
       </span>
-      {lang && (
-        <Badge color="gray" size="sm" radius="md">
-          {lang}
-        </Badge>
-      )}
+      {lang && <span className="text-muted font-mono text-xs">{lang}</span>}
     </div>
   );
 }
