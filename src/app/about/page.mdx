@@ -1,20 +1,19 @@
 export const meta = {
   title: "About",
-  date: "2026-06",
+  date: "2026-07",
 };
 
 export const dynamic = "force-static";
 
 # 김도현
 
-_updated at 2026-06_
+_updated at 2026-07_
 
-제품 UX와 개발 생산성의 병목을 구조로 풀어내는 프론트엔드 엔지니어입니다.
+4년간 B2B 제품과 사내 운영 도구를 개발해 온 프론트엔드 엔지니어입니다.
 
-기능 구현에 머무르지 않고, 사용 흐름과 팀의 개발 방식이 함께 좋아지는 지점을 찾습니다.
-기획자, 디자이너와 제품 흐름을 논의하고, 개발자 관점의 UX 피드백이 팀의 공통 기준으로 남도록 일합니다.
+신규 모빌리티 플랫폼의 프론트엔드 기반을 설계하고, 여러 서비스가 함께 사용하는 디자인 시스템과 API 타입 자동화를 구축했습니다.
 
-디자인 시스템, API 자동화, AI 기반 운영 도구처럼 제품을 더 잘 만들기 위해 필요한 문제라면 프론트엔드 경계 밖까지 파고듭니다.
+제품 UX와 개발 생산성의 병목을 구조로 풀어내며, 필요한 문제라면 AI 기반 운영 도구와 Native Bridge처럼 프론트엔드 경계 밖까지 파고듭니다.
 
 ## Contact
 
@@ -28,53 +27,50 @@ _updated at 2026-06_
 
 2024년 07월 ~ 현재
 
-> 피플카(투루카)의 신규 B2B 플랫폼 프로젝트의 0부터 1을 개발하였습니다.
-> 기술 스택 선택 및 디자인 시스템 구축, B2B Web/Admin, WebView, 대외 홈페이지 개선까지 전반적인 프론트엔드 영역을 담당하였습니다.
+> 피플카(투루카)의 신규 B2B 플랫폼과 공용 프론트엔드 기반, 운영 백오피스 앱 개발을 담당하고 있습니다.
 
-`Next.js(app)` `Vite` `TailwindCSS` `Tanstack Query`
+`Next.js (App Router)` `Vite` `Electron` `Tailwind CSS` `TanStack Query`
 
-#### 신규 B2B 플랫폼을 0부터 만들며 여러 웹앱이 같은 방식으로 확장되는 기반을 설계했습니다.
+#### B2B 모빌리티 플랫폼 신규 구축 및 확장
 
-- 3개 웹과 1개 WebView가 같은 방식으로 확장되는 개발 기반을 마련했습니다.
-  - 화면마다 달라지던 데이터 조회, 변경, UI 조립 방식을 `page → container → components`, 공통 SDK, Server Action 패턴으로 정리
-  - 서비스 종류, 예약 상태, 관리자 권한에 따라 달라지는 섹션/액션 노출 기준을 Boundary 컴포넌트로 분리해 변경 범위를 줄임
+**2024년 10월 ~ 2025년 05월 구축·출시 / 이후 유지보수 및 확장**
+
+- 차량 자산을 기반으로 한 B2B Web·Admin·WebView를 0부터 구축해 2025년 05월 출시했습니다.
 - 차량 관제 지도에서 수천 대 마커가 몰려도 조작 가능한 성능을 확보했습니다.
-  - Chrome DevTools FPS Meter와 4x throttling 환경에서 프레임 드랍/프리징을 재현하고, 기획자와 필요한 정보 밀도를 먼저 재정의
-  - 클러스터링, 이동 중 업데이트 debounce, 이미지 기반 마커를 조합해 고밀도 지역에서도 60fps 수준 유지
-- WebView와 Native 경계에서 흔들리던 입력 흐름과 상태 동기화를 안정화했습니다.
-  - 페이지를 오가며 입력하는 복잡한 폼의 입력값은 내부 페이지 간 유지하고, 상위 페이지 진입 시 초기화되도록 zustand 상태 흐름 설계
-  - iOS/AOS 키보드, safe area, Native BLE 상태 차이로 발생하던 CTA 위치 불안정과 불필요한 Web API fallback을 공통 기준으로 정리
-- Runtime별로 흩어지던 로그 수집 방식을 하나의 운영 관점으로 묶었습니다.
-  - Edge Runtime, Server, Client의 로그 수집 지점을 표준화하고, Server Action 기반 logger로 AWS CloudWatch Logs Insights 조회 흐름 구축
-  - Client Runtime Error, API 호출 성공/실패, Server Error를 각각 error 이벤트, SDK lifecycle, instrumentation.ts에서 수집하도록 표준화
+  - Chrome DevTools FPS Meter와 4x throttling 환경에서 프레임 드롭/프리징을 재현하고, 기획자와 필요한 정보 밀도를 먼저 재정의
+  - 클러스터링, 이동 중 업데이트 debounce, 이미지 기반 마커를 조합해 고밀도 지역에서도 **60fps 수준 유지**
+- iOS/AOS 키보드·safe area 차이로 인한 CTA 위치 불안정을 개선하고, Native BLE 상태에 따른 불필요한 Web API fallback을 제거했습니다.
+- Edge·Server·Client Runtime의 로그 수집을 표준화하고, Server Action 기반 logger와 AWS CloudWatch Logs Insights 조회 흐름을 구축했습니다.
+  - Client Runtime Error, API 호출 lifecycle, Server Error를 각 Runtime의 진입점에서 수집
   - [Next.js에서 자동화된 로깅 구조 만들기](/blog/nextjs-logging-strategy)
-- B2B 파트너가 API를 직접 이해하고 연동할 수 있는 개발자센터를 구축했습니다.
-  - OpenAPI 3.0 기반 YAML 문서를 파싱해 API 문서를 웹 페이지로 제공
-  - https://developers.carplat.co.kr
+- OpenAPI 3.0 YAML 기반 [개발자센터](https://developers.carplat.co.kr)를 구축해 B2B 파트너가 API 문서를 직접 확인하고 연동할 수 있도록 지원했습니다.
 
-#### 반복 구현과 변경 누락을 줄이는 개발 기반을 만들었습니다.
+#### 프론트엔드 플랫폼 및 디자인 시스템
 
-- 6개 웹앱과 1개 WebView가 함께 쓰는 UI 기준을 정리했습니다.
-  - Radix UI 기반 50+ 공용 컴포넌트, variant-color 토큰, `data-theme` 기반 라이트/다크 테마 구조 설계
+**2024년 07월 ~ 현재**
+
+- 6개 웹앱과 1개 WebView에서 사용하는 Radix UI 기반 공용 컴포넌트 50개 이상과 라이트·다크 테마 구조를 구축했습니다.
   - AI 코드 생성이 사내 컴포넌트 사용 기준을 벗어나지 않도록 Storybook 문서를 Agent Skills 형태로 전환
-- API 연동에서 반복되던 수기 타입 작성과 변경 누락을 자동화했습니다.
-  - 팀의 파일 구조와 IDE 탐색 방식에 맞춰 OpenAPI YAML을 파싱하는 `.d.ts` 생성 스크립트를 직접 구현
-  - JSDoc hover 문서, 타입 정의 이동, 공통 SDK 기반 request/response 추론으로 API 탐색과 연동 흐름 개선
+- OpenAPI YAML 기반 `.d.ts` 생성 스크립트를 개발해 request·response 타입의 수기 작성과 변경 누락을 줄였습니다.
+- Date Picker와 Table·ColorPicker·Markdown 입력을 지원하는 Rich Text Editor를 공용 컴포넌트로 구축했습니다.
+  - Rich Text Editor HTML 결과를 gzip 압축해 DB 저장 크기 평균 **70~80% 감소**
 
-#### 복잡한 입력 경험을 제품 요구사항에 맞게 직접 설계했습니다.
+#### 투루카 운영 백오피스 데스크톱 앱 신규 구축
 
-- 브라우저 기본 입력으로 해결하기 어려운 Date Picker UI 시스템과 Rich Text Editor를 구축했습니다.
-  - 브라우저 기본 date input으로 대응하기 어려운 복합 날짜 입력 UX를 위해 Calendar, DateInput, TimeWheelPicker 기반 Date Picker UI 시스템 구현
-  - 사내 디자인 시스템과 DB 저장 요구사항에 맞춰 Table, ColorPicker, Markdown 입력을 지원하는 Rich Text Editor 구축
-  - Rich Text Editor HTML 결과를 gzip 압축해 DB 저장 크기 평균 70~80% 감소
+**2026년 03월 ~ 현재**
 
-#### 프론트엔드 요구사항을 풀기 위해 필요한 영역까지 확장했습니다.
+`Electron` `TanStack Router` `Rust` `napi-rs`
 
-- 운영자가 필요한 데이터를 직접 찾을 수 있도록 RAG 기반 사내 데이터 분석 챗봇을 만들었습니다.
-  - 개발자에게 반복적으로 데이터 추출을 요청하던 병목을 자연어 기반 운영 데이터 탐색 흐름으로 전환
-  - 스키마 사전 embedding, 개인정보성 테이블 제외, 금지 SQL 키워드 검증, `TOP N` 기본 주입을 적용한 MSSQL SELECT query 생성/실행 구조 구현
-- 유지보수가 중단된 Electron 알림 상태 조회 문제를 native bridge로 해결했습니다.
-  - Rust/napi-rs 기반으로 macOS/Windows 알림 권한 및 Focus/DND 상태를 Electron/Node.js 환경에서 조회할 수 있는 npm 패키지 개발
+- Electron 기본 API만으로 확인하기 어려운 OS 알림 권한과 Focus/DND 상태를 조회할 수 있도록 Rust·napi-rs 기반 macOS·Windows Native Bridge를 구현했습니다.
+- TanStack Router 기반의 Chrome 탭 형태 라우팅을 구현해 화면 전환 후에도 검색 조건과 입력 상태가 유지되도록 했습니다.
+- Fetch 응답 스트림으로 다운로드 진행률을 표시하고, 진행 현황이 항상 노출되는 Overlay UI를 구현했습니다.
+
+#### Text-to-SQL 운영 데이터 분석 챗봇
+
+**2025년 11월 ~ 2025년 12월 구축 / 이후 유지보수**
+
+- 개발자에게 반복적으로 요청하던 데이터 추출 과정을 자연어 기반 운영 데이터 탐색 흐름으로 전환했습니다.
+- 스키마 사전 embedding, 개인정보성 테이블 제외, 금지 SQL 키워드 검증, `TOP N` 기본 주입을 적용한 MSSQL SELECT query 생성·실행 구조를 구현했습니다.
 
 ### (주)이노룰스
 
@@ -82,43 +78,31 @@ _updated at 2026-06_
 
 2022년 03월 ~ 2024년 03월
 
-> ERP 솔루션의 프론트엔드 개발 및 기술지원을 담당했습니다.
-> 첫 1년은 Java, React 를 병행, 이후 1년은 프론트엔드 전담으로 근무하였습니다.
-> 각 고객사용 커스텀 페이지 구현 및 고객사의 온프로미스 환경에 ERP 솔루션을 배포, 유지보수 업무를 진행하였습니다.
+> ERP 솔루션의 프론트엔드 개발과 기술지원을 담당했으며, 첫 1년은 Java·React를 병행하고 이후 1년은 프론트엔드 전담으로 근무했습니다.
+> 고객사별 커스텀 화면을 구현하고 온프로미스 환경에 솔루션을 배포·유지보수했습니다.
 
-`Typescript` `Next.js` `TailwindCSS` `Tanstack Query`
+`TypeScript` `Next.js` `Tailwind CSS` `TanStack Query`
 
-#### Java 기반 백엔드 성능 모니터링 웹 앱
+#### 백엔드 성능 모니터링 웹 앱
 
-- 오픈소스 모니터링 솔루션을 분석하며 기획, 설계, 기술스택 선정, 개발 등 다방면의 역할 수행
+- 실시간 차트 API 응답 크기를 **10MB에서 1MB 이내로 줄여 90% 이상 감소**
+  - 차트별 마지막 Timestamp 이후 데이터만 조회하도록 API를 개선해 전체 데이터를 반복 수신하던 문제 해결
+- 오픈소스 모니터링 솔루션을 분석하고 Apache ECharts 기반 대시보드의 기획·설계·기술스택 선정·개발을 담당
 - `Vanilla JS` 기반의 사내 디자인 시스템을 `React`로 마이그레이션
   - UI 컴포넌트, Modal(Dialog, Drawer, Tooltip) 등을 `React`로 재구성
-- Apache ECharts 기반의 대시보드 화면 개발
-- **실시간 차트 API 응답 크기를 10MB에서 1MB 이내로 줄여 90% 이상 감소**
-  - 기존에는 조회 구간의 전체 데이터를 매번 받아와 응답 크기가 커지는 문제가 발생
-  - 차트별 마지막 Timestamp 이후 데이터만 조회하도록 API 개선
-- [React-Query, Suspense, Error Boundary를 통해 API 캐싱 및 예외 처리 로직 구현](/post/react-query)
+- [React Query, Suspense, Error Boundary를 통해 API 캐싱 및 예외 처리 로직 구현](/blog/react-query)
 
-#### JAVA 기반 솔루션 어드민 페이지 웹 앱
+#### Java 기반 솔루션 어드민 페이지 웹 앱
 
-- 사내 솔루션 제품 설정 방법을 분석하여 화면 설계
-- 고객사별 온프로미스 환경에서 필요한 커스텀 설정 화면을 구현하고 유지보수
+- 사내 솔루션의 설정 방식을 분석해 고객사별 온프로미스 환경에 필요한 커스텀 화면을 설계·구현하고 유지보수
 
 ## Side Projects
 
 ### bandal.dev
 
-개인 블로그로, 프론트엔드 개발자로서의 경험을 공유하고 있습니다.
+프론트엔드 개발 경험과 기술적 의사결정을 기록하는 개인 블로그입니다.
 
-**Tech Stack**
-
-- Next.js + App Router
-- Tailwind
-- [website](https://bandal.dev/)
-- [github](https://github.com/ban-dal/bandal.dev)
-
-> 2022년부터 2023년 중반까지는 Java, JS 개발을 함께 다뤘고, 이후 React 중심으로 방향을 옮겼습니다.  
-> 당시 작성한 백엔드 중심 글은 [이전 블로그](https://gomban.tistory.com/)에 남겨두었습니다.
+[Website](https://bandal.dev/) · [GitHub](https://github.com/ban-dal/bandal.dev)
 
 ## Education
 
@@ -130,7 +114,7 @@ Java, Spring, Oracle DB, JavaScript 기반 웹 애플리케이션 개발 과정 
 
 **병역 2019년 07월 ~ 2021년 04월**
 
-### 신구대학교 
+### 신구대학교
 
 **IT미디어 정보통신과 전문학사**
 
