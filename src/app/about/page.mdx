@@ -1,6 +1,6 @@
 export const meta = {
   title: "About",
-  date: "2026-07",
+  date: "2026-08",
 };
 
 export const dynamic = "force-static";
@@ -33,44 +33,46 @@ _updated at 2026-07_
 
 #### B2B 모빌리티 플랫폼 신규 구축 및 확장
 
-**2024년 10월 ~ 2025년 05월 구축·출시 / 이후 유지보수 및 확장**
+**2024년 10월 ~ 2025년 05월 구축·출시 / 이후 유지보수 및 기능 확장**
 
 - 차량 자산을 기반으로 한 B2B Web·Admin·WebView를 0부터 구축해 2025년 05월 출시했습니다.
 - 차량 관제 지도에서 수천 대 마커가 몰려도 조작 가능한 성능을 확보했습니다.
-  - Chrome DevTools FPS Meter와 4x throttling 환경에서 프레임 드롭/프리징을 재현하고, 기획자와 필요한 정보 밀도를 먼저 재정의
-  - 클러스터링, 이동 중 업데이트 debounce, 이미지 기반 마커를 조합해 고밀도 지역에서도 **60fps 수준 유지**
-- iOS/AOS 키보드·safe area 차이로 인한 CTA 위치 불안정을 개선하고, Native BLE 상태에 따른 불필요한 Web API fallback을 제거했습니다.
-- Edge·Server·Client Runtime의 로그 수집을 표준화하고, Server Action 기반 logger와 AWS CloudWatch Logs Insights 조회 흐름을 구축했습니다.
+  - Chrome DevTools FPS Meter와 4x throttling 환경에서 프레임 드롭/프리징을 재현하고, 기획자와 필요한 마커 밀도를 협의
+  - 클러스터링, 이동 중 마커 렌더 debounce, 이미지 기반 마커를 조합해 고밀도 지역에서도 **60fps 수준 유지**
+- 앱에서 차량 제어를 위한 BLE bridge 호출, Timeout 시 Web API fallback 호출 구조를 구축하였습니다.
+- Next.js 앱의 로그 수집 방법을 표준화하고, Server Action 기반 logger와 Slack 알림 전송, AWS Logs Insights 조회 흐름을 구축했습니다.
   - Client Runtime Error, API 호출 lifecycle, Server Error를 각 Runtime의 진입점에서 수집
   - [Next.js에서 자동화된 로깅 구조 만들기](/blog/nextjs-logging-strategy)
-- OpenAPI 3.0 YAML 기반 [개발자센터](https://developers.carplat.co.kr)를 구축해 B2B 파트너가 API 문서를 직접 확인하고 연동할 수 있도록 지원했습니다.
+- 백엔드 파트에서 구축한 OpenAPI 제공을 위한 [개발자센터](https://developers.carplat.co.kr) 사이트를 구축하였습니다.
+  - OpenAPI YAML 을 파싱하여 표시하는 구조
 
 #### 프론트엔드 플랫폼 및 디자인 시스템
 
 **2024년 07월 ~ 현재**
 
 - 6개 웹앱과 1개 WebView에서 사용하는 Radix UI 기반 공용 컴포넌트 50개 이상과 라이트·다크 테마 구조를 구축했습니다.
-  - AI 코드 생성이 사내 컴포넌트 사용 기준을 벗어나지 않도록 Storybook 문서를 Agent Skills 형태로 전환
-- OpenAPI YAML 기반 `.d.ts` 생성 스크립트를 개발해 request·response 타입의 수기 작성과 변경 누락을 줄였습니다.
-- Date Picker와 Table·ColorPicker·Markdown 입력을 지원하는 Rich Text Editor를 공용 컴포넌트로 구축했습니다.
+  - AI 코드 생성 시 사내 컴포넌트 사용 가이드를 따를 수 있도록 Storybook 문서를 Agent Skills 형태로 전환
+- OpenAPI YAML 기반 `.d.ts` 생성 스크립트를 구현하여 request·response 타입의 수기 작성과 변경 누락을 줄였습니다.
+- 자체 DatePicker 및 Table·ColorPicker·Markdown 입력을 지원하는 Rich Text Editor 컴포넌트를 구현하였습니다.
   - Rich Text Editor HTML 결과를 gzip 압축해 DB 저장 크기 평균 **70~80% 감소**
 
 #### 투루카 운영 백오피스 데스크톱 앱 신규 구축
 
 **2026년 03월 ~ 현재**
 
-`Electron` `TanStack Router` `Rust` `napi-rs`
+`Electron` `TanStack Router`
 
-- Electron 기본 API만으로 확인하기 어려운 OS 알림 권한과 Focus/DND 상태를 조회할 수 있도록 Rust·napi-rs 기반 macOS·Windows Native Bridge를 구현했습니다.
-- TanStack Router 기반의 Chrome 탭 형태 라우팅을 구현해 화면 전환 후에도 검색 조건과 입력 상태가 유지되도록 했습니다.
+- TanStack Router 기반의 브라우저 탭 형태 라우팅을 구현해 화면 전환 후에도 Page Keep-Alive 되도록 구현하였습니다.
+- Electron 기본 API만으로 확인하기 어려운 OS 알림 권한과 Focus/DND 상태를 조회할 수 있도록 Rust + napi-rs 기반 macOS·Windows Native Bridge를 구현했습니다.
 - Fetch 응답 스트림으로 다운로드 진행률을 표시하고, 진행 현황이 항상 노출되는 Overlay UI를 구현했습니다.
 
 #### Text-to-SQL 운영 데이터 분석 챗봇
 
 **2025년 11월 ~ 2025년 12월 구축 / 이후 유지보수**
 
-- 개발자에게 반복적으로 요청하던 데이터 추출 과정을 자연어 기반 운영 데이터 탐색 흐름으로 전환했습니다.
-- 스키마 사전 embedding, 개인정보성 테이블 제외, 금지 SQL 키워드 검증, `TOP N` 기본 주입을 적용한 MSSQL SELECT query 생성·실행 구조를 구현했습니다.
+- 개발자에게 반복적으로 요청하던 데이터 추출 과정을 자연어 기반 Query 생성 후 Next.js Server Side 에서 RDB 를 조회하는 챗봇 앱을 구축하였습니다.
+- 현업 도메인 용어와 DB 컬럼명간 매칭을 위한 스키마 사전 embedding Postgres pgvector 환경을 구성하였습니다.
+- 개인정보성 테이블 제외, 금지 SQL 키워드 검증, `TOP N` 기본 주입을 적용한 MSSQL SELECT query 생성·실행 Prompt 를 작성하였습니다.
 
 ### (주)이노룰스
 
