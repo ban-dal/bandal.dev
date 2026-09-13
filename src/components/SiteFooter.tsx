@@ -12,9 +12,7 @@ export function SiteFooter() {
         className="text-muted flex flex-wrap items-center gap-x-2 gap-y-1 text-sm"
       >
         <a
-          href={`https://mail.google.com/mail/?view=cm&fs=1&to=${EMAIL_ADDRESS}`}
-          target="_blank"
-          rel="noreferrer"
+          href={`mailto:${EMAIL_ADDRESS}`}
           className={buttonVariants({
             variant: "light",
             size: "sm",
