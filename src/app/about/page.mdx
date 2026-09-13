@@ -7,13 +7,13 @@ export const dynamic = "force-static";
 
 # 김도현
 
-_updated at 2026-07_
+_updated at 2026-09_
 
 4년간 B2B 제품과 사내 운영 도구를 개발해 온 프론트엔드 엔지니어입니다.
 
-신규 모빌리티 플랫폼의 프론트엔드 기반을 설계하고, 여러 서비스가 함께 사용하는 디자인 시스템과 API 타입 자동화를 구축했습니다.
+신규 모빌리티 플랫폼의 프론트엔드 공통 구조를 설계하고 앱 내 WebView 개발을 전담했으며, 7개 서비스에서 사용하는 공용 UI 컴포넌트와 API 타입 자동화를 구축했습니다.
 
-제품 UX와 개발 생산성의 병목을 구조로 풀어내며, 필요한 문제라면 AI 기반 운영 도구와 Native Bridge처럼 프론트엔드 경계 밖까지 파고듭니다.
+운영 데이터 분석을 위한 Text-to-SQL 챗봇 구축 및 Electron 기반 Native Bridge 구현 등 프론트엔드 밖의 문제도 해결해 왔습니다.
 
 ## Contact
 
@@ -35,11 +35,14 @@ _updated at 2026-07_
 
 **2024년 10월 ~ 2025년 05월 구축·출시 / 이후 유지보수 및 기능 확장**
 
-- 차량 자산을 기반으로 한 B2B Web·Admin·WebView를 0부터 구축해 2025년 05월 출시했습니다.
+- FE 개발자 4인으로 B2B Web·Admin·WebView를 신규 구축해 2025년 05월 출시했습니다.
+  - 폴더 구조, query·mutation 처리 흐름, 로딩·에러 fallback 등 프론트엔드 공통 구조 설계
+  - 회원 가입, 로그인 및 토큰 관리, 권한 처리 구현
+  - 앱 내 WebView의 프론트엔드 개발 전반을 담당, Web·Admin은 일부 페이지를 담당
 - 차량 관제 지도에서 수천 대 마커가 몰려도 조작 가능한 성능을 확보했습니다.
   - Chrome DevTools FPS Meter와 4x throttling 환경에서 프레임 드롭/프리징을 재현하고, 기획자와 필요한 마커 밀도를 협의
   - 클러스터링, 이동 중 마커 렌더 debounce, 이미지 기반 마커를 조합해 고밀도 지역에서도 **60fps 수준 유지**
-- 앱에서 차량 제어를 위한 BLE bridge 호출, Timeout 시 Web API fallback 호출 구조를 구축하였습니다.
+- 모바일 WebView 환경에서 BLE 차량 제어, 카메라, GPS 등 Native API 를 활용한 기능을 구현했습니다.
 - Next.js 앱의 로그 수집 방법을 표준화하고, Server Action 기반 logger와 Slack 알림 전송, AWS Logs Insights 조회 흐름을 구축했습니다.
   - Client Runtime Error, API 호출 lifecycle, Server Error를 각 Runtime의 진입점에서 수집
   - [Next.js에서 자동화된 로깅 구조 만들기](/blog/nextjs-logging-strategy)
@@ -51,6 +54,7 @@ _updated at 2026-07_
 **2024년 07월 ~ 현재**
 
 - 6개 웹앱과 1개 WebView에서 사용하는 Radix UI 기반 공용 컴포넌트 50개 이상과 라이트·다크 테마 구조를 구축했습니다.
+  - 공용 컴포넌트는 단일 UI 역할만 수행하고, 화면에서 조합해 사용하도록 구성
   - AI 코드 생성 시 사내 컴포넌트 사용 가이드를 따를 수 있도록 Storybook 문서를 Agent Skills 형태로 전환
 - OpenAPI YAML 기반 `.d.ts` 생성 스크립트를 구현하여 request·response 타입의 수기 작성과 변경 누락을 줄였습니다.
 - 자체 DatePicker 및 Table·ColorPicker·Markdown 입력을 지원하는 Rich Text Editor 컴포넌트를 구현하였습니다.
