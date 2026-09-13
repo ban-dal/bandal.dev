@@ -6,7 +6,11 @@ export default function AboutLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <main className="py-16 max-md:py-9 print:py-0">
+    <main
+      id="main-content"
+      tabIndex={-1}
+      className="py-16 max-md:py-9 print:py-0"
+    >
       <AboutResumeShell>{children}</AboutResumeShell>
     </main>
   );

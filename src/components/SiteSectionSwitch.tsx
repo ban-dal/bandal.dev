@@ -20,11 +20,11 @@ export function SiteSectionSwitch() {
   const activeSection = getActiveSection(pathname);
 
   return (
-    <nav aria-label="Primary navigation" className="flex items-center gap-3">
+    <nav aria-label="Primary navigation" className="flex items-center gap-1">
       <Link
         aria-current={activeSection === "blog" ? "page" : undefined}
         className={cn(
-          "text-muted hover:text-foreground focus-visible:outline-focus text-sm transition-colors focus-visible:outline-2 focus-visible:outline-offset-2",
+          "text-muted hover:text-foreground focus-visible:outline-focus inline-flex min-h-11 min-w-11 items-center justify-center px-1 text-sm transition-colors focus-visible:outline-2 focus-visible:outline-offset-2",
           activeSection === "blog" && "text-foreground font-semibold",
         )}
         href="/blog"
@@ -34,7 +34,7 @@ export function SiteSectionSwitch() {
       <Link
         aria-current={activeSection === "about" ? "page" : undefined}
         className={cn(
-          "text-muted hover:text-foreground focus-visible:outline-focus text-sm transition-colors focus-visible:outline-2 focus-visible:outline-offset-2",
+          "text-muted hover:text-foreground focus-visible:outline-focus inline-flex min-h-11 min-w-11 items-center justify-center px-1 text-sm transition-colors focus-visible:outline-2 focus-visible:outline-offset-2",
           activeSection === "about" && "text-foreground font-semibold",
         )}
         href="/about"

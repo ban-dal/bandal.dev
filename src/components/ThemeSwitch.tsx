@@ -3,11 +3,14 @@
 import { useSyncExternalStore, type ReactNode } from "react";
 
 import { DesktopIcon, MoonIcon, SunIcon } from "@/components/ThemeIcons";
+import {
+  readTheme,
+  setTheme,
+  subscribeThemeChange,
+  getServerThemeSnapshot,
+  type Theme,
+} from "@/lib/theme";
 import { cn } from "@/lib/utils";
-
-type Theme = "system" | "light" | "dark";
-
-const THEME_STORAGE_EVENT = "theme-storage-change";
 
 const THEME_OPTIONS = [
   {
@@ -31,53 +34,6 @@ const THEME_OPTIONS = [
   value: Theme;
 }[];
 
-function readTheme(): Theme {
-  if (typeof window === "undefined") {
-    return "system";
-  }
-
-  const storedTheme = localStorage.getItem("theme");
-
-  if (
-    storedTheme === "system" ||
-    storedTheme === "light" ||
-    storedTheme === "dark"
-  ) {
-    return storedTheme;
-  }
-
-  return "system";
-}
-
-function applyTheme(theme: Theme) {
-  const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
-
-  localStorage.setItem("theme", theme);
-  document.documentElement.dataset.theme = theme;
-  document.documentElement.classList.toggle(
-    "dark",
-    theme === "dark" || (theme === "system" && prefersDark),
-  );
-}
-
-function subscribeThemeChange(onStoreChange: () => void) {
-  window.addEventListener("storage", onStoreChange);
-  window.addEventListener(THEME_STORAGE_EVENT, onStoreChange);
-
-  return () => {
-    window.removeEventListener("storage", onStoreChange);
-    window.removeEventListener(THEME_STORAGE_EVENT, onStoreChange);
-  };
-}
-
-function emitThemeChange() {
-  window.dispatchEvent(new Event(THEME_STORAGE_EVENT));
-}
-
-function getServerThemeSnapshot(): Theme {
-  return "system";
-}
-
 export function ThemeSwitch() {
   const theme = useSyncExternalStore(
     subscribeThemeChange,
@@ -97,12 +53,12 @@ export function ThemeSwitch() {
           aria-label={option.label}
           aria-pressed={theme === option.value}
           className={cn(
-            "text-muted hover:text-foreground focus-visible:outline-focus inline-grid size-7 place-items-center rounded-sm transition-colors focus-visible:outline-2 focus-visible:outline-offset-2",
-            theme === option.value && "text-primary",
+            "text-muted hover:text-foreground focus-visible:outline-focus inline-grid size-11 place-items-center rounded-sm transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 sm:size-8",
+            theme === option.value &&
+              "bg-surface-muted text-primary ring-border ring-1",
           )}
           onClick={() => {
-            applyTheme(option.value);
-            emitThemeChange();
+            setTheme(option.value);
           }}
           type="button"
         >

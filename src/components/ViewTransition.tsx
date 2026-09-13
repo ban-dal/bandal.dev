@@ -155,7 +155,11 @@ export function ViewTransition({
   const applyTransition = useCallback(
     (instance: ViewTransitionInstance, eventType: TransitionEvent) => {
       const transitionType = transitions?.[eventType];
-      if (!transitionType) return;
+      if (
+        !transitionType ||
+        window.matchMedia("(prefers-reduced-motion: reduce)").matches
+      )
+        return;
 
       const config = getTransitionConfig(transitionType);
 

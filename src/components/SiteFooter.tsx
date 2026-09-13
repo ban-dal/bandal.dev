@@ -6,7 +6,7 @@ const EMAIL_ADDRESS = "bandal2dev@gmail.com";
 
 export function SiteFooter() {
   return (
-    <footer className="border-border mx-auto w-[min(100%-2rem,56rem)] border-t py-8 md:py-12 print:hidden">
+    <footer className="border-border container border-t py-8 md:py-12 print:hidden">
       <nav
         aria-label="Contact links"
         className="text-muted flex flex-wrap items-center gap-x-2 gap-y-1 text-sm"

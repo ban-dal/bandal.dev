@@ -37,13 +37,17 @@
 
 @utility container {
   margin-inline: auto;
-  width: min(100% - calc(var(--spacing) * 8), var(--container-6xl));
+  width: min(100% - calc(var(--spacing) * 8), var(--site-max-width));
 }
 
 @media (width < 40rem) {
   .container {
     width: calc(100% - calc(var(--spacing) * 5));
   }
+}
+
+:root {
+  --site-max-width: 74rem;
 }
 
 :root,
@@ -161,5 +165,36 @@
   ::view-transition-new(root) {
     animation-duration: 420ms;
     animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+  }
+}
+
+@layer base {
+  :focus-visible {
+    outline: 2px solid var(--focus);
+    outline-offset: 4px;
+  }
+
+  a,
+  button,
+  summary {
+    touch-action: manipulation;
+  }
+
+  [data-mdx-prose] {
+    overflow-wrap: anywhere;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-group(*),
+  ::view-transition-old(*),
+  ::view-transition-new(*) {
+    animation: none !important;
+  }
+}
+
+@media (width < 40rem) {
+  html {
+    scroll-padding-top: 8rem;
   }
 }

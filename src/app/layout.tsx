@@ -33,6 +33,12 @@ export default function RootLayout({
     <html lang="ko" className={pretendard.variable} suppressHydrationWarning>
       <body>
         <ThemeProvider>
+          <a
+            href="#main-content"
+            className="bg-surface text-foreground fixed top-2 left-4 z-50 -translate-y-24 rounded-sm px-4 py-3 focus:translate-y-0 print:hidden"
+          >
+            본문으로 바로가기
+          </a>
           <header className="border-border bg-background sticky top-0 z-40 w-full border-b print:hidden">
             <SiteNav />
           </header>

@@ -1,15 +1,17 @@
 import Image from "next/image";
+import Link from "next/link";
 
 import { SiteSectionSwitch } from "@/components/SiteSectionSwitch";
 import { ThemeSwitch } from "@/components/ThemeSwitch";
 
 export function SiteNav() {
   return (
-    <nav
-      aria-label="Site navigation"
-      className="mx-auto flex h-14 w-[min(100%-2rem,56rem)] items-center justify-between gap-4"
-    >
-      <div className="flex min-w-0 items-center gap-2.5">
+    <div className="container flex min-h-14 flex-wrap items-center justify-between gap-4 py-1">
+      <Link
+        href="/blog"
+        aria-label="bandal.dev 홈"
+        className="flex min-h-11 min-w-0 items-center gap-2.5"
+      >
         <span
           aria-hidden="true"
           className="border-border bg-surface inline-grid size-7 shrink-0 place-items-center overflow-hidden rounded-sm border"
@@ -24,11 +26,11 @@ export function SiteNav() {
           />
         </span>
         <span className="truncate text-sm font-semibold">bandal.dev</span>
-      </div>
-      <div className="flex items-center gap-4">
+      </Link>
+      <div className="flex items-center gap-1 sm:gap-4">
         <SiteSectionSwitch />
         <ThemeSwitch />
       </div>
-    </nav>
+    </div>
   );
 }
