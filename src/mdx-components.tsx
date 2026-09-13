@@ -139,19 +139,25 @@ type MDXWrapperProps = ComponentPropsWithoutRef<"article"> & {
 
 export function useMDXComponents(components: MDXComponents): MDXComponents {
   return {
-    wrapper: ({ children, className, ...props }: MDXWrapperProps) => (
-      <article
-        {...props}
-        className={cn(
-          "mx-auto w-full max-w-[68ch] font-sans text-base leading-[1.78] font-normal tracking-[-0.006em] md:text-[1.0625rem]",
-          proseTextColor,
-          className,
-        )}
-        data-mdx-prose="true"
-      >
-        {children}
-      </article>
-    ),
+    wrapper: ({ children, className, ...props }: MDXWrapperProps) => {
+      // Next.js page props are not HTML attributes.
+      delete props.params;
+      delete props.searchParams;
+
+      return (
+        <article
+          {...props}
+          className={cn(
+            "mx-auto w-full max-w-[68ch] font-sans text-base leading-[1.78] font-normal tracking-[-0.006em] md:text-[1.0625rem]",
+            proseTextColor,
+            className,
+          )}
+          data-mdx-prose="true"
+        >
+          {children}
+        </article>
+      );
+    },
     h1: ({ children, className, ...props }) => (
       <h1
         {...props}
