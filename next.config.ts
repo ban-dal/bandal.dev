@@ -87,7 +87,6 @@ const nextConfig: NextConfig = {
     mdxRs: {
       mdxType: "gfm",
     },
-    viewTransition: true,
   },
 };
 

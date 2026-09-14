@@ -7,9 +7,11 @@ import {
 } from "@testing-library/react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
+import type { ContentHeading } from "@/lib/content-utils";
+
 import { BlogPostTableOfContents } from "./BlogPostTableOfContents";
 
-const headings = [
+const headings: ContentHeading[] = [
   { id: "first", text: "첫 구간", depth: 2 },
   { id: "second", text: "다음 구간", depth: 2 },
 ];
@@ -30,7 +32,7 @@ afterEach(() => {
   vi.unstubAllGlobals();
 });
 
-it("tracks the section while scrolling down and back up", async () => {
+it("아래로 스크롤한 뒤 위로 돌아오면 현재 구간에 맞게 활성 목차를 변경한다", async () => {
   let secondTop = 1000;
   vi.spyOn(HTMLElement.prototype, "getBoundingClientRect").mockImplementation(
     function (this: HTMLElement) {
@@ -63,7 +65,7 @@ it("tracks the section while scrolling down and back up", async () => {
 });
 
 describe("mobile disclosure", () => {
-  it("closes after navigation and returns focus on Escape", () => {
+  it("모바일 목차는 Escape 입력 시 닫히고 버튼에 포커스를 반환하며 링크 선택 시 닫힌다", () => {
     render(<BlogPostTableOfContents headings={headings} />);
     const toggle = screen.getByRole("button", { name: "목차 열기" });
     fireEvent.click(toggle);
