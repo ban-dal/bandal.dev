@@ -15,3 +15,13 @@
 - 저장소 문서, 설치된 패키지 문서, 로컬 스킬을 모델 기억보다 우선합니다.
 - 문서끼리 충돌하면, 변경하려는 코드에 가장 구체적으로 적용되는 로컬 문서를 따릅니다.
 - 필요한 가장 작은 범위의 문서를 먼저 읽고, 부족할 때만 더 넓게 탐색합니다.
+
+<!-- BEGIN:nextjs-agent-rules -->
+
+# This is NOT the Next.js you know
+
+This version has breaking changes — APIs, conventions, and file structure may all differ from your training data. Read the relevant guide in `node_modules/next/dist/docs/` (resolved from this file's directory; in monorepos the `next` package may not be visible from the repo root) before writing any code. Heed deprecation notices.
+
+This block is written and re-added by `next dev` — verify at `node_modules/next/dist/server/lib/generate-agent-files.js`. Removing it from a diff only re-creates the uncommitted change; committing it with your work keeps the tree clean.
+
+<!-- END:nextjs-agent-rules -->
