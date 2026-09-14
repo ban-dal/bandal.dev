@@ -5,9 +5,12 @@ import { usePathname } from "next/navigation";
 
 import { cn } from "@/lib/utils";
 
-type Section = "about" | "blog";
+type Section = "about" | "blog" | "labs";
 
 function getActiveSection(pathname: string): Section {
+  if (pathname === "/labs" || pathname.startsWith("/labs/")) {
+    return "labs";
+  }
   if (pathname.startsWith("/about")) {
     return "about";
   }
@@ -30,6 +33,16 @@ export function SiteSectionSwitch() {
         href="/blog"
       >
         Blog
+      </Link>
+      <Link
+        aria-current={activeSection === "labs" ? "page" : undefined}
+        className={cn(
+          "text-muted hover:text-foreground focus-visible:outline-focus inline-flex min-h-11 min-w-11 items-center justify-center px-1 text-sm transition-colors focus-visible:outline-2 focus-visible:outline-offset-2",
+          activeSection === "labs" && "text-foreground font-semibold",
+        )}
+        href="/labs"
+      >
+        Labs
       </Link>
       <Link
         aria-current={activeSection === "about" ? "page" : undefined}
