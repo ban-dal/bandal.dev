@@ -162,7 +162,7 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
       <h1
         {...props}
         className={cn(
-          "text-foreground mb-8 text-[clamp(2.25rem,4vw,3rem)] leading-[1.12] font-bold tracking-[-0.025em]",
+          "text-foreground mb-8 text-[clamp(1.5rem,3vw,1.75rem)] leading-[1.12] font-bold tracking-[-0.025em]",
           className,
         )}
       >
