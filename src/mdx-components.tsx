@@ -49,7 +49,7 @@ function Heading({
       <h2
         {...props}
         className={cn(
-          "text-foreground mt-16 mb-5 scroll-mt-20 text-[clamp(1.5rem,3vw,1.75rem)] leading-[1.28] font-bold tracking-[-0.02em]",
+          "text-foreground mt-16 mb-5 scroll-mt-20 text-[clamp(1.25rem,2.5vw,1.375rem)] leading-[1.45] font-semibold tracking-[-0.02em]",
           className,
         )}
         id={id}
@@ -64,7 +64,7 @@ function Heading({
       <h3
         {...props}
         className={cn(
-          "text-foreground mt-12 mb-4 scroll-mt-20 text-[clamp(1.25rem,2.5vw,1.4375rem)] leading-[1.35] font-semibold tracking-[-0.015em]",
+          "text-foreground mt-12 mb-4 scroll-mt-20 text-[1.1875rem] leading-[1.5] font-semibold tracking-[-0.015em]",
           className,
         )}
         id={id}
@@ -78,7 +78,7 @@ function Heading({
     <h4
       {...props}
       className={cn(
-        "text-foreground mt-10 mb-3 scroll-mt-20 text-xl leading-[1.4] font-semibold tracking-[-0.01em]",
+        "text-foreground mt-10 mb-3 scroll-mt-20 text-[1.0625rem] leading-[1.5] font-semibold tracking-[-0.01em]",
         className,
       )}
       id={id}

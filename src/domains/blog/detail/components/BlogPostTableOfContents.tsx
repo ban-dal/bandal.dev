@@ -20,7 +20,7 @@ function BlogPostTocLinks({
   onNavigate?: () => void;
 }) {
   return (
-    <div className="grid gap-2.5">
+    <div className="grid gap-1">
       {headings.map((heading) => (
         <a
           key={`${heading.id}-${heading.text}`}
@@ -28,10 +28,10 @@ function BlogPostTocLinks({
           aria-current={activeId === heading.id ? "location" : undefined}
           onClick={onNavigate}
           className={cn(
-            "text-muted hover:text-foreground flex min-h-11 items-center border-l-2 border-transparent py-1 pl-3 text-sm leading-relaxed [overflow-wrap:anywhere] break-keep transition-colors sm:min-h-6",
+            "text-muted hover:text-foreground focus-visible:outline-focus flex min-h-11 items-center border-l border-transparent py-1 pl-3 text-sm leading-relaxed [overflow-wrap:anywhere] break-keep transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 xl:min-h-6 xl:text-[0.8125rem]",
             heading.depth === 3 && "pl-6",
             activeId === heading.id &&
-              "border-primary bg-surface-muted text-primary font-semibold",
+              "border-foreground text-foreground font-medium",
           )}
         >
           {heading.text}
@@ -55,19 +55,19 @@ export function BlogPostTableOfContents({
     <aside
       aria-label="Table of contents"
       style={{ "--site-header-height": `${headerHeight}px` } as CSSProperties}
-      className="border-border bg-background sticky top-[var(--site-header-height)] z-30 mb-10 border-y lg:top-[calc(var(--site-header-height)+1.5rem)] lg:col-start-1 lg:row-span-2 lg:row-start-1 lg:mb-0 lg:max-h-[calc(100dvh-6rem)] lg:min-w-0 lg:self-start lg:overflow-y-auto lg:overscroll-contain lg:border-y-0 lg:border-r lg:pr-4 print:hidden"
+      className="border-border bg-background sticky top-[var(--site-header-height)] z-30 mb-10 border-y xl:top-[calc(var(--site-header-height)+1.5rem)] xl:col-start-1 xl:row-span-2 xl:row-start-1 xl:mb-0 xl:max-h-[calc(100dvh-6rem)] xl:min-w-0 xl:self-start xl:overflow-y-auto xl:overscroll-contain xl:border-y-0 xl:pr-2 print:hidden"
     >
-      <nav aria-label="목차" className="hidden lg:block">
-        <h2 className="text-foreground mb-4 text-sm font-semibold">목차</h2>
+      <nav aria-label="목차" className="hidden xl:block">
+        <h2 className="text-muted mb-3 text-xs font-medium">목차</h2>
         <BlogPostTocLinks headings={headings} activeId={activeId} />
       </nav>
-      <div className="relative lg:hidden">
+      <div className="relative xl:hidden">
         <button
           type="button"
           aria-expanded={isOpen}
           aria-controls="mobile-post-toc"
           onClick={() => setIsOpen(!isOpen)}
-          className="text-foreground flex min-h-12 w-full items-center justify-between gap-3 text-sm font-medium"
+          className="text-muted flex min-h-12 w-full items-center justify-between gap-3 text-sm font-medium"
         >
           <span>목차 {isOpen ? "닫기" : "열기"}</span>
           <span aria-hidden="true">{isOpen ? "−" : "+"}</span>

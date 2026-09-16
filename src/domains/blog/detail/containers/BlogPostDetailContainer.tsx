@@ -23,14 +23,14 @@ export async function BlogPostDetailContainer({
     <main
       id="main-content"
       tabIndex={-1}
-      className="mx-auto max-w-[68ch] py-12 max-md:py-8 lg:grid lg:max-w-none lg:grid-cols-[12rem_minmax(0,1fr)_12rem] lg:gap-x-6 xl:grid-cols-[14rem_minmax(0,1fr)_14rem] xl:gap-x-8"
+      className="max-w-blog mx-auto py-10 max-md:py-7 xl:grid xl:max-w-none xl:grid-cols-[minmax(0,1fr)_minmax(0,var(--blog-max-width))_minmax(0,1fr)] xl:gap-x-8"
     >
-      <div className="min-w-0 lg:col-start-2 lg:row-start-1">
+      <div className="min-w-0 xl:col-start-2 xl:row-start-1">
         <BlogPostDetailHeader post={post.meta} />
       </div>
 
       <BlogPostTableOfContents headings={post.headings} />
-      <div className="min-w-0 lg:col-start-2 lg:row-start-2">
+      <div className="min-w-0 xl:col-start-2 xl:row-start-2">
         <ViewTransition>
           <post.Component />
         </ViewTransition>
