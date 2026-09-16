@@ -183,8 +183,7 @@
     isolation: isolate;
   }
 
-  .site-header::before,
-  .blog-post-toc::after {
+  .site-header::before {
     position: absolute;
     pointer-events: none;
     background: var(--background);
@@ -204,28 +203,6 @@
       rgb(0 0 0 / 0.01) calc(100% - var(--scroll-fade-size) + 84px),
       transparent
     );
-  }
-
-  @media (width < 80rem) {
-    .blog-post-toc {
-      background-color: color-mix(in srgb, var(--background) 94%, transparent);
-    }
-
-    .blog-post-toc::after {
-      content: "";
-      inset-inline: 0;
-      top: 100%;
-      height: var(--scroll-fade-size);
-      mask-image: linear-gradient(
-        to bottom,
-        rgb(0 0 0 / 0.94),
-        rgb(0 0 0 / 0.55) 21%,
-        rgb(0 0 0 / 0.2) 46%,
-        rgb(0 0 0 / 0.05) 71%,
-        rgb(0 0 0 / 0.01) 88%,
-        transparent
-      );
-    }
   }
 
   ::view-transition-group(.blog-page) {
