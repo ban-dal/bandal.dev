@@ -33,6 +33,7 @@
   --radius-md: var(--radius);
   --radius-app: var(--radius);
   --shadow-app: var(--shadow);
+  --container-blog: var(--blog-max-width);
 }
 
 @utility container {
@@ -48,6 +49,7 @@
 
 :root {
   --site-max-width: 74rem;
+  --blog-max-width: 40rem;
 }
 
 :root,
@@ -145,7 +147,7 @@
   }
 
   html {
-    scroll-padding-top: 4rem;
+    scroll-padding-top: 6rem;
   }
 
   body {

@@ -39,7 +39,7 @@ export default function RootLayout({
           >
             본문으로 바로가기
           </a>
-          <header className="border-border bg-background sticky top-0 z-40 w-full border-b print:hidden">
+          <header className="bg-background sticky top-0 z-40 w-full pt-4 sm:pt-8 print:hidden">
             <SiteNav />
           </header>
           <div className="container print:!mx-0 print:!w-full">{children}</div>
