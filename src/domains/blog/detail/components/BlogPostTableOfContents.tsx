@@ -55,7 +55,7 @@ export function BlogPostTableOfContents({
     <aside
       aria-label="Table of contents"
       style={{ "--site-header-height": `${headerHeight}px` } as CSSProperties}
-      className="border-border bg-background sticky top-[var(--site-header-height)] z-30 mb-10 border-y xl:top-[calc(var(--site-header-height)+1.5rem)] xl:col-start-1 xl:row-span-2 xl:row-start-1 xl:mb-0 xl:max-h-[calc(100dvh-6rem)] xl:min-w-0 xl:self-start xl:overflow-y-auto xl:overscroll-contain xl:border-y-0 xl:pr-2 print:hidden"
+      className="blog-post-toc border-border sticky top-[var(--site-header-height)] z-40 mb-10 border-y xl:top-[calc(var(--site-header-height)+1.5rem)] xl:col-start-1 xl:row-span-2 xl:row-start-1 xl:mb-0 xl:max-h-[calc(100dvh-6rem)] xl:min-w-0 xl:self-start xl:overflow-y-auto xl:overscroll-contain xl:border-y-0 xl:pr-2 print:hidden"
     >
       <nav aria-label="목차" className="hidden xl:block">
         <h2 className="text-muted mb-3 text-xs font-medium">목차</h2>

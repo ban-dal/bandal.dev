@@ -50,6 +50,7 @@
 :root {
   --site-max-width: 74rem;
   --blog-max-width: 40rem;
+  --scroll-fade-size: 96px;
 }
 
 :root,
@@ -163,20 +164,6 @@
     @apply bg-primary text-primary-foreground;
   }
 
-  ::view-transition-group(.blog-page) {
-    animation: none;
-  }
-
-  ::view-transition-old(.blog-page),
-  ::view-transition-new(.blog-page),
-  ::view-transition-old(root),
-  ::view-transition-new(root) {
-    animation-duration: 260ms;
-    animation-timing-function: cubic-bezier(0.2, 0, 0, 1);
-  }
-}
-
-@layer base {
   :focus-visible {
     outline: 2px solid var(--focus);
     outline-offset: 4px;
@@ -190,6 +177,100 @@
 
   [data-mdx-prose] {
     overflow-wrap: anywhere;
+  }
+
+  .site-header {
+    isolation: isolate;
+  }
+
+  .site-header::before,
+  .blog-post-toc::after {
+    position: absolute;
+    pointer-events: none;
+    background: var(--background);
+  }
+
+  .site-header::before {
+    content: "";
+    inset: 0 0 calc(-1 * var(--scroll-fade-size));
+    z-index: -1;
+    mask-image: linear-gradient(
+      to bottom,
+      rgb(0 0 0 / 0.96),
+      rgb(0 0 0 / 0.92) calc(100% - var(--scroll-fade-size)),
+      rgb(0 0 0 / 0.55) calc(100% - var(--scroll-fade-size) + 20px),
+      rgb(0 0 0 / 0.2) calc(100% - var(--scroll-fade-size) + 44px),
+      rgb(0 0 0 / 0.05) calc(100% - var(--scroll-fade-size) + 68px),
+      rgb(0 0 0 / 0.01) calc(100% - var(--scroll-fade-size) + 84px),
+      transparent
+    );
+  }
+
+  @media (width < 80rem) {
+    .blog-post-toc {
+      background-color: color-mix(in srgb, var(--background) 94%, transparent);
+    }
+
+    .blog-post-toc::after {
+      content: "";
+      inset-inline: 0;
+      top: 100%;
+      height: var(--scroll-fade-size);
+      mask-image: linear-gradient(
+        to bottom,
+        rgb(0 0 0 / 0.94),
+        rgb(0 0 0 / 0.55) 21%,
+        rgb(0 0 0 / 0.2) 46%,
+        rgb(0 0 0 / 0.05) 71%,
+        rgb(0 0 0 / 0.01) 88%,
+        transparent
+      );
+    }
+  }
+
+  ::view-transition-group(.blog-page) {
+    animation-name: none;
+  }
+
+  ::view-transition-old(.blog-page),
+  ::view-transition-new(.blog-page),
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    animation-duration: 260ms;
+    animation-timing-function: cubic-bezier(0.2, 0, 0, 1);
+    /* 스냅샷이 제거될 때까지 이전 화면의 opacity: 0을 유지한다. */
+    animation-fill-mode: both;
+    mix-blend-mode: normal;
+  }
+
+  ::view-transition-old(.blog-page),
+  ::view-transition-old(root) {
+    animation-name: page-fade-out;
+  }
+
+  ::view-transition-new(.blog-page),
+  ::view-transition-new(root) {
+    animation-name: page-fade-in-up;
+  }
+}
+
+@keyframes page-fade-out {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes page-fade-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }
 
