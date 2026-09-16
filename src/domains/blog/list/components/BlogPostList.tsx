@@ -1,5 +1,4 @@
 import Link from "next/link";
-import { ViewTransition } from "react";
 
 import type { ContentItem } from "@/lib/content-utils";
 
@@ -27,11 +26,9 @@ export function BlogPostList({ posts }: BlogPostListProps) {
             href={`/blog/${post.meta.slug}`}
             className="group focus-visible:outline-focus grid gap-1.5 py-5 focus-visible:outline-2 focus-visible:outline-offset-4 md:grid-cols-[minmax(0,1fr)_auto] md:items-baseline md:gap-6"
           >
-            <ViewTransition name={`post-title-${post.meta.slug}`}>
-              <h2 className="group-hover:text-primary min-w-0 text-[17px] leading-relaxed font-medium [overflow-wrap:anywhere] break-keep transition-colors">
-                {post.meta.title}
-              </h2>
-            </ViewTransition>
+            <h2 className="group-hover:text-primary min-w-0 text-[17px] leading-relaxed font-medium [overflow-wrap:anywhere] break-keep transition-colors duration-180 motion-reduce:transition-none">
+              {post.meta.title}
+            </h2>
             <time
               dateTime={post.meta.date}
               className="text-muted block text-xs leading-relaxed whitespace-nowrap tabular-nums"

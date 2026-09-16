@@ -1,5 +1,4 @@
 import { notFound } from "next/navigation";
-import { ViewTransition } from "react";
 
 import { getPostBySlug } from "@/lib/content-utils";
 
@@ -31,9 +30,7 @@ export async function BlogPostDetailContainer({
 
       <BlogPostTableOfContents headings={post.headings} />
       <div className="min-w-0 xl:col-start-2 xl:row-start-2">
-        <ViewTransition>
-          <post.Component />
-        </ViewTransition>
+        <post.Component />
       </div>
     </main>
   );

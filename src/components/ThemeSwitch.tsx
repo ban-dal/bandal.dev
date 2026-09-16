@@ -50,7 +50,7 @@ export function ThemeSwitch() {
           aria-pressed={theme === option.value}
           title={option.label}
           className={cn(
-            "text-muted hover:text-foreground focus-visible:outline-focus relative inline-grid h-11 w-8 place-items-center rounded-sm transition-colors focus-visible:outline-2 focus-visible:outline-offset-2",
+            "text-muted hover:text-foreground focus-visible:outline-focus relative inline-grid h-11 w-8 place-items-center rounded-sm transition-colors duration-180 focus-visible:outline-2 focus-visible:outline-offset-2 motion-reduce:transition-none",
             theme === option.value &&
               "text-foreground after:absolute after:bottom-1 after:size-0.5 after:rounded-full after:bg-current",
           )}

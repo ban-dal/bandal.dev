@@ -1,5 +1,3 @@
-import { ViewTransition } from "react";
-
 import { MotionShell } from "@/components/MotionShell";
 import { getAllPosts } from "@/lib/content-utils";
 
@@ -15,9 +13,7 @@ export async function BlogListContainer() {
       className="max-w-blog mx-auto py-12 max-md:py-8"
     >
       <MotionShell className="mb-5">
-        <ViewTransition name="home-title">
-          <h1 className="text-[22px] leading-snug font-semibold">글 목록</h1>
-        </ViewTransition>
+        <h1 className="text-[22px] leading-snug font-semibold">글 목록</h1>
       </MotionShell>
       <BlogPostList posts={posts} />
     </main>

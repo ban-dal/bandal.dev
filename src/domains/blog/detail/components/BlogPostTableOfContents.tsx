@@ -28,7 +28,7 @@ function BlogPostTocLinks({
           aria-current={activeId === heading.id ? "location" : undefined}
           onClick={onNavigate}
           className={cn(
-            "text-muted hover:text-foreground focus-visible:outline-focus flex min-h-11 items-center border-l border-transparent py-1 pl-3 text-sm leading-relaxed [overflow-wrap:anywhere] break-keep transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 xl:min-h-6 xl:text-[0.8125rem]",
+            "text-muted hover:text-foreground focus-visible:outline-focus flex min-h-11 items-center border-l border-transparent py-1 pl-3 text-sm leading-relaxed [overflow-wrap:anywhere] break-keep transition-colors duration-180 focus-visible:outline-2 focus-visible:outline-offset-2 motion-reduce:transition-none xl:min-h-6 xl:text-[0.8125rem]",
             heading.depth === 3 && "pl-6",
             activeId === heading.id &&
               "border-foreground text-foreground font-medium",

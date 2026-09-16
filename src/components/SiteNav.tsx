@@ -9,7 +9,7 @@ export function SiteNav() {
       <Link
         href="/blog"
         aria-label="bandal.dev 홈"
-        className="text-text-secondary hover:text-foreground flex min-h-11 min-w-0 items-center text-[13px] font-medium transition-colors"
+        className="text-text-secondary hover:text-foreground flex min-h-11 min-w-0 items-center text-[13px] font-medium transition-colors duration-180 motion-reduce:transition-none"
       >
         <span className="truncate">bandal.dev</span>
       </Link>

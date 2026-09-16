@@ -24,7 +24,7 @@ export function SiteSectionSwitch() {
       <Link
         aria-current={activeSection === "blog" ? "page" : undefined}
         className={cn(
-          "text-muted hover:text-foreground focus-visible:outline-focus inline-flex min-h-11 min-w-11 items-center justify-center px-1 text-[13px] underline-offset-4 transition-colors focus-visible:outline-2 focus-visible:outline-offset-2",
+          "text-muted hover:text-foreground focus-visible:outline-focus inline-flex min-h-11 min-w-11 items-center justify-center px-1 text-[13px] underline-offset-4 transition-colors duration-180 focus-visible:outline-2 focus-visible:outline-offset-2 motion-reduce:transition-none",
           activeSection === "blog" && "text-foreground underline",
         )}
         href="/blog"
@@ -34,7 +34,7 @@ export function SiteSectionSwitch() {
       <Link
         aria-current={activeSection === "about" ? "page" : undefined}
         className={cn(
-          "text-muted hover:text-foreground focus-visible:outline-focus inline-flex min-h-11 min-w-11 items-center justify-center px-1 text-[13px] underline-offset-4 transition-colors focus-visible:outline-2 focus-visible:outline-offset-2",
+          "text-muted hover:text-foreground focus-visible:outline-focus inline-flex min-h-11 min-w-11 items-center justify-center px-1 text-[13px] underline-offset-4 transition-colors duration-180 focus-visible:outline-2 focus-visible:outline-offset-2 motion-reduce:transition-none",
           activeSection === "about" && "text-foreground underline",
         )}
         href="/about"

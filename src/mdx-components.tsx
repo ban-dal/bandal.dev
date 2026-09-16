@@ -28,7 +28,7 @@ function getTextContent(node: ReactNode): string {
 function HeadingAnchor({ children, id }: { children: ReactNode; id: string }) {
   return (
     <a
-      className="hover:text-primary focus-visible:outline-focus font-[inherit] [overflow-wrap:normal] text-[inherit] no-underline decoration-transparent transition-colors focus-visible:outline-2 focus-visible:outline-offset-2"
+      className="hover:text-primary focus-visible:outline-focus font-[inherit] [overflow-wrap:normal] text-[inherit] no-underline decoration-transparent transition-colors duration-180 focus-visible:outline-2 focus-visible:outline-offset-2 motion-reduce:transition-none"
       href={`#${id}`}
     >
       {children}
@@ -243,7 +243,7 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
           <Link
             {...props}
             className={cn(
-              "text-primary hover:text-accent-hover focus-visible:outline-focus font-medium [overflow-wrap:anywhere] underline decoration-[color-mix(in_srgb,var(--primary)_45%,transparent)] decoration-1 underline-offset-[0.2em] transition-colors focus-visible:outline-2 focus-visible:outline-offset-2",
+              "text-primary hover:text-accent-hover focus-visible:outline-focus font-medium [overflow-wrap:anywhere] underline decoration-[color-mix(in_srgb,var(--primary)_45%,transparent)] decoration-1 underline-offset-[0.2em] transition-colors duration-180 focus-visible:outline-2 focus-visible:outline-offset-2 motion-reduce:transition-none",
               className,
             )}
             href={href}
@@ -257,7 +257,7 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
         <a
           {...props}
           className={cn(
-            "text-primary hover:text-accent-hover focus-visible:outline-focus font-medium [overflow-wrap:anywhere] underline decoration-[color-mix(in_srgb,var(--primary)_45%,transparent)] decoration-1 underline-offset-[0.2em] transition-colors focus-visible:outline-2 focus-visible:outline-offset-2",
+            "text-primary hover:text-accent-hover focus-visible:outline-focus font-medium [overflow-wrap:anywhere] underline decoration-[color-mix(in_srgb,var(--primary)_45%,transparent)] decoration-1 underline-offset-[0.2em] transition-colors duration-180 focus-visible:outline-2 focus-visible:outline-offset-2 motion-reduce:transition-none",
             className,
           )}
           href={href}
@@ -318,7 +318,7 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
             className,
           )}
         >
-          {children}
+          {removeWhitespaceTextNodes(children)}
         </table>
       </div>
     ),

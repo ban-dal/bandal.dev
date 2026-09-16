@@ -163,10 +163,16 @@
     @apply bg-primary text-primary-foreground;
   }
 
+  ::view-transition-group(.blog-page) {
+    animation: none;
+  }
+
+  ::view-transition-old(.blog-page),
+  ::view-transition-new(.blog-page),
   ::view-transition-old(root),
   ::view-transition-new(root) {
-    animation-duration: 420ms;
-    animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+    animation-duration: 260ms;
+    animation-timing-function: cubic-bezier(0.2, 0, 0, 1);
   }
 }
 
