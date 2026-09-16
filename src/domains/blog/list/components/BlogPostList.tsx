@@ -17,7 +17,7 @@ function formatDate(date: string) {
 
 export function BlogPostList({ posts }: BlogPostListProps) {
   return (
-    <ul className="divide-border divide-y">
+    <ul className="divide-border/60 divide-y">
       {posts.length === 0 && (
         <li className="text-text-secondary py-8">아직 작성된 글이 없습니다.</li>
       )}
@@ -25,22 +25,19 @@ export function BlogPostList({ posts }: BlogPostListProps) {
         <li key={post.meta.slug}>
           <Link
             href={`/blog/${post.meta.slug}`}
-            className="group focus-visible:outline-focus block py-7 focus-visible:outline-2 focus-visible:outline-offset-4"
+            className="group focus-visible:outline-focus grid gap-1.5 py-5 focus-visible:outline-2 focus-visible:outline-offset-4 md:grid-cols-[minmax(0,1fr)_auto] md:items-baseline md:gap-6"
           >
             <ViewTransition name={`post-title-${post.meta.slug}`}>
-              <h2 className="group-hover:text-primary block text-[clamp(1.375rem,3vw,1.5rem)] leading-[1.35] font-semibold [overflow-wrap:anywhere] break-keep transition-colors">
+              <h2 className="group-hover:text-primary min-w-0 text-[17px] leading-relaxed font-medium [overflow-wrap:anywhere] break-keep transition-colors">
                 {post.meta.title}
               </h2>
             </ViewTransition>
             <time
               dateTime={post.meta.date}
-              className="text-muted mt-2 block text-sm leading-relaxed tabular-nums"
+              className="text-muted block text-xs leading-relaxed whitespace-nowrap tabular-nums"
             >
               {formatDate(post.meta.date)}
             </time>
-            <p className="text-text-secondary mt-3 line-clamp-2 text-base leading-relaxed">
-              {post.meta.description}
-            </p>
           </Link>
         </li>
       ))}
