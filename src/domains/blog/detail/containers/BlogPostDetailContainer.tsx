@@ -20,6 +20,7 @@ export async function BlogPostDetailContainer({
 
   return (
     <main
+      key={slug}
       id="main-content"
       tabIndex={-1}
       className="max-w-blog mx-auto py-10 max-md:py-7 lg:grid lg:max-w-none lg:grid-cols-[minmax(10rem,1fr)_minmax(0,var(--blog-max-width))_minmax(0,1fr)] lg:gap-x-6"

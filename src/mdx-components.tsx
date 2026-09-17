@@ -148,7 +148,7 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
         <article
           {...props}
           className={cn(
-            "mx-auto w-full max-w-[68ch] font-sans text-base leading-[1.78] font-normal tracking-[-0.006em] md:text-[1.0625rem]",
+            "slide-enter-content mx-auto w-full max-w-[68ch] font-sans text-base leading-[1.78] font-normal tracking-[-0.006em] md:text-[1.0625rem]",
             proseTextColor,
             className,
           )}

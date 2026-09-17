@@ -1,11 +1,9 @@
 import Link from "next/link";
 
 import { buttonVariants } from "@/components/ui/Button";
-import { ViewTransition } from "@/components/ViewTransition";
 import { cn } from "@/lib/utils";
 
 type ContentDetailHeaderProps = {
-  slug: string;
   title: string;
   description: string;
   date: string;
@@ -16,7 +14,6 @@ type ContentDetailHeaderProps = {
 };
 
 export default function ContentDetailHeader({
-  slug,
   title,
   description,
   date,
@@ -34,22 +31,16 @@ export default function ContentDetailHeader({
       >
         ← {backLink.label}
       </Link>
-      <ViewTransition name={`title-${slug}`}>
-        <h1
-          className={cn(
-            "mb-4 text-3xl font-bold md:text-4xl",
-            "text-heading font-serif",
-          )}
-        >
-          {title}
-        </h1>
-      </ViewTransition>
-      <ViewTransition name={`description-${slug}`}>
-        <p className="text-blockquote mb-4 text-base">{description}</p>
-      </ViewTransition>
-      <ViewTransition name={`date-${slug}`}>
-        <time className="text-blockquote text-base">{date}</time>
-      </ViewTransition>
+      <h1
+        className={cn(
+          "mb-4 text-3xl font-bold md:text-4xl",
+          "text-heading font-serif",
+        )}
+      >
+        {title}
+      </h1>
+      <p className="text-blockquote mb-4 text-base">{description}</p>
+      <time className="text-blockquote text-base">{date}</time>
     </div>
   );
 }

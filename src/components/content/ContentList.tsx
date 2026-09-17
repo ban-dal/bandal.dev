@@ -1,6 +1,5 @@
 import Link from "next/link";
 
-import { ViewTransition } from "@/components/ViewTransition";
 import type { ContentItem } from "@/lib/content-utils";
 
 type ContentByYear = Record<number, ContentItem[]>;
@@ -37,17 +36,13 @@ export default function ContentList({
                     className="block transition-opacity group-hover:opacity-80"
                   >
                     <div className="flex flex-col gap-2 md:flex-row md:items-center md:gap-6">
-                      <ViewTransition name={`title-${meta.slug}`}>
-                        <h3 className="text-heading flex-grow text-xl font-bold">
-                          {meta.title}
-                        </h3>
-                      </ViewTransition>
+                      <h3 className="text-heading flex-grow text-xl font-bold">
+                        {meta.title}
+                      </h3>
                       <div className="flex items-center gap-4">
-                        <ViewTransition name={`date-${meta.slug}`}>
-                          <time className="text-blockquote text-sm whitespace-nowrap">
-                            {meta.date}
-                          </time>
-                        </ViewTransition>
+                        <time className="text-blockquote text-sm whitespace-nowrap">
+                          {meta.date}
+                        </time>
                       </div>
                     </div>
                     <p className="text-blockquote mt-2 line-clamp-2 text-base">

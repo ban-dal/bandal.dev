@@ -16,7 +16,7 @@ function formatDate(date: string) {
 
 export function BlogPostList({ posts }: BlogPostListProps) {
   return (
-    <ul>
+    <ul className="slide-enter-content">
       {posts.length === 0 && (
         <li className="text-text-secondary py-8">아직 작성된 글이 없습니다.</li>
       )}
