@@ -310,8 +310,10 @@
     --enter-stage: 19;
   }
 
+  /* animation: none은 포커스가 빠질 때 애니메이션을 처음부터 다시 재생하므로 타이밍만 줄인다. */
   .slide-enter-content > :focus-within {
-    animation: none;
+    animation-duration: 0s;
+    animation-delay: 0s;
   }
 }
 
