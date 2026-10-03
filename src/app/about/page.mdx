@@ -1,13 +1,13 @@
 export const meta = {
   title: "About",
-  date: "2026-09",
+  date: "2026-10",
 };
 
 export const dynamic = "force-static";
 
 # 김도현
 
-_updated at 2026-09_
+_updated at 2026-10_
 
 4년간 B2B 제품과 사내 운영 도구를 개발해 온 프론트엔드 엔지니어입니다.
 
@@ -15,7 +15,7 @@ _updated at 2026-09_
 
 OpenAPI 기반 타입 자동화로 API 스펙 오용 오류를 없앴습니다. 7개 서비스의 공용 UI 컴포넌트를 구축하고 Agent Skills로 문서화해 AI 코딩 환경의 기반으로 활용하고 있습니다.
 
-운영 데이터 분석을 위한 Text-to-SQL 챗봇 구축 및 Electron 기반 Native Bridge 구현 등 프론트엔드 밖의 문제도 해결해 왔습니다.
+운영 데이터 분석을 위한 Text-to-SQL 챗봇 구축 및 Rust 기반 Native Bridge 구현 등 프론트엔드 밖의 문제도 해결해 왔습니다.
 
 ## Contact
 
@@ -54,7 +54,7 @@ OpenAPI 기반 타입 자동화로 API 스펙 오용 오류를 없앴습니다. 
   - Client Error, API Error, RSC Error를 각 Runtime의 진입점에서 수집해 Server Action 기반 logger로 전송
   - 에러 발생 시 Slack Webhook으로 에러 요약을 전송하고, 버튼 클릭 시 해당 에러를 조회하는 CloudWatch Logs Insights 쿼리가 입력된 화면으로 바로 이동
   - [Next.js에서 자동화된 로깅 구조 만들기](/blog/nextjs-logging-strategy)
-- 개발 인력이 없는 렌트카 업체도 백엔드 파트의 OpenAPI를 연동할 수 있도록 [개발자센터](https://developers.carplat.co.kr)를 구축했습니다.
+- 개발 인력이 없는 렌트카 업체도 공개 API를 연동할 수 있도록 [개발자센터](https://developers.carplat.co.kr)를 구축했습니다.
   - 비개발 직군도 이해할 수 있도록 API 명세와 차량·상품·예약·스케줄 등 도메인 가이드 작성
 
 #### 프론트엔드 플랫폼 및 디자인 시스템
@@ -116,8 +116,8 @@ OpenAPI 기반 타입 자동화로 API 스펙 오용 오류를 없앴습니다. 
 - 실시간 차트 API 응답 크기를 **10MB에서 1MB 이내로** 줄였습니다.
   - 전체 데이터를 반복 수신하던 문제를 차트별 마지막 Timestamp 이후 데이터만 조회하도록 API를 개선해 해결
 - 오픈소스 모니터링 솔루션을 분석하고 Apache ECharts 기반 대시보드의 기획·설계·기술스택 선정·개발을 담당했습니다.
-- `Vanilla JS` 기반의 사내 디자인 시스템을 `React`로 마이그레이션했습니다.
-  - UI 컴포넌트, Modal(Dialog, Drawer, Tooltip) 등을 `React`로 재구성
+- Vanilla JS 기반의 사내 디자인 시스템을 React로 마이그레이션했습니다.
+  - UI 컴포넌트, Modal(Dialog, Drawer, Tooltip) 등을 React로 재구성
 - React Query, Suspense, Error Boundary로 API 캐싱과 예외 처리 로직을 구현했습니다.
   - [React Query로 비동기 컴포넌트 개발하기](/blog/react-query)
 
