@@ -32,11 +32,13 @@ OpenAPI 기반 타입 자동화로 API 스펙 오용 오류를 없앴습니다. 
 
 > 피플카(투루카)의 신규 B2B 플랫폼과 공용 프론트엔드 기반, 운영 백오피스 앱 개발을 담당하고 있습니다.
 
-`TypeScript` `React` `Next.js (App Router)` `Vite` `Electron` `Tailwind CSS` `TanStack Query`
+`TypeScript` `React` `TanStack Query`
 
 #### B2B 모빌리티 플랫폼 신규 구축 및 확장
 
 **2024년 10월 ~ 현재** (2025년 05월 출시)
+
+`Next.js (App Router)` `Tailwind CSS` `React Hook Form` `Kakao Maps SDK`
 
 - FE 개발자 4인으로 B2B Web·Admin·WebView를 신규 구축해 2025년 05월 출시했습니다.
   - 폴더 구조, 조회·제출 처리 흐름, 로딩·에러 fallback 등 프론트엔드 공통 구조 설계
@@ -59,8 +61,11 @@ OpenAPI 기반 타입 자동화로 API 스펙 오용 오류를 없앴습니다. 
 
 **2024년 07월 ~ 현재**
 
+`Radix UI` `React Hook Form` `Sass` `Storybook` `Lexical` `Vite`
+
 - 6개 웹앱과 1개 WebView에서 사용하는 Radix UI 기반 공용 컴포넌트 50개 이상과 라이트·다크 테마 구조를 구축했습니다.
   - 공용 컴포넌트는 단일 UI 역할만 수행하고, 화면에서 조합해 사용하도록 디자이너와 협업해 Atomic Design 기반 구조 설계
+  - 폼 컴포넌트를 React Hook Form과 연동해 Input은 `register` 기반 uncontrolled, Select·DatePicker 등은 `Controller` 기반 controlled로 구현하고, label·설명·에러 메시지의 접근성 속성을 자동 연결
   - Storybook 컴포넌트 문서를 Agent Skills 형태로 전환해, Figma MCP로 디자인을 전달하면 AI가 공용 컴포넌트로 화면을 구현하도록 구성
 - OpenAPI YAML 기반 `.d.ts` 생성 스크립트를 구현해 모든 서비스에 적용했습니다.
   - endpoint·method별 request·response 타입을 자동 생성해 적용 이후 API 스펙 오용으로 인한 오류 **0건**
@@ -74,7 +79,7 @@ OpenAPI 기반 타입 자동화로 API 스펙 오용 오류를 없앴습니다. 
 
 **2026년 03월 ~ 현재**
 
-`Electron` `TanStack Router` `Rust` `napi-rs`
+`Electron` `TanStack Router` `Vite` `Rust` `napi-rs`
 
 - 여러 탭을 띄우고 전환하며 작업하는 운영 업무에 맞춰 브라우저 탭 형태 라우팅과 Page Keep-Alive를 구현했습니다.
   - 각 페이지를 독립된 React Root로 마운트해, 탭을 전환해도 입력 중인 내용과 화면 상태 유지
@@ -85,7 +90,7 @@ OpenAPI 기반 타입 자동화로 API 스펙 오용 오류를 없앴습니다. 
 
 **2025년 11월 ~ 현재** (2025년 12월 오픈)
 
-`Next.js` `Vercel AI SDK` `pgvector` `MSSQL`
+`Next.js (App Router)` `Vercel AI SDK` `pgvector` `MSSQL`
 
 - 개발자에게 반복 요청하던 데이터 추출을 현업이 직접 조회할 수 있도록, 자연어로 SQL을 생성해 조회하는 챗봇을 구축했습니다.
   - Next.js로 full-stack 앱을 구현하고, 사내 온프레미스 Ubuntu 서버에 배포 환경을 처음부터 구성
@@ -104,7 +109,7 @@ OpenAPI 기반 타입 자동화로 API 스펙 오용 오류를 없앴습니다. 
 > ERP 솔루션의 프론트엔드 개발과 기술지원을 담당했으며, 첫 1년은 Java·React를 병행하고 이후 1년은 프론트엔드 전담으로 근무했습니다.
 > 고객사별 커스텀 화면을 구현하고 온프레미스 환경에 솔루션을 배포·유지보수했습니다.
 
-`TypeScript` `React` `Next.js` `Tailwind CSS` `TanStack Query` `Apache ECharts` `Java`
+`TypeScript` `React` `Next.js (Pages Router)` `Tailwind CSS` `TanStack Query` `Apache ECharts` `Java`
 
 #### 백엔드 성능 모니터링 웹 앱
 
