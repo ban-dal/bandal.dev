@@ -8,7 +8,6 @@
 
 - 모든 코드 작업: 먼저 `.docs/`에서 관련 문서를 찾고 읽습니다.
   - 코드 컨벤션: `.docs/CONVENTION.md`
-  - 퀄리티 가이드: `.docs/QUALITY.md`
 
 ## 소스 우선순위
 
