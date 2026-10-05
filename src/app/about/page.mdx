@@ -41,9 +41,11 @@ OpenAPI 기반 타입 자동화로 API 스펙 오용 오류를 없앴습니다. 
 `Next.js (App Router)` `Tailwind CSS` `React Hook Form` `Kakao Maps SDK`
 
 - FE 개발자 4인으로 B2B Web·Admin·WebView를 신규 구축해 2025년 05월 출시했습니다.
-  - 폴더 구조, 조회·제출 처리 흐름, 로딩·에러 fallback 등 프론트엔드 공통 구조 설계
-  - 회원 가입, 로그인 및 토큰 관리, 권한 처리 구현
-  - 앱 내 WebView의 프론트엔드 개발 전반 전담, Web·Admin은 일부 페이지 담당
+  - 앱 내 WebView의 프론트엔드 개발을 전담하고, Web·Admin은 일부 페이지 담당
+  - 비즈니스 도메인별로 컴포넌트·훅·유틸을 응집하고, RSC 진입점과 Client Component의 역할을 구분한 폴더 구조 설계
+  - 조회는 RSC, 변경은 Server Actions를 중심으로 구성해 백엔드 API 주소와 키를 클라이언트에 노출하지 않도록 처리
+  - `proxy.ts`에서 JWT 갱신·만료 처리와 페이지 접근 권한 검증을 공통화해 RSC 렌더링 전 접근 제어
+  - Streaming·Suspense를 적용해 페이지 전체 로딩 대신 데이터가 준비된 영역부터 점진적으로 렌더링
 - 차량 관제 지도에서 수천 대 마커가 몰려도 조작 가능한 성능을 확보했습니다.
   - 4x CPU throttling 환경에서 지도 이동 시 15fps 이하 프레임 드롭과 프리징 재현, 기획자와 필요한 마커 밀도 협의
   - 클러스터링, 이동 중 마커 렌더 debounce, 이미지 기반 마커를 조합해 같은 환경의 고밀도 지역에서도 **15fps 이하 → 60fps 유지**
